@@ -51,6 +51,10 @@ bool CLoginLogic::OnCreate( TNotifyUI& msg )
 bool CLoginLogic::OnInit( TNotifyUI& msg )
 {
     REG_RCKTOOL_MSG_WND_OB(m_pm->GetPaintWindow());
+
+    /*ISipToolCommonOp::ShowControl( true, m_pm, _T("PageLogin") );
+    ISipToolCommonOp::ShowControl( false, m_pm, _T("PageSipToolMain") );*/
+
     return true;
 }
 
@@ -62,13 +66,13 @@ bool CLoginLogic::OnDestroy( TNotifyUI& msg )
 
 bool CLoginLogic::OnMinBtnClicked(TNotifyUI& msg)
 {
-    WINDOW_MGR_PTR->ShowWindowMinsize(g_stcStrLoginDlg.c_str());  
+    WINDOW_MGR_PTR->ShowWindowMinsize(g_stcStrMainFrameDlg.c_str());  
     return true;
 }
 
 bool CLoginLogic::OnCloseBtnClicked(TNotifyUI& msg)
 {
-    WINDOW_MGR_PTR->CloseWindow(g_stcStrLoginDlg.c_str());  
+    WINDOW_MGR_PTR->CloseWindow(g_stcStrMainFrameDlg.c_str());  
     TerminateProcess(GetCurrentProcess(), 0); 
     return false;
 }

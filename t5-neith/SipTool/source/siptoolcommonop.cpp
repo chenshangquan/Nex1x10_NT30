@@ -1,8 +1,7 @@
 #include "StdAfx.h"
 #include "siptoolcommonop.h"
-#include "networksetuplogic.h"
-
 #include "loginlogic.h"
+#include "networksetuplogic.h"
 
 ISipToolCommonOp::ISipToolCommonOp(void)
 {

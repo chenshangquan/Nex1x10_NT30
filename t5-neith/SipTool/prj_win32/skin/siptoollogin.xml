@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<Window size="454,282" caption="0,0,0,40" roundcorner="1,0" bktrans="false" >
-<Font name="宋体" size="12" bold="false" />
+<PageLogin>
+<!--Window size="454,282" caption="0,0,0,40" roundcorner="1,0" bktrans="false" -->
+<!--Font name="宋体" size="12" bold="false" /-->
 	<VerticalLayout name="login" bkimage="res/login/login_bg.png">
 		<HorizontalLayout height="81">
 			<Button name="minbtn" float="true" pos="351,8,0,0" width="43" height="28" normalimage="res/login/min_normal.png" hotimage="res/login/min_hover.png" pushedimage="res/login/min_down.png"/>
@@ -37,4 +38,5 @@
 		</Case>
 	
 	</VerticalLayout>
-</Window>
+<!--/Window-->
+</PageLogin>

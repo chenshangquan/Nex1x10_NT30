@@ -39,6 +39,6 @@ protected:
 };
 
 
-
+extern const String g_stcStrMainFrameDlg;
 extern const String g_stcStrLoginDlg;
 extern const String g_stcStrNetworkSetupDlg;

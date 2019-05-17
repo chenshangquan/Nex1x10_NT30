@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<Window size="850,600" caption="0,0,0,40" roundcorner="1,0" bktrans="false" >
-<Font name="宋体" size="12" bold="false" />
+<PageSipToolMain>
 	<VerticalLayout name="login" bkcolor="#ff000000">
+		<HorizontalLayout height="90">
+		</HorizontalLayout>
 		
+		<HorizontalLayout height="81">
+		</HorizontalLayout>
+		
+		<HorizontalLayout height="81">
+		</HorizontalLayout>
 		
 		<!--Case name="caseNormal">
 			<LoginBtn enabled="true"/>
@@ -19,4 +25,4 @@
 		</Case-->
 	
 	</VerticalLayout>
-</Window>
+</PageSipToolMain>

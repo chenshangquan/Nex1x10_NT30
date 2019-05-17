@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window size="850,600" roundcorner="1,0" caption="0,0,0,40" bktrans="false" mininfo="454,282" >
+<Font name="宋体" size="12" bold="false" />
+	<!--Font name="微软雅黑" size="20" bold="false" ></Font>
+	<Font name="微软雅黑" size="22" bold="false" ></Font>
+	<Font name="微软雅黑" default="true" size="12" bold="false"></Font>
+	<Font name="微软雅黑" size="36" bold="false" ></Font-->
+	
+  <!--Default name="Edit" value="bordercolor=&quot;#FFABABAB&quot; bordersize=&quot;0,0,0,1&quot; gdiplus=&quot;true&quot;" />
+  <Default name="Label" value="gdiplus=&quot;true&quot;" />
+  <Default name="Button" value="gdiplus=&quot;true&quot; textcolor=&quot;#CCD4DEEB&quot; pushedtextcolor=&quot;#FF379FDB&quot;" /-->
+
+	<VerticalLayout name="MainFrame"  bkimage="" inset="0,0,0,0">
+		<Container bkcolor="#FF000000" name="TPadLayoutWndBody">
+			<ChildLayout xmlfile="siptoollogin.xml" name="PageLogin" />
+			<ChildLayout xmlfile="networksetup.xml" name="PageSipToolMain" />
+		</Container> 
+	</VerticalLayout>
+</Window>

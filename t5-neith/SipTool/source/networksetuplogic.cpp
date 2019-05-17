@@ -4,6 +4,9 @@
 template<> CNetworkSetupLogic* Singleton<CNetworkSetupLogic>::ms_pSingleton  = NULL;
 
 APP_BEGIN_MSG_MAP(CNetworkSetupLogic, CNotifyUIImpl)
+    MSG_CREATEWINDOW(_T("MainFrame"), OnCreate)
+    MSG_INIWINDOW(_T("MainFrame"), OnInit)
+
     USER_MSG(UI_SIPTOOL_CONNECTED , OnSipToolConnected)
 APP_END_MSG_MAP()
 
@@ -35,6 +38,12 @@ bool CNetworkSetupLogic::OnCreate( TNotifyUI& msg )
 bool CNetworkSetupLogic::OnInit( TNotifyUI& msg )
 {
     REG_RCKTOOL_MSG_WND_OB(m_pm->GetPaintWindow());
+
+    ISipToolCommonOp::ShowControl( true, m_pm, _T("PageLogin") );
+    ISipToolCommonOp::ShowControl( false, m_pm, _T("PageSipToolMain") );
+    SetWindowPos( m_pm->GetPaintWindow(), HWND_TOP, 0, 0, 454, 282, SWP_NOACTIVATE|SWP_NOMOVE );
+    WINDOW_MGR_PTR->ShowWindowCenter(g_stcStrNetworkSetupDlg.c_str());
+
     return true;
 }
 
@@ -67,8 +76,9 @@ bool CNetworkSetupLogic::OnSipToolConnected(WPARAM wparam)
         //界面变更
         //m_pm->DoCase(_T("caseIsLogin"));
 
-        //窗口变更
-        WINDOW_MGR_PTR->ShowWindow(g_stcStrLoginDlg.c_str(), false); 
+        ISipToolCommonOp::ShowControl( false, m_pm, _T("PageLogin") );
+        ISipToolCommonOp::ShowControl( true, m_pm, _T("PageSipToolMain") );
+        SetWindowPos( m_pm->GetPaintWindow(), HWND_TOP, 0, 0, 850, 600, SWP_NOACTIVATE|SWP_NOMOVE );
         WINDOW_MGR_PTR->ShowWindowCenter(g_stcStrNetworkSetupDlg.c_str());
     }
     else
@@ -89,7 +99,7 @@ bool CNetworkSetupLogic::OnSipToolConnected(WPARAM wparam, LPARAM lparam, bool& 
         m_pm->DoCase(_T("caseIsLogin"));
 
         //窗口变更
-        WINDOW_MGR_PTR->HideWindow(g_stcStrLoginDlg.c_str());
+        //WINDOW_MGR_PTR->HideWindow(g_stcStrLoginDlg.c_str());
         WINDOW_MGR_PTR->ShowWindowCenter(g_stcStrNetworkSetupDlg.c_str());
     }
     else
