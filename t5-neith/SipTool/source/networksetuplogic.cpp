@@ -7,6 +7,14 @@ APP_BEGIN_MSG_MAP(CNetworkSetupLogic, CNotifyUIImpl)
     MSG_CREATEWINDOW(_T("MainFrame"), OnCreate)
     MSG_INIWINDOW(_T("MainFrame"), OnInit)
 
+	MSG_CLICK(_T("exitbutton"), OnExitBtnClicked)
+	MSG_CLICK(_T("minbutton"), OnMinBtnClicked)
+	MSG_CLICK(_T("closebutton"), OnCloseBtnClicked)
+
+	MSG_SELECTCHANGE(_T("CascadeCfgOpt"), OnTabCascadeCfg)
+	MSG_SELECTCHANGE(_T("NeighborCfgOpt"), OnTabNeighborCfg)
+	MSG_SELECTCHANGE(_T("LocalAreaNumCfgOpt"), OnTabLocalAreaNumCfg)
+
     USER_MSG(UI_SIPTOOL_CONNECTED , OnSipToolConnected)
 APP_END_MSG_MAP()
 
@@ -53,17 +61,61 @@ bool CNetworkSetupLogic::OnDestroy( TNotifyUI& msg )
     return true;
 }
 
+bool CNetworkSetupLogic::OnExitBtnClicked(TNotifyUI& msg)
+{
+	ISipToolCommonOp::ShowControl( true, m_pm, _T("PageLogin") );
+	ISipToolCommonOp::ShowControl( false, m_pm, _T("PageSipToolMain") );
+	SetWindowPos( m_pm->GetPaintWindow(), HWND_TOP, 0, 0, 454, 282, SWP_NOACTIVATE|SWP_NOMOVE );
+	WINDOW_MGR_PTR->ShowWindowCenter(g_stcStrNetworkSetupDlg.c_str());
+
+	return true;
+}
+
+
 bool CNetworkSetupLogic::OnMinBtnClicked(TNotifyUI& msg)
 {
-    WINDOW_MGR_PTR->ShowWindowMinsize(g_stcStrNetworkSetupDlg.c_str());  
+    WINDOW_MGR_PTR->ShowWindowMinsize(g_stcStrMainFrameDlg.c_str());  
     return true;
 }
 
 bool CNetworkSetupLogic::OnCloseBtnClicked(TNotifyUI& msg)
 {
-    WINDOW_MGR_PTR->CloseWindow(g_stcStrNetworkSetupDlg.c_str());  
+    WINDOW_MGR_PTR->CloseWindow(g_stcStrMainFrameDlg.c_str());  
     TerminateProcess(GetCurrentProcess(), 0); 
     return false;
+}
+
+bool CNetworkSetupLogic::OnTabCascadeCfg(TNotifyUI& msg)
+{
+	CTabLayoutUI *pControl = (CTabLayoutUI*)ISipToolCommonOp::FindControl( m_pm, _T("SipToolSlideTab") );
+	if (pControl)
+	{
+		pControl->SelectItem(emTabID_CascadeCfg);
+	}
+
+	return true;
+}
+
+bool CNetworkSetupLogic::OnTabNeighborCfg(TNotifyUI& msg)
+{
+	CTabLayoutUI *pControl = (CTabLayoutUI*)ISipToolCommonOp::FindControl( m_pm, _T("SipToolSlideTab") );
+	if (pControl)
+	{
+		pControl->SelectItem(emTabID_NeighborCfg);
+	}
+
+	return true;
+}
+
+bool CNetworkSetupLogic::OnTabLocalAreaNumCfg(TNotifyUI& msg)
+{
+	CTabLayoutUI *pControl = (CTabLayoutUI*)ISipToolCommonOp::FindControl( m_pm, _T("SipToolSlideTab") );
+	if (pControl)
+	{
+		pControl->SelectItem(emTabID_LocalAreaNumCfg);
+	}
+
+	return true;
 }
 
 bool CNetworkSetupLogic::OnSipToolConnected(WPARAM wparam)
@@ -78,7 +130,7 @@ bool CNetworkSetupLogic::OnSipToolConnected(WPARAM wparam)
 
         ISipToolCommonOp::ShowControl( false, m_pm, _T("PageLogin") );
         ISipToolCommonOp::ShowControl( true, m_pm, _T("PageSipToolMain") );
-        SetWindowPos( m_pm->GetPaintWindow(), HWND_TOP, 0, 0, 850, 600, SWP_NOACTIVATE|SWP_NOMOVE );
+        SetWindowPos( m_pm->GetPaintWindow(), HWND_TOP, 0, 0, 862, 614, SWP_NOACTIVATE|SWP_NOMOVE );
         WINDOW_MGR_PTR->ShowWindowCenter(g_stcStrNetworkSetupDlg.c_str());
     }
     else

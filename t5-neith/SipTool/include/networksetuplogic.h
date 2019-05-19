@@ -10,6 +10,13 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+enum EmCfgCtrlTabID
+{
+	emTabID_CascadeCfg = 0,
+	emTabID_NeighborCfg,
+	emTabID_LocalAreaNumCfg,
+};
+
 class CNetworkSetupLogic : public CNotifyUIImpl, public Singleton<CNetworkSetupLogic> 
 {
 public:
@@ -39,10 +46,19 @@ protected:
      */
     bool OnDestroy(TNotifyUI& msg);
 
+	//点击退出按钮
+	bool OnExitBtnClicked(TNotifyUI& msg);
     //点击最小化按钮
     bool OnMinBtnClicked(TNotifyUI& msg);
     //点击关闭按钮
     bool OnCloseBtnClicked(TNotifyUI& msg);
+
+	//级联配置
+	bool OnTabCascadeCfg(TNotifyUI& msg);
+	//邻居配置
+	bool OnTabNeighborCfg(TNotifyUI& msg);
+	//本地区域号配置
+	bool OnTabLocalAreaNumCfg(TNotifyUI& msg);
 
     //Siptool connected
     bool OnSipToolConnected(WPARAM wparam, LPARAM lparam, bool& bHandle);
