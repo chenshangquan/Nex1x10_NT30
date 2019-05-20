@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<PageLocalAreaNumCfg>
+	<VerticalLayout name="LocalAreaNumCfgLayout">
+		<VerticalLayout>
+			<Label float="true" pos="40,38,0,0" width="115" height="14" text="本地区号配置" textcolor="#FF354646" font="1" align="left" />
+			<Label float="true" pos="164,45,0,0" width="515" height="1" bkimage="res\cascade_cfg\line.png" />
+			
+			<Edit name="RegSerIPEdt" float="true" pos="35,76,0,0" width="559" height="42" text="" textpadding="19,0,0,0" textcolor="#FF3B3B3B" font="0" normalimage="res\cascade_cfg\input_normal.png" focusedimage="res\cascade_cfg\input_focused.png" disabledimage="res\cascade_cfg\input_disabled.png" maxchar="15" numberstyle="1" />
+			
+			<Button name="LocCfgSaveBtn" float="true" pos="614,78,0,0" width="86" height="38" normalimage="res\cascade_cfg\save_normal.png" hotimage="res\cascade_cfg\save_hover.png" pushedimage="res\cascade_cfg\save_down.png" disabledimage="res\cascade_cfg\save_disable.png" />
+		</VerticalLayout>
+		
+		<Case name="caseIPIsSave">		<!--已经成功保存-->
+			<IPCheckBtn enabled="false" />
+			<IPCheckOkLeb visible="false" />
+		</Case>
+
+	</VerticalLayout>
+</PageLocalAreaNumCfg>

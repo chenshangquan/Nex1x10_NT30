@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "loginlogic.h"
-#include "networksetuplogic.h"
+#include "mainframelogic.h"
 
 #define TIMER_LENGTH  4000
 #define TIMER_SHOWTIP 200
@@ -150,7 +150,7 @@ bool CLoginLogic::OnLoginBtnClicked(TNotifyUI& msg)
     /*m_pm->DoCase(_T("caseIsLogining"));
     CSipToolComInterface->SocketConnect( dwIp, CT2A(strUserName), CT2A(strPassWord));*/
 
-    CNetworkSetupLogic::GetSingletonPtr()->OnSipToolConnected(1);
+    CMainFrameLogic::GetSingletonPtr()->OnSipToolConnected(1);
     return true;
 }
 

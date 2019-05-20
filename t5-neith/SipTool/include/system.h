@@ -42,3 +42,5 @@ protected:
 extern const String g_stcStrMainFrameDlg;
 extern const String g_stcStrLoginDlg;
 extern const String g_stcStrNetworkSetupDlg;
+extern const String g_stcStrPopupDlg;
+extern const String g_stcStrLogoutDlg;

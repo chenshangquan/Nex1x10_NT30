@@ -10,6 +10,8 @@ const String CSystem::strDefaultSkin	= _T("skin\\");
 const String g_stcStrMainFrameDlg = _T("siptool"); 
 const String g_stcStrLoginDlg = _T("LoginDlg");
 const String g_stcStrNetworkSetupDlg = _T("NetworkSetup");
+const String g_stcStrPopupDlg = _T("PopupDlg");
+const String g_stcStrLogoutDlg = _T("LogoutDlg");
 
 CSystem::CSystem(void)
 {

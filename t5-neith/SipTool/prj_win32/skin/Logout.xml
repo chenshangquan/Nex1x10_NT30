@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window size="450,278" roundcorner="1,0" caption="0,0,0,278" bktrans="false" >
+	<Font name="宋体" size="12" bold="false" />
+	<Font name="宋体" size="12" bold="true" />
+	<Default name="Edit" value="gdiplus=&quot;false&quot;" />
+	<Default name="Label" value="gdiplus=&quot;false&quot;" />
+	<Default name="Button" value="gdiplus=&quot;false&quot;" />
+
+	<VerticalLayout name="LogoutLayout" bkimage="res/logout/background.png" >
+		<Button name="CloseBtn" float="true" pos="391,3,0,0" width="44" height="30" normalimage="res/logout/close_normal.png" hotimage="res/logout/close_hover.png" pushedimage="res/logout/close_down.png" />
+		<Label float="true" pos="22,20,0,0" width="56" height="14" font="0" text="提示信息" textcolor="#FF8D8D8D" />
+		<Label float="true" pos="171,113,0,0" width="120" height="14" font="0" text="确定退出当前登陆？" textcolor="#FFFFFFFF" />
+		
+		<Button name="ConfirmBtn" float="true" pos="124,232,0,0" width="87" height="31" normalimage="res/logout/confirm_normal.png" hotimage="res/logout/confirm_hover.png" pushedimage="res/logout/confirm_down.png" disabledimage="res/logout/confirm_disabled.png" />
+		<Button name="CancelBtn" float="true" pos="239,232,0,0" width="87" height="31" normalimage="res/logout/cancel_normal.png" pushedimage="res/logout/cancel_down.png" disabledimage="res/logout/cancel_disabled.png" />
+	</VerticalLayout>
+</Window>

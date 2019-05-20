@@ -63,7 +63,19 @@
     <ClInclude Include="..\include\siptoolinterface.h">
       <Filter>Header Files\interface</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\networksetuplogic.h">
+    <ClInclude Include="..\include\logoutlogic.h">
+      <Filter>Header Files\logic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mainframelogic.h">
+      <Filter>Header Files\logic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\cascadecfglogic.h">
+      <Filter>Header Files\logic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\neighborcfglogic.h">
+      <Filter>Header Files\logic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\localareanumcfglogic.h">
       <Filter>Header Files\logic</Filter>
     </ClInclude>
   </ItemGroup>
@@ -95,7 +107,19 @@
     <ClCompile Include="..\source\siptoolsysctrlif.cpp">
       <Filter>Source Files\interface</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\networksetuplogic.cpp">
+    <ClCompile Include="..\source\logoutlogic.cpp">
+      <Filter>Source Files\logic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\mainframelogic.cpp">
+      <Filter>Source Files\logic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\cascadecfglogic.cpp">
+      <Filter>Source Files\logic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\neighborcfglogic.cpp">
+      <Filter>Source Files\logic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\localareanumcfglogic.cpp">
       <Filter>Source Files\logic</Filter>
     </ClCompile>
   </ItemGroup>

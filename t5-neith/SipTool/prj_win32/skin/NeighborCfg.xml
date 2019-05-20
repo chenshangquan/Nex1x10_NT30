@@ -16,6 +16,9 @@
 				<Label float="true" pos="118,14,0,0" width="28" height="14" text="区号" textcolor="#FF0F4F51" font="0" align="left" />
 				<Label float="true" pos="302,14,0,0" width="42" height="14" text="IP地址" textcolor="#FF0F4F51" font="0" align="left" />
 				<Label float="true" pos="514,14,0,0" width="28" height="14" text="端口" textcolor="#FF0F4F51" font="0" align="left" />
+				
+				<Button name="NeiCfgAddBtn" float="true" pos="438,352,0,0" width="87" height="32" normalimage="res\neighbor_cfg\add_normal.png" hotimage="res\neighbor_cfg\add_hover.png" pushedimage="res\neighbor_cfg\add_down.png" disabledimage="res\neighbor_cfg\add_disable.png" />
+				<Button name="NeiCfgdelBtn" float="true" pos="543,356,0,0" width="81" height="25" normalimage="res\neighbor_cfg\delete_normal.png" hotimage="res\neighbor_cfg\delete_hover.png" pushedimage="res\neighbor_cfg\delete_down.png" disabledimage="res\neighbor_cfg\delete_disable.png" />
 			</VerticalLayout>
 		</VerticalLayout>
 		

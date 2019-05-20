@@ -77,10 +77,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\cascadecfglogic.h" />
     <ClInclude Include="..\include\constdef.h" />
     <ClInclude Include="..\include\globalheader.h" />
+    <ClInclude Include="..\include\localareanumcfglogic.h" />
     <ClInclude Include="..\include\loginlogic.h" />
-    <ClInclude Include="..\include\networksetuplogic.h" />
+    <ClInclude Include="..\include\logoutlogic.h" />
+    <ClInclude Include="..\include\mainframelogic.h" />
+    <ClInclude Include="..\include\neighborcfglogic.h" />
     <ClInclude Include="..\include\siptoolcommonop.h" />
     <ClInclude Include="..\include\siptoolinterface.h" />
     <ClInclude Include="..\include\siptoolmsgmanager.h" />
@@ -92,8 +96,12 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\source\cascadecfglogic.cpp" />
+    <ClCompile Include="..\source\localareanumcfglogic.cpp" />
     <ClCompile Include="..\source\loginlogic.cpp" />
-    <ClCompile Include="..\source\networksetuplogic.cpp" />
+    <ClCompile Include="..\source\logoutlogic.cpp" />
+    <ClCompile Include="..\source\mainframelogic.cpp" />
+    <ClCompile Include="..\source\neighborcfglogic.cpp" />
     <ClCompile Include="..\source\siptoolcommonop.cpp" />
     <ClCompile Include="..\source\siptoolinterface.cpp" />
     <ClCompile Include="..\source\siptoolmsgmanager.cpp" />

@@ -27,7 +27,13 @@ enum EmUiRkcMsg
 	ev_UISipToolDisconnected,
 #define UI_SIPTOOL_DISCONNECTED	 ev_UISipToolDisconnected
 
-    
+    /************************************************************************/
+	/** ×¢Ïú
+	wParam = 0
+	lparam = 0*/
+	/************************************************************************/
+	ev_UISipToolLogout,
+#define UI_SIPTOOL_LOGOUT  ev_UISipToolLogout
 
     ev_UIRkcEnd,
 #define	UI_RKC_MSG_END   ev_UIRkcEnd

@@ -1,7 +1,11 @@
 #include "StdAfx.h"
 #include "siptoolcommonop.h"
 #include "loginlogic.h"
-#include "networksetuplogic.h"
+#include "mainframelogic.h"
+#include "logoutlogic.h"
+#include "cascadecfglogic.h"
+#include "neighborcfglogic.h"
+#include "localareanumcfglogic.h"
 
 ISipToolCommonOp::ISipToolCommonOp(void)
 {
@@ -16,7 +20,11 @@ ISipToolCommonOp::~ISipToolCommonOp(void)
 void ISipToolCommonOp::RegLogics()
 {
     REG_LOGIC(CLoginLogic);
-	REG_LOGIC(CNetworkSetupLogic);
+	REG_LOGIC(CMainFrameLogic);
+    REG_LOGIC(CLogoutLogic);
+    REG_LOGIC(CCascadeCfgLogic);
+    REG_LOGIC(CNeighborCfgLogic);
+    REG_LOGIC(CLocalAreaNumCfgLogic);
 
 	return ;
 }

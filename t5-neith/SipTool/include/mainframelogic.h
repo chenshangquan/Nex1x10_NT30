@@ -17,11 +17,11 @@ enum EmCfgCtrlTabID
 	emTabID_LocalAreaNumCfg,
 };
 
-class CNetworkSetupLogic : public CNotifyUIImpl, public Singleton<CNetworkSetupLogic> 
+class CMainFrameLogic : public CNotifyUIImpl, public Singleton<CMainFrameLogic> 
 {
 public:
-	CNetworkSetupLogic();
-	~CNetworkSetupLogic();
+	CMainFrameLogic();
+	~CMainFrameLogic();
 
     bool OnSipToolConnected(WPARAM wparam);
 
@@ -62,6 +62,8 @@ protected:
 
     //Siptool connected
     bool OnSipToolConnected(WPARAM wparam, LPARAM lparam, bool& bHandle);
+    //µÇÂ½×¢Ïú
+    bool OnSipToolLogout(WPARAM wparam, LPARAM lparam, bool& bHandle);
 
     APP_DECLARE_MSG_MAP()
 
