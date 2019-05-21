@@ -16,7 +16,7 @@ public:
 	CNeighborCfgLogic();
 	~CNeighborCfgLogic();
 
-    //bool OnSaveNetWorkButClicked();
+    bool NeiRegServerItemAdd();
 protected:
     //µã»÷Ìí¼Ó°´Å¥
     bool OnNeighborCfgAddBtnClicked(TNotifyUI& msg);
@@ -28,7 +28,7 @@ protected:
     APP_DECLARE_MSG_MAP()
 
 private:
-
+    CListUI* m_pNeiRegServerList;
 };
 
 #endif // !defined(AFX_NEIGHBORCFG_H_)

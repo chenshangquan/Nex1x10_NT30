@@ -49,6 +49,7 @@ bool CMainFrameLogic::OnInit( TNotifyUI& msg )
     REG_RCKTOOL_MSG_WND_OB(m_pm->GetPaintWindow());
 
     WINDOW_MGR_PTR->ShowWindow(g_stcStrLogoutDlg.c_str(), false);
+    WINDOW_MGR_PTR->ShowWindow(g_stcStrNeiRegServerAddDlg.c_str(), false);
 
     ISipToolCommonOp::ShowControl( true, m_pm, _T("PageLogin") );
     ISipToolCommonOp::ShowControl( false, m_pm, _T("PageSipToolMain") );
@@ -128,7 +129,7 @@ bool CMainFrameLogic::OnSipToolConnected(WPARAM wparam)
 
         ISipToolCommonOp::ShowControl( false, m_pm, _T("PageLogin") );
         ISipToolCommonOp::ShowControl( true, m_pm, _T("PageSipToolMain") );
-        SetWindowPos( m_pm->GetPaintWindow(), HWND_TOP, 0, 0, 862, 614, SWP_NOACTIVATE|SWP_NOMOVE );
+        SetWindowPos( m_pm->GetPaintWindow(), HWND_TOP, 0, 0, 864, 614, SWP_NOACTIVATE|SWP_NOMOVE );
         WINDOW_MGR_PTR->ShowWindowCenter(g_stcStrNetworkSetupDlg.c_str());
     }
     else

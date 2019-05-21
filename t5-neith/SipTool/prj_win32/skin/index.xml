@@ -4,6 +4,6 @@
   <siptool file="mainframe.xml" logic="CMainFrameLogic|CLoginLogic|CCascadeCfgLogic|CNeighborCfgLogic|CLocalAreaNumCfgLogic" style="frame" />
   <!--networksetup file="networksetup.xml" logic="CNetworkSetupLogic" parent="siptool" style="dialog" /-->
   <!--networksetup file="networksetup.xml" logic="CCascadeCfgLogic" parent="siptool" style="child"-->
-  <PopupDlg file="Popup.xml" logic="CPopupLogic" parent="siptool" style="dialog" />
-  <LogoutDlg file="Logout.xml" logic="CLogoutLogic" parent="siptool" style="dialog" />
+  <LogoutDlg file="logout.xml" logic="CLogoutLogic" parent="siptool" style="dialog" />
+  <NeiRegServerAddDlg file="neiregserveradd.xml" logic="CNeiRegServerAddLogic" parent="siptool" style="dialog" />
 </index>

@@ -6,6 +6,15 @@
 	<Font name="微软雅黑" size="22" bold="false" ></Font>
 	<Font name="微软雅黑" default="true" size="12" bold="false"></Font>
 	<Font name="微软雅黑" size="36" bold="false" ></Font-->
+	<Default name="VScrollBar" value="width=&quot;23&quot; 
+    bknormalimage=&quot;res/public/scrollbar_bg.png&quot; 
+    button1normalimage=&quot;res/public/tria_top_normal.png&quot; 
+    button1hotimage=&quot;res/public/tria_top_hover.png&quot; 
+    button1pushedimage=&quot;res/public/tria_top_down.png&quot; 
+    button2normalimage=&quot;res/public/tria_bottom_normal.png&quot; 
+    button2hotimage=&quot;res/public/tria_bottom_hover.png&quot; 
+    button2pushedimage=&quot;res/public/tria_bottom_down.png&quot; 
+    thumbnormalimage=&quot;res/public/rail.png&quot;" />
 	
 	<!--Default name="Edit" value="bordercolor=&quot;#FFABABAB&quot; bordersize=&quot;0,0,0,1&quot; gdiplus=&quot;true&quot;" /-->
 	<Default name="Edit" value="gdiplus=&quot;false&quot;" />
@@ -14,7 +23,7 @@
 
 	<VerticalLayout name="MainFrame"  bkimage="" inset="0,0,0,0">
 		<Container name="TPadLayoutWndBody">
-			<ChildLayout xmlfile="siptoollogin.xml" name="PageLogin" />
+			<ChildLayout xmlfile="login.xml" name="PageLogin" />
 			<ChildLayout xmlfile="networksetup.xml" name="PageSipToolMain" />
 		</Container> 
 	</VerticalLayout>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window size="488,338" roundcorner="1,0" caption="0,0,0,50" bktrans="false" >
+	<Font name="宋体" size="12" bold="false" />
+	<Font name="宋体" size="12" bold="true" />
+	<Default name="Edit" value="gdiplus=&quot;false&quot;" />
+	<Default name="Label" value="gdiplus=&quot;false&quot;" />
+	<Default name="Button" value="gdiplus=&quot;false&quot;" />
+
+	<VerticalLayout name="NeiRegServerAddLayout" bkimage="res/neighbor_cfg/pop_up/background.png" >
+		<Button name="CloseBtn" float="true" pos="429,5,0,0" width="44" height="30" normalimage="res/neighbor_cfg/pop_up/close_normal.png" hotimage="res/neighbor_cfg/pop_up/close_hover.png" pushedimage="res/neighbor_cfg/pop_up/close_down.png" />
+		<Label float="true" pos="23,19,0,0" width="150" height="14" font="0" text="添加邻居regserver服务" textcolor="#FF8D8D8D" />
+		
+		<Label float="true" pos="64,116,0,0" width="120" height="14" font="0" text="区号：" textcolor="#FF0F4F51" />
+		<Edit name="AreaNumEdt" float="true" pos="208,106,0,0" width="220" height="32" text="0000" textpadding="19,0,0,0" textcolor="#FF3B3B3B" font="0" normalimage="res/neighbor_cfg/pop_up/input_normal.png" focusedimage="res/neighbor_cfg/pop_up/input_focused.png" numberstyle="1" />
+		
+		<Label float="true" pos="64,156,0,0" width="120" height="14" font="0" text="IP地址：" textcolor="#FF0F4F51" />
+		<Edit name="IPAddrEdt" float="true" pos="208,146,0,0" width="220" height="32" text="0.0.0.0" textpadding="19,0,0,0" textcolor="#FF3B3B3B" font="0" normalimage="res/neighbor_cfg/pop_up/input_normal.png" focusedimage="res/neighbor_cfg/pop_up/input_focused.png" maxchar="16" numberstyle="1" />
+		
+		<Label float="true" pos="64,196,0,0" width="120" height="14" font="0" text="端口：" textcolor="#FF0F4F51" />
+		<Edit name="IPAddrEdt" float="true" pos="208,186,0,0" width="220" height="32" text="0000" textpadding="19,0,0,0" textcolor="#FF3B3B3B" font="0" normalimage="res/neighbor_cfg/pop_up/input_normal.png" focusedimage="res/neighbor_cfg/pop_up/input_focused.png" numberstyle="1" />
+		
+		<Button name="ConfirmBtn" float="true" pos="250,292,0,0" width="87" height="31" normalimage="res/neighbor_cfg/pop_up/confirm_normal.png" hotimage="res/neighbor_cfg/pop_up/confirm_hover.png" pushedimage="res/neighbor_cfg/pop_up/confirm_down.png" disabledimage="res/neighbor_cfg/pop_up/confirm_disabled.png" />
+		<Button name="CancelBtn" float="true" pos="365,292,0,0" width="87" height="31" normalimage="res/neighbor_cfg/pop_up/cancel_normal.png" pushedimage="res/neighbor_cfg/pop_up/cancel_down.png" disabledimage="res/neighbor_cfg/pop_up/cancel_disabled.png" />
+	</VerticalLayout>
+</Window>

@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "neighborcfglogic.h"
-#include "mainframelogic.h"
 
 template<> CNeighborCfgLogic* Singleton<CNeighborCfgLogic>::ms_pSingleton  = NULL;
 
@@ -22,8 +21,34 @@ CNeighborCfgLogic::~CNeighborCfgLogic()
 {
 }
 
+bool CNeighborCfgLogic::NeiRegServerItemAdd()
+{
+    m_pNeiRegServerList = (CListUI*)ISipToolCommonOp::FindControl( m_pm, _T("NeiRegServerList") );
+    //CListContainerElementUI *pListContainer = (CListContainerElementUI*)CONTROLFACTORY()->GetControl( _T("PeripheralListItem") );
+    
+    CString str;
+    // 添加List列表内容，必须先Add(pListElement)，再SetText
+    for (int i = 0; i < 50; i++)
+    {
+        CListTextElementUI* pListElement = new CListTextElementUI;
+        pListElement->SetTag(i);
+        m_pNeiRegServerList->Add(pListElement);
+
+        str.Format(_T("%d"), i);
+        pListElement->SetText(0, str);
+        pListElement->SetText(1, _T("haha"));
+        pListElement->SetText(2, _T("xixi"));
+        pListElement->SetText(3, _T("hehe"));
+    }
+
+    return true;
+}
+
 bool CNeighborCfgLogic::OnNeighborCfgAddBtnClicked(TNotifyUI& msg)
 {
+    NeiRegServerItemAdd();
+    //WINDOW_MGR_PTR->ShowWindowCenter(g_stcStrNeiRegServerAddDlg.c_str());
+
     return true;
 }
 

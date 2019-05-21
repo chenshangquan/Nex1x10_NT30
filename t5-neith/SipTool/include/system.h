@@ -44,3 +44,4 @@ extern const String g_stcStrLoginDlg;
 extern const String g_stcStrNetworkSetupDlg;
 extern const String g_stcStrPopupDlg;
 extern const String g_stcStrLogoutDlg;
+extern const String g_stcStrNeiRegServerAddDlg;

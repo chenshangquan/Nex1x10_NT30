@@ -85,6 +85,7 @@
     <ClInclude Include="..\include\logoutlogic.h" />
     <ClInclude Include="..\include\mainframelogic.h" />
     <ClInclude Include="..\include\neighborcfglogic.h" />
+    <ClInclude Include="..\include\neiregserveraddlogic.h" />
     <ClInclude Include="..\include\siptoolcommonop.h" />
     <ClInclude Include="..\include\siptoolinterface.h" />
     <ClInclude Include="..\include\siptoolmsgmanager.h" />
@@ -102,6 +103,7 @@
     <ClCompile Include="..\source\logoutlogic.cpp" />
     <ClCompile Include="..\source\mainframelogic.cpp" />
     <ClCompile Include="..\source\neighborcfglogic.cpp" />
+    <ClCompile Include="..\source\neiregserveraddlogic.cpp" />
     <ClCompile Include="..\source\siptoolcommonop.cpp" />
     <ClCompile Include="..\source\siptoolinterface.cpp" />
     <ClCompile Include="..\source\siptoolmsgmanager.cpp" />

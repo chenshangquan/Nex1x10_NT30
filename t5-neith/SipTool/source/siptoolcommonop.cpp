@@ -6,6 +6,7 @@
 #include "cascadecfglogic.h"
 #include "neighborcfglogic.h"
 #include "localareanumcfglogic.h"
+#include "neiregserveraddlogic.h"
 
 ISipToolCommonOp::ISipToolCommonOp(void)
 {
@@ -25,6 +26,7 @@ void ISipToolCommonOp::RegLogics()
     REG_LOGIC(CCascadeCfgLogic);
     REG_LOGIC(CNeighborCfgLogic);
     REG_LOGIC(CLocalAreaNumCfgLogic);
+    REG_LOGIC(CNeiRegServerAddLogic);
 
 	return ;
 }

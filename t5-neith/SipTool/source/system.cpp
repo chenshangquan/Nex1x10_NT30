@@ -12,6 +12,7 @@ const String g_stcStrLoginDlg = _T("LoginDlg");
 const String g_stcStrNetworkSetupDlg = _T("NetworkSetup");
 const String g_stcStrPopupDlg = _T("PopupDlg");
 const String g_stcStrLogoutDlg = _T("LogoutDlg");
+const String g_stcStrNeiRegServerAddDlg = _T("NeiRegServerAddDlg");
 
 CSystem::CSystem(void)
 {
