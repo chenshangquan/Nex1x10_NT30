@@ -16,10 +16,12 @@ public:
 	CNeighborCfgLogic();
 	~CNeighborCfgLogic();
 
-    bool NeiRegServerItemAdd();
+    bool NeiRegServerItemAdd(TNeiRegServerInfo& tNeiRegServerInfo);
 protected:
     //点击添加按钮
     bool OnNeighborCfgAddBtnClicked(TNotifyUI& msg);
+    //点击删除按钮
+    bool OnNeighborCfgDelBtnClicked(TNotifyUI& msg);
 
     //bool OnRkcIPChecked( WPARAM wparam, LPARAM lparam, bool& bHandle );
 

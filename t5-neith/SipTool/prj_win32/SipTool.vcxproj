@@ -56,7 +56,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\..\..\10-common\lib\debug\win32_2010;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <IgnoreSpecificDefaultLibraries>mfco42d.lib;mfc42d.lib;mfcs42d.lib;nafxcwd.lib;libcmtd.lib;LIBCD.lib;LIBCMT.lib;LIBC.lib;strmbasd.lib;dxguid.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>mfco42d.lib;mfc42d.lib;mfcs42d.lib;nafxcwd.lib;libcmtd.lib;LIBCD.lib;LIBCMT.lib;LIBC.lib;strmbasd.lib;dxguid.lib;msvcprtd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

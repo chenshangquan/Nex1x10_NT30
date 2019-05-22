@@ -19,7 +19,7 @@
 #include <map> 
 using namespace std;
 
-#define CONNETCT_SIPSERVER_PORT      60002                                     //sip服务器端口号 
+#define CONNETCT_SIPSERVER_PORT      60600                                     //sip服务器端口号 
 
 #define PrtSipToolMsg (CSipToolPrintCtrl::GetPrintCtrl()->PrintMsg)                        //打印Curl消息接口
 #define SIPTOOLMAPPING_HELPER (CSipToolPrintCtrl::GetPrintCtrl()->MappingHelper)                  //注册打印的消息名
@@ -29,6 +29,7 @@ using namespace std;
 #define ERR_BGN		100
 #define ERR_END		ERR_BGN + 1999
 
+#define MAX_AREANUM_LENGTH          4
 #define MAX_IP_LENGTH               16
 #define MAX_ALIAS_LENGTH            32
 #define MAX_SEARCH_TIME             10000

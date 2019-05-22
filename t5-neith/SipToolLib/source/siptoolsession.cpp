@@ -4,6 +4,9 @@
 #include "siptoolmsgrecver.h"
 #include "siptoolsysctrl.h"
 #include "siptoolprintctrl.h"
+#include "json.h"
+
+#pragma comment(lib, "lib_json.lib")
 
 //线程函数
 DWORD WINAPI GetConfTempThread(LPVOID pParam);
@@ -11,6 +14,7 @@ DWORD WINAPI GetConfTempThread(LPVOID pParam);
 CSipToolSession::CSipToolSession():m_bInitOsp(FALSE)
 {
     InitializeOsp();
+    SetAppId( AID_SIPTOOL_APP );
 
     m_pSysCtrlIf = NULL;
    
@@ -54,7 +58,7 @@ u16 CSipToolSession::InitializeOsp()
         m_bInitOsp = TRUE;
     }
 
-    char szOspApp[] = "RkcLib";
+    char szOspApp[] = "SipToolLib";
     const u32 dwPrior = 80;
     int nRet = g_SipToolApp.CreateApp(&szOspApp[0], AID_SIPTOOL_APP, dwPrior, 300, 200);
     ASSERT(nRet == 0);
@@ -128,6 +132,16 @@ u16 CSipToolSession::ConnectSip(u32 dwIP, u32 dwPort, char* strUser, char* strPw
     //设置在node连接中断时需通知的appid和InstId
     ::OspNodeDiscCBReg( dwCnNodeId, AID_SIPTOOL_APP, 1);
 
+    // 消息封装发送
+    Json::FastWriter jsWriterInfo;
+    Json::Value jsLoginInfo;
+    jsLoginInfo["user"] = strUser;
+    jsLoginInfo["password"] = strPwd;
+    
+    string strLoginInfo = jsWriterInfo.write(jsLoginInfo);
+
+    CSipToolMsgDriver::s_pMsgDriver->PostCMsg(MULTIPLEREGSIGN, &strLoginInfo, strLoginInfo.length());
+    
 	return NO_ERROR;
 }
 

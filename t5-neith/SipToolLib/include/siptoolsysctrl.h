@@ -14,6 +14,8 @@ public:
 protected:
     void BuildEventsMap();
 
+    //Á¬½Ó
+    void OnConnected(const CMessage& cMsg);
     void OnDicconnected(const CMessage& cMsg);
 
     virtual void DispEvent(const CMessage &cMsg);

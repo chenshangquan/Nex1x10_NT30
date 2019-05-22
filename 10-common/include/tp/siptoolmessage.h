@@ -11,6 +11,15 @@
 
 #define   RK_MAXLEN_MESSAGE          65535 //1024*64,  消息最大长度64K   
 
+#define MULTIPLEREGSETTINGSBASE 0x1111
+#define MULTIPLEREGBASE 0xf111
+enum EmSipToolMsg
+{
+    #define MULTIPLEREGSIGN             (MULTIPLEREGSETTINGSBASE+3)
+    #define MULTIPLEREGSIGNACK          (MULTIPLEREGSETTINGSBASE+4)
+};
+
+
 class CRkMessage
 {
 public:

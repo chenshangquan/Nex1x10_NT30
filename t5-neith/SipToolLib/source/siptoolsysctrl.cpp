@@ -26,7 +26,13 @@ u16 CSipToolSysCtrl::CloseSocket()
 
 void CSipToolSysCtrl::BuildEventsMap()
 {
-    
+    REG_PFUN(MULTIPLEREGSIGNACK, CSipToolSysCtrl::OnConnected);
+}
+
+void CSipToolSysCtrl::OnConnected(const CMessage& cMsg)
+{
+    PostEvent( UI_SIPTOOL_CONNECTED, 0, 0 ); 
+    return;
 }
 
 void CSipToolSysCtrl::OnDicconnected(const CMessage& cMsg)

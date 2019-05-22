@@ -19,7 +19,7 @@ APP_BEGIN_MSG_MAP(CLoginLogic, CNotifyUIImpl)
 
     MSG_TIMER(_T("LoginTipLeb"), OnShowTipTimer)
 
-    //USER_MSG(UI_SIPTOOL_CONNECTED , OnSipToolConnected)
+    USER_MSG(UI_SIPTOOL_CONNECTED , OnSipToolConnected)
     //USER_MSG(UI_RKC_DISCONNECTED , OnSipToolDisconnected)
 APP_END_MSG_MAP()
 
@@ -147,10 +147,10 @@ bool CLoginLogic::OnLoginBtnClicked(TNotifyUI& msg)
     }*/
 
     u32 dwIp = ntohl( inet_addr( CT2A(strIP) ) );
-    /*m_pm->DoCase(_T("caseIsLogining"));
-    CSipToolComInterface->SocketConnect( dwIp, CT2A(strUserName), CT2A(strPassWord));*/
+    m_pm->DoCase(_T("caseIsLogining"));
+    CSipToolComInterface->SocketConnect( dwIp, CT2A(strUserName), CT2A(strPassWord));
 
-    CMainFrameLogic::GetSingletonPtr()->OnSipToolConnected(1);
+    //CMainFrameLogic::GetSingletonPtr()->OnSipToolConnected(1);
     return true;
 }
 

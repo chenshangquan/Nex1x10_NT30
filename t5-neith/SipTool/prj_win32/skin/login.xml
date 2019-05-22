@@ -9,9 +9,9 @@
 		<HorizontalLayout height="126">
 			<Control width="36"/>
 			<VerticalLayout>
-				<Edit name="edtIP" width="286" height="42" tiptext="服务器地址" tiptextcolor="#ff787878" maxchar="32" textcolor="#ff000000" textpadding="17,0,0,0" font="0" normalimage="res/login/input_normal.png" focusedimage="res/login/input_selected.png" nativebkcolor="#ffffffff"/>
-				<Edit name="edtUserName" width="286" height="42" tiptext="用户名" tiptextcolor="#ff787878" maxchar="32" textcolor="#ff000000" textpadding="17,0,0,0" font="0" normalimage="res/login/input_normal.png" focusedimage="res/login/input_selected.png"/>
-				<Edit name="edtPassWord" width="286" height="42" tiptext="密码" tiptextcolor="#ff787878" maxchar="32" textcolor="#ff000000" textpadding="17,0,0,0" font="0" normalimage="res/login/input_normal.png" focusedimage="res/login/input_selected.png" password="true"/>
+				<Edit name="edtIP" width="286" height="42" text="172.16.236.16" tiptext="服务器地址" tiptextcolor="#ff787878" maxchar="32" textcolor="#ff000000" textpadding="17,0,0,0" font="0" normalimage="res/login/input_normal.png" focusedimage="res/login/input_selected.png" nativebkcolor="#ffffffff"/>
+				<Edit name="edtUserName" width="286" height="42" text="Keda_User" tiptext="用户名" tiptextcolor="#ff787878" maxchar="32" textcolor="#ff000000" textpadding="17,0,0,0" font="0" normalimage="res/login/input_normal.png" focusedimage="res/login/input_selected.png"/>
+				<Edit name="edtPassWord" width="286" height="42" text="Pwd_Change" tiptext="密码" tiptextcolor="#ff787878" maxchar="32" textcolor="#ff000000" textpadding="17,0,0,0" font="0" normalimage="res/login/input_normal.png" focusedimage="res/login/input_selected.png" password="true"/>
 			</VerticalLayout>
 			<Button name="LoginBtn" float="true" pos="328,85,0,0" width="86" height="40" normalimage="res/login/login_normal.png" hotimage="res/login/login_hover.png" pushedimage="res/login/login_down.png"/>
 		</HorizontalLayout>

@@ -36,14 +36,42 @@ void CSipToolMsgDriver::MappingEventName()
     
 }
 
+void CSipToolMsgDriver::PostCMsg(u16 wEvenId, void* pConent, u16 wLen)
+{
+    ZeroMemory(&m_cMsg, sizeof(CMessage));
+
+    m_cMsg.event = wEvenId;
+    if (pConent == NULL)
+    {
+        m_cMsg.content = NULL;
+        m_cMsg.length = 0;
+    }
+    else
+    {
+        m_cMsg.content = (u8*)pConent;
+        m_cMsg.length = wLen;
+    }
+
+    PostMsg(TYPE_CMESSAGE);
+}
+
 u16 CSipToolMsgDriver::PostMsg(u32 dwType)
 {  
+    u32 dwDesIID = MAKEIID(573, 0);	 //Ä¿µÄ
+    u32 dwSrcIID = MAKEIID(GetAppId());	         //Ô´
+
     u16 wRet = NO_ERROR;
     u16 wEvent = 0;
     if (TYPE_TPMSG == dwType) 
     {  
         wRet = OspPost(MAKEIID(AID_SIPTOOL_APP,0), m_tOspMsg.GetEvent(),m_tOspMsg.GetBody(),m_tOspMsg.GetBodyLen());
     }
+    else
+    {
+        wRet = OspPost(dwDesIID, m_cMsg.event, m_cMsg.content, m_cMsg.length,
+            GetNodeId(), dwSrcIID);
+    }
+
     return wRet;
 }
 

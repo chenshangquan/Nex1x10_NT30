@@ -12,7 +12,7 @@ UINT ThreadConnectSipTool(LPVOID lpParam)
 
     if ( re != NO_ERROR )
     {
-        
+        NOTIFY_MSG( UI_SIPTOOL_CONNECTED, FALSE, re );
         return re;
     }
 

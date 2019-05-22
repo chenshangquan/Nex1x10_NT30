@@ -48,7 +48,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\include;..\..\..\10-common\include\tp;..\..\..\10-common\include\platform;..\..\..\10-common\include\nms1;..\..\..\10-common\include\system1;.\;..\..\common_2010\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\json\include\json;..\include;..\..\..\10-common\include\tp;..\..\..\10-common\include\platform;..\..\..\10-common\include\nms1;..\..\..\10-common\include\system1;.\;..\..\common_2010\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
