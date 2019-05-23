@@ -18,7 +18,8 @@
 //#include "eventoutrkcentre.h"
 #include "siptoolmessage.h"
 
-#define     AID_SIPTOOL_APP     100
+#define     AID_SIPTOOL_SERVER_APP     573
+#define     AID_SIPTOOL_APP     62
 
 class CSipToolMsgDriver
 {

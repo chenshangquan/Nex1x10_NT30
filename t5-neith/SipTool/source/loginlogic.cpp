@@ -19,7 +19,7 @@ APP_BEGIN_MSG_MAP(CLoginLogic, CNotifyUIImpl)
 
     MSG_TIMER(_T("LoginTipLeb"), OnShowTipTimer)
 
-    USER_MSG(UI_SIPTOOL_CONNECTED , OnSipToolConnected)
+    //USER_MSG(UI_SIPTOOL_CONNECTED , OnSipToolConnected)
     //USER_MSG(UI_RKC_DISCONNECTED , OnSipToolDisconnected)
 APP_END_MSG_MAP()
 

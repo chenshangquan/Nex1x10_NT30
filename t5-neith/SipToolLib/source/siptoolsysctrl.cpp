@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "siptoolsysctrl.h"
 #include "siptoolevent.h"
+#include "json.h"
 
 CSipToolSysCtrl::CSipToolSysCtrl(CSipToolSession &cSession) : CSipToolSysCtrlIF()
 {
@@ -27,11 +28,25 @@ u16 CSipToolSysCtrl::CloseSocket()
 void CSipToolSysCtrl::BuildEventsMap()
 {
     REG_PFUN(MULTIPLEREGSIGNACK, CSipToolSysCtrl::OnConnected);
+    //REG_PFUN(CONNECTCONTROLACK, CSipToolSysCtrl::OnConnected);
 }
 
 void CSipToolSysCtrl::OnConnected(const CMessage& cMsg)
 {
-    PostEvent( UI_SIPTOOL_CONNECTED, 0, 0 ); 
+    OspPrintf(true, false, "MULTIPLEREGSIGNACK:%s\r\n", cMsg.content);
+    s32 nRet = 0;
+    Json::Reader *readerinfo = new Json::Reader(Json::Features::strictMode());
+    Json::Value root;
+    CString cstrRead(cMsg.content);
+    if ( readerinfo->parse(cstrRead.GetBuffer(0), root) )
+    {
+        if (root["ret"].isInt())
+        {
+            nRet = root["ret"].asInt();
+        }
+    }
+
+    PostEvent( UI_SIPTOOL_CONNECTED, (WPARAM)nRet, 0 );
     return;
 }
 

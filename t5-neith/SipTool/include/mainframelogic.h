@@ -23,8 +23,6 @@ public:
 	CMainFrameLogic();
 	~CMainFrameLogic();
 
-    bool OnSipToolConnected(WPARAM wparam);
-
 protected:
     /** 窗口创建 
 	*  @param[in] 消息

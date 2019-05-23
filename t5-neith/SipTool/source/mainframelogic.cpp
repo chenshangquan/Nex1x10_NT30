@@ -117,16 +117,14 @@ bool CMainFrameLogic::OnTabLocalAreaNumCfg(TNotifyUI& msg)
 	return true;
 }
 
-bool CMainFrameLogic::OnSipToolConnected(WPARAM wparam)
+bool CMainFrameLogic::OnSipToolConnected(WPARAM wparam, LPARAM lparam, bool& bHandle)
 {
     bool bIsLogin = (bool)wparam;
-    //int emErr = lparam;
     if (bIsLogin)
     {
-        //SetTimerOutTimer(true);
-        //界面变更
-        //m_pm->DoCase(_T("caseIsLogin"));
+        m_pm->DoCase(_T("caseIsLogining"));
 
+        //界面变更
         ISipToolCommonOp::ShowControl( false, m_pm, _T("PageLogin") );
         ISipToolCommonOp::ShowControl( true, m_pm, _T("PageSipToolMain") );
         SetWindowPos( m_pm->GetPaintWindow(), HWND_TOP, 0, 0, 864, 614, SWP_NOACTIVATE|SWP_NOMOVE );
@@ -136,27 +134,7 @@ bool CMainFrameLogic::OnSipToolConnected(WPARAM wparam)
     {
         m_pm->DoCase(_T("caseIsnotLogin"));
     }
-    return true;
-}
 
-bool CMainFrameLogic::OnSipToolConnected(WPARAM wparam, LPARAM lparam, bool& bHandle)
-{
-    bool bIsLogin = (bool)wparam;
-    //int emErr = lparam;
-    if (bIsLogin)
-    {
-        //SetTimerOutTimer(true);
-        //界面变更
-        m_pm->DoCase(_T("caseIsLogin"));
-
-        //窗口变更
-        //WINDOW_MGR_PTR->HideWindow(g_stcStrLoginDlg.c_str());
-        WINDOW_MGR_PTR->ShowWindowCenter(g_stcStrNetworkSetupDlg.c_str());
-    }
-    else
-    {
-        m_pm->DoCase(_T("caseIsnotLogin"));
-    }
     return true;
 }
 

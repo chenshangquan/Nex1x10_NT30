@@ -57,8 +57,8 @@ void CSipToolMsgDriver::PostCMsg(u16 wEvenId, void* pConent, u16 wLen)
 
 u16 CSipToolMsgDriver::PostMsg(u32 dwType)
 {  
-    u32 dwDesIID = MAKEIID(573, 0);	 //目的
-    u32 dwSrcIID = MAKEIID(GetAppId());	         //源
+    u32 dwDesIID = MAKEIID(AID_SIPTOOL_SERVER_APP, CInstance::DAEMON);    //目的
+    u32 dwSrcIID = MAKEIID(GetAppId());                   //源
 
     u16 wRet = NO_ERROR;
     u16 wEvent = 0;
@@ -69,7 +69,8 @@ u16 CSipToolMsgDriver::PostMsg(u32 dwType)
     else
     {
         wRet = OspPost(dwDesIID, m_cMsg.event, m_cMsg.content, m_cMsg.length,
-            GetNodeId(), dwSrcIID);
+            1, dwSrcIID);
+        OspPrintf(true, false, "event:%d,content:%s, length:%d\r\n", m_cMsg.event, m_cMsg.content, m_cMsg.length);
     }
 
     return wRet;
