@@ -39,8 +39,8 @@ Global
 		{E14822FA-DCD2-4F4D-2E05-5D7345D45F9E}.Debug|Win32.Build.0 = Unicode_Debug|Win32
 		{E14822FA-DCD2-4F4D-2E05-5D7345D45F9E}.dummy|Win32.ActiveCfg = Debug|Win32
 		{E14822FA-DCD2-4F4D-2E05-5D7345D45F9E}.dummy|Win32.Build.0 = Debug|Win32
-		{E14822FA-DCD2-4F4D-2E05-5D7345D45F9E}.Release|Win32.ActiveCfg = Release|Win32
-		{E14822FA-DCD2-4F4D-2E05-5D7345D45F9E}.Release|Win32.Build.0 = Release|Win32
+		{E14822FA-DCD2-4F4D-2E05-5D7345D45F9E}.Release|Win32.ActiveCfg = Unicode_Release|Win32
+		{E14822FA-DCD2-4F4D-2E05-5D7345D45F9E}.Release|Win32.Build.0 = Unicode_Release|Win32
 		{E14822FA-DCD2-4F4D-2E05-5D7345D45F9E}.Unicode_Debug|Win32.ActiveCfg = Unicode_Debug|Win32
 		{E14822FA-DCD2-4F4D-2E05-5D7345D45F9E}.Unicode_Debug|Win32.Build.0 = Unicode_Debug|Win32
 		{E14822FA-DCD2-4F4D-2E05-5D7345D45F9E}.Unicode_Release|Win32.ActiveCfg = Unicode_Release|Win32
@@ -49,8 +49,8 @@ Global
 		{E106ACD7-4E53-4AEE-942B-D0DD426DB34E}.Debug|Win32.Build.0 = Unicode_Debug|Win32
 		{E106ACD7-4E53-4AEE-942B-D0DD426DB34E}.dummy|Win32.ActiveCfg = Debug|Win32
 		{E106ACD7-4E53-4AEE-942B-D0DD426DB34E}.dummy|Win32.Build.0 = Debug|Win32
-		{E106ACD7-4E53-4AEE-942B-D0DD426DB34E}.Release|Win32.ActiveCfg = Release|Win32
-		{E106ACD7-4E53-4AEE-942B-D0DD426DB34E}.Release|Win32.Build.0 = Release|Win32
+		{E106ACD7-4E53-4AEE-942B-D0DD426DB34E}.Release|Win32.ActiveCfg = Unicode_Release|Win32
+		{E106ACD7-4E53-4AEE-942B-D0DD426DB34E}.Release|Win32.Build.0 = Unicode_Release|Win32
 		{E106ACD7-4E53-4AEE-942B-D0DD426DB34E}.Unicode_Debug|Win32.ActiveCfg = Unicode_Debug|Win32
 		{E106ACD7-4E53-4AEE-942B-D0DD426DB34E}.Unicode_Debug|Win32.Build.0 = Unicode_Debug|Win32
 		{E106ACD7-4E53-4AEE-942B-D0DD426DB34E}.Unicode_Release|Win32.ActiveCfg = Unicode_Release|Win32

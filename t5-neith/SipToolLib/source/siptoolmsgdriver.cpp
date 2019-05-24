@@ -69,7 +69,7 @@ u16 CSipToolMsgDriver::PostMsg(u32 dwType)
     else
     {
         wRet = OspPost(dwDesIID, m_cMsg.event, m_cMsg.content, m_cMsg.length,
-            1, dwSrcIID);
+            GetNodeId(), dwSrcIID);
         OspPrintf(true, false, "event:%d,content:%s, length:%d\r\n", m_cMsg.event, m_cMsg.content, m_cMsg.length);
     }
 

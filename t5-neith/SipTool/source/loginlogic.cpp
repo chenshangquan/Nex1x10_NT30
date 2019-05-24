@@ -146,6 +146,11 @@ bool CLoginLogic::OnLoginBtnClicked(TNotifyUI& msg)
         return false;
     }*/
 
+    /*if (false == ISIPFORMATRIGHT(strIP) )
+    {
+        return false;
+    }*/
+
     u32 dwIp = ntohl( inet_addr( CT2A(strIP) ) );
     m_pm->DoCase(_T("caseIsLogining"));
     CSipToolComInterface->SocketConnect( dwIp, CT2A(strUserName), CT2A(strPassWord));

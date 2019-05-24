@@ -13,6 +13,8 @@
 #define __RKCSYSCTRLIF_H__
 
 #include "kdvdispevent.h"
+#include "siptoolstruct.h"
+#include <vector>
 
 class CSipToolSysCtrlIF : public CKdvDispEvent
 {
@@ -25,6 +27,18 @@ public:
 	*   Socket断开
 	*/ 
     virtual u16 CloseSocket() = 0;
+    /**
+	*   设置父级ip及port
+	*/ 
+    virtual u16 SetParentIP(s8* szIp) = 0;
+    /**
+    *   设置一条邻居信息
+    */ 
+    virtual u16 SetNeighborInfo(TNeiRegServerInfo &tNeighborInfo) = 0;
+    /**
+    *   获取当前所有的邻居信息
+    */ 
+    virtual u16 GetNeighborBackInfo(vector<TNeiRegServerInfo> &vNeighborInfo) = 0;
 	
 };
 

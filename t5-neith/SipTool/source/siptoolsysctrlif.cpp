@@ -24,7 +24,7 @@ u16 CSipToolInterface::SocketConnect( u32 dwIp, s8* szUser , s8* szPwd)
     if( NULL == m_pSipToolSession )
     {
         return ERR_SIPTOOL;
-    } 
+    }
 
     m_tLoginInfo.m_dwIp = dwIp;
     m_tLoginInfo.m_wPort = CONNETCT_SIPSERVER_PORT;
@@ -51,4 +51,34 @@ u16 CSipToolInterface::LinkSipServer()
 u16 CSipToolInterface::CloseLink()
 {
     return m_pSysCtrlIf->CloseSocket();
+}
+
+u16 CSipToolInterface::SetParentIP(s8* szIp)
+{
+    if ( NULL == m_pSysCtrlIf )
+    {
+        return -1;
+    }
+
+    return m_pSysCtrlIf->SetParentIP(szIp);
+}
+
+u16 CSipToolInterface::SetNeighborInfo(TNeiRegServerInfo &tNeighborInfo)
+{
+    if ( NULL == m_pSysCtrlIf )
+    {
+        return -1;
+    }
+
+    return m_pSysCtrlIf->SetNeighborInfo(tNeighborInfo);
+}
+
+u16 CSipToolInterface::GetNeighborBackInfo(vector<TNeiRegServerInfo> &vNeighborInfo)
+{
+    if ( NULL == m_pSysCtrlIf )
+    {
+        return -1;
+    }
+
+    return m_pSysCtrlIf->GetNeighborBackInfo(vNeighborInfo);
 }

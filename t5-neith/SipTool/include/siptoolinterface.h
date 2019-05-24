@@ -42,7 +42,18 @@ public:
 	*   连接断开
 	*/ 
     u16 CloseLink();
-
+    /**
+	*   设置父级ip及port
+	*/ 
+    u16 SetParentIP(s8* szIp);
+    /**
+	*   设置一条邻居信息
+	*/ 
+    u16 SetNeighborInfo(TNeiRegServerInfo &tNeighborInfo);
+    /**
+	*   获取当前所有的邻居信息
+	*/ 
+    u16 GetNeighborBackInfo(vector<TNeiRegServerInfo> &vNeighborInfo);
     
 
 private:

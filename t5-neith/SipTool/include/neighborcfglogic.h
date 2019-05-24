@@ -23,7 +23,8 @@ protected:
     //点击删除按钮
     bool OnNeighborCfgDelBtnClicked(TNotifyUI& msg);
 
-    //bool OnRkcIPChecked( WPARAM wparam, LPARAM lparam, bool& bHandle );
+    //更新邻居信息列表
+    bool OnUpdateNeighborInfoList( WPARAM wparam, LPARAM lparam, bool& bHandle );
 
     //bool OnRkcDisconnected( WPARAM wparam, LPARAM lparam, bool& bHandle );
 

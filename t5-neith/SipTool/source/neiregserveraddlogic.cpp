@@ -41,6 +41,7 @@ bool CNeiRegServerAddLogic::OnConfirmBtnClicked(TNotifyUI& msg)
     tNeiRegServerInfo.m_wPort = _ttoi(strPort);
 
     CNeighborCfgLogic::GetSingletonPtr()->NeiRegServerItemAdd(tNeiRegServerInfo);
+    CSipToolComInterface->SetNeighborInfo(tNeiRegServerInfo);
 
     WINDOW_MGR_PTR->ShowWindow(g_stcStrNeiRegServerAddDlg.c_str(), false);
     return true;

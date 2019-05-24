@@ -128,32 +128,18 @@ u16 CSipToolSession::ConnectSip(u32 dwIP, u32 dwPort, char* strUser, char* strPw
 		dwCnNodeId = 0;
 	}
 
-    g_SipToolApp.SetNodeId( dwCnNodeId );
+    //g_SipToolApp.SetNodeId( dwCnNodeId );
+    SetNodeId( dwCnNodeId );
     //设置在node连接中断时需通知的appid和InstId
     ::OspNodeDiscCBReg( dwCnNodeId, AID_SIPTOOL_APP, 0);
 
-    // 消息封装发送
-#if 1  //连接消息;
-    Json::FastWriter jsWriterInfo;
+    // 登陆消息封装发送
     Json::Value jsLoginInfo;
     jsLoginInfo["user"] = strUser;
     jsLoginInfo["password"] = strPwd;
-    
-    string strLoginInfo = jsWriterInfo.write(jsLoginInfo);
-    char achLoginInfo[50] = {0};
-    strncpy(achLoginInfo, strLoginInfo.c_str(), strlen(strLoginInfo.c_str()));
-#else  //父级级联;
-    Json::FastWriter jsWriterInfo;
-    Json::Value jsLoginInfo;
-    jsLoginInfo["ParentIP"] = "127.0.0.1";
-    jsLoginInfo["ParentPort"] = "6668";
 
-    string strLoginInfo = jsWriterInfo.write(jsLoginInfo);
-    char achLoginInfo[100] = {0};
-    strncpy(achLoginInfo, strLoginInfo.c_str(), strlen(strLoginInfo.c_str()));
-#endif
-    CSipToolMsgDriver::s_pMsgDriver->PostCMsg(MULTIPLEREGSIGN, achLoginInfo, strlen(achLoginInfo));
-    //CSipToolMsgDriver::s_pMsgDriver->PostCMsg(OSP_NETSTATEST, NULL, 0);
+    string strLoginInfo = jsLoginInfo.toStyledString();
+    CSipToolMsgDriver::s_pMsgDriver->PostCMsg(MULTIPLEREGSIGN, (char*)strLoginInfo.c_str(), strlen(strLoginInfo.c_str()));
     
 	return NO_ERROR;
 }
