@@ -93,6 +93,7 @@ bool CNeighborCfgLogic::OnUpdateNeighborInfoList( WPARAM wparam, LPARAM lparam, 
     if (bSuccess)
     {
         m_pNeiRegServerList = (CListUI*)ISipToolCommonOp::FindControl( m_pm, _T("NeiRegServerList") );
+        m_pNeiRegServerList->RemoveAll();
         CSipToolComInterface->GetNeighborBackInfo(vNeighborInfo);
         u32 dwNeighborInfoSize = vNeighborInfo.size();
 
