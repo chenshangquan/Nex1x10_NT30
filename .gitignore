@@ -1,6 +1,8 @@
 *debug/
 *ipch/
 
+10-common/lib/release/win32_2010/
+
 t5-neith/SipTool/prj_win32/SipTool.sdf
 t5-neith/SipTool/prj_win32/SipTool.suo
 
