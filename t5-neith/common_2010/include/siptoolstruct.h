@@ -21,17 +21,18 @@ typedef struct tagLoginInfo
 	}
 }TLoginInfo;
 
-typedef struct tagNeiRegServerInfo
+typedef struct tagRegServerInfo
 {
     s8      m_achAreaNum[MAX_AREANUM_LENGTH+1];
     s8      m_achIpAddr[MAX_IP_LENGTH+1];
     u16     m_wPort;
 
-    tagNeiRegServerInfo()
+public:
+    tagRegServerInfo()
     {
-        memset( this, 0, sizeof(tagNeiRegServerInfo) );
+        memset( this, 0, sizeof(tagRegServerInfo) );
     }
-}TNeiRegServerInfo;
+}TRegServerInfo,TNeiRegServerInfo;
 
 //#define ISIPFORMATRIGHT(pIpAddr)  do{\
 //    u32 dwCount = 0;\

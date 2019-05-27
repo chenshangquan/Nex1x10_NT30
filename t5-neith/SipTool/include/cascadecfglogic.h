@@ -20,15 +20,18 @@ public:
 protected:
     //点击级联配置保存按钮
     bool OnCasCfgSaveBtnClicked(TNotifyUI& msg);
+    //父级IP地址更改
+    bool OnParentIPChanged(TNotifyUI& msg);
 
-    //bool OnRkcIPChecked( WPARAM wparam, LPARAM lparam, bool& bHandle );
+    //登陆连接响应
+    bool OnSipToolConnected( WPARAM wparam, LPARAM lparam, bool& bHandle );
 
     //bool OnRkcDisconnected( WPARAM wparam, LPARAM lparam, bool& bHandle );
 
     APP_DECLARE_MSG_MAP()
 
 private:
-
+    CString m_cstrParentIP;     //父级IP地址
 };
 
 #endif // !defined(AFX_CASCADECFG_H_)

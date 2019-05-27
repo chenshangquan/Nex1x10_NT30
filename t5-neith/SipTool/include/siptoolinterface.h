@@ -50,11 +50,14 @@ public:
 	*   设置一条邻居信息
 	*/ 
     u16 SetNeighborInfo(TNeiRegServerInfo &tNeighborInfo);
+     /**
+	*   获取当前级联配置信息
+	*/ 
+    u16 GetCasRegServerBackInfo(TRegServerInfo &tCasRegServerInfo);
     /**
 	*   获取当前所有的邻居信息
 	*/ 
     u16 GetNeighborBackInfo(vector<TNeiRegServerInfo> &vNeighborInfo);
-    
 
 private:
     static  CSipToolInterface*  m_pMySelf;

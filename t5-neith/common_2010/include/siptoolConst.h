@@ -29,13 +29,13 @@ using namespace std;
 #define ERR_BGN		100
 #define ERR_END		ERR_BGN + 1999
 
-#define MAX_AREANUM_LENGTH          4
+#define MAX_AREANUM_LENGTH          5
 #define MAX_IP_LENGTH               16
 #define MAX_ALIAS_LENGTH            32
 #define MAX_SEARCH_TIME             10000
 
-//rkcLib中的错误码
-enum EmErrRkcLib
+//SipToolLib中的错误码
+enum EmErrSipToolLib
 {
 
 #define ERR_SIPTOOL_LIB_BEGIN  ERR_BGN

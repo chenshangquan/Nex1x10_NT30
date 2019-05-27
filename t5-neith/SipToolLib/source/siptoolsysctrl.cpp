@@ -50,6 +50,15 @@ u16 CSipToolSysCtrl::SetNeighborInfo(TNeiRegServerInfo &tNeighborInfo)
     return NO_ERROR;
 }
 
+u16 CSipToolSysCtrl::GetCasRegServerBackInfo(TRegServerInfo &tCasRegServerInfo)
+{
+    strncpy(tCasRegServerInfo.m_achAreaNum, m_tCasRegServerInfo.m_achAreaNum, MAX_AREANUM_LENGTH);
+    strncpy(tCasRegServerInfo.m_achIpAddr, m_tCasRegServerInfo.m_achIpAddr, MAX_IP_LENGTH);
+    tCasRegServerInfo.m_wPort = m_tCasRegServerInfo.m_wPort;
+
+    return true;
+}
+
 u16 CSipToolSysCtrl::GetNeighborBackInfo(vector<TNeiRegServerInfo> &vNeighborInfo)
 {
     vNeighborInfo.assign(m_vNeighborInfo.begin(), m_vNeighborInfo.end());
@@ -82,6 +91,7 @@ void CSipToolSysCtrl::OnConnected(const CMessage& cMsg)
             nRet = root["ret"].asInt();
         }
 
+        //获取所有的邻居信息
         if (root["NeighborInfo"].isArray())
         {
             u32 dwArraySize = root["NeighborInfo"].size();
@@ -97,6 +107,19 @@ void CSipToolSysCtrl::OnConnected(const CMessage& cMsg)
 
                 m_vNeighborInfo.push_back(tNeighborInfo);
             }
+        }
+
+        //获取父级配置信息
+        if (root["ParentIP"].isInt())
+        {
+            in_addr inaddr;
+            inaddr.s_addr=root["ParentIP"].asInt();
+            strncpy(m_tCasRegServerInfo.m_achIpAddr, inet_ntoa(inaddr), strlen(inet_ntoa(inaddr)));
+        }
+
+        if (root["ParentPort"].isInt())
+        {
+            m_tCasRegServerInfo.m_wPort = root["ParentPort"].asInt();
         }
     }
 

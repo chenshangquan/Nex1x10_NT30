@@ -36,6 +36,10 @@ public:
     */ 
     virtual u16 SetNeighborInfo(TNeiRegServerInfo &tNeighborInfo) = 0;
     /**
+    *   获取当前级联配置信息
+    */ 
+    virtual u16 GetCasRegServerBackInfo(TRegServerInfo &tCasRegServerInfo) = 0;
+    /**
     *   获取当前所有的邻居信息
     */ 
     virtual u16 GetNeighborBackInfo(vector<TNeiRegServerInfo> &vNeighborInfo) = 0;

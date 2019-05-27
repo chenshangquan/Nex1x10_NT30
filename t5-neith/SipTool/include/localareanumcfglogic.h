@@ -20,15 +20,18 @@ public:
 protected:
     //点击本地区号保存按钮
     bool OnLocCfgSaveBtnClicked(TNotifyUI& msg);
+    //本地区号更改
+    bool OnLocAreaNumChanged(TNotifyUI& msg);
 
-    //bool OnRkcIPChecked( WPARAM wparam, LPARAM lparam, bool& bHandle );
+    //登陆连接响应
+    bool OnSipToolConnected( WPARAM wparam, LPARAM lparam, bool& bHandle );
 
     //bool OnRkcDisconnected( WPARAM wparam, LPARAM lparam, bool& bHandle );
 
     APP_DECLARE_MSG_MAP()
 
 private:
-
+    CString m_cstrAreaNum;      //本地区号
 };
 
 #endif // !defined(AFX_LOCALAREANUMCFG_H_)

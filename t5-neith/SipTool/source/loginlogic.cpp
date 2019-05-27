@@ -51,10 +51,6 @@ bool CLoginLogic::OnCreate( TNotifyUI& msg )
 bool CLoginLogic::OnInit( TNotifyUI& msg )
 {
     REG_RCKTOOL_MSG_WND_OB(m_pm->GetPaintWindow());
-
-    /*ISipToolCommonOp::ShowControl( true, m_pm, _T("PageLogin") );
-    ISipToolCommonOp::ShowControl( false, m_pm, _T("PageSipToolMain") );*/
-
     return true;
 }
 

@@ -16,6 +16,8 @@ public:
     //设置一条邻居信息
     virtual u16 SetNeighborInfo(TNeiRegServerInfo &tNeighborInfo);
 
+    //获取当前级联配置信息
+    virtual u16 GetCasRegServerBackInfo(TRegServerInfo &tCasRegServerInfo);
     //获取当前所有的邻居信息
     virtual u16 GetNeighborBackInfo(vector<TNeiRegServerInfo> &vNeighborInfo);
 
@@ -37,4 +39,5 @@ protected:
 private:
     CSipToolSession    *m_pSession;
     vector<TNeiRegServerInfo> m_vNeighborInfo;
+    TRegServerInfo m_tCasRegServerInfo;
 };

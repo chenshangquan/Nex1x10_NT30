@@ -17,7 +17,7 @@
 				<Label float="true" pos="302,14,0,0" width="42" height="14" text="IP地址" textcolor="#FF0F4F51" font="0" align="left" />
 				<Label float="true" pos="514,14,0,0" width="28" height="14" text="端口" textcolor="#FF0F4F51" font="0" align="left" />
 				
-				<List name="NeiRegServerList" float="true" pos="1,0,0,0" width="650" height="344" align="center" header="false" vscrollbar="true" itemfont="0" itemalign="center" itemtextcolor="#FF000000" itemhottextcolor="#FFFFFFFF" itemselectedtextcolor="#FFFFFFFF" itemhotbkcolor="#FF0F4F51" itemselectedbkcolor="#FF0F4F51" >
+				<List name="NeiRegServerList" float="true" pos="1,0,0,0" width="650" height="344" align="center" header="false" vscrollbar="true" itemfont="0" itemalign="center" itemtextcolor="#FF000000" itemhottextcolor="#FFFFFFFF" itemselectedtextcolor="#FFFFFFFF" itemselectedimage="res\neighbor_cfg\selected.png" itemhotimage="res\neighbor_cfg\selected.png">
 					<ListHeader width="653" height="35" visble="false" >
 						<ListHeaderItem width="50" sepwidth="1" />
 						<ListHeaderItem width="160" sepwidth="1"/>

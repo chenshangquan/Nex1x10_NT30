@@ -129,6 +129,9 @@ bool CMainFrameLogic::OnSipToolConnected(WPARAM wparam, LPARAM lparam, bool& bHa
         ISipToolCommonOp::ShowControl( true, m_pm, _T("PageSipToolMain") );
         SetWindowPos( m_pm->GetPaintWindow(), HWND_TOP, 0, 0, 864, 614, SWP_NOACTIVATE|SWP_NOMOVE );
         WINDOW_MGR_PTR->ShowWindowCenter(g_stcStrNetworkSetupDlg.c_str());
+
+        //默认选中级联配置
+        ISipToolCommonOp::OptionSelect(true, m_pm, _T("CascadeCfgOpt"));
     }
     else
     {

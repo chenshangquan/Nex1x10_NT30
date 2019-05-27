@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encodinug="utf-8" standalone="yes" ?>
 <PageSipToolMain>
 	<VerticalLayout name="networkconfig" bkimage="res/neighbor_cfg/background.png">
 		<HorizontalLayout height="73">
@@ -39,10 +39,10 @@
 			<Label float="true" pos="640,10,0,0" width="204" height="14" font="0" text="2012-2019 苏州科达科技股份有限公司" textcolor="#FF8D8D8D" />
 		</HorizontalLayout>
 		
-		<!--Case name="caseNormal">
-			<LoginBtn enabled="true"/>
-		</Case>
 		<Case name="caseIsLogining">
+			<CascadeCfgOpt selected="true"/>
+		</Case>
+		<!--Case name="caseIsLogining">
 			<LoginBtn enabled="false"/>
 		</Case>
 		

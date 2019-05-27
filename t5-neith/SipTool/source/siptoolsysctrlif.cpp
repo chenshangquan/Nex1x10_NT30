@@ -73,6 +73,16 @@ u16 CSipToolInterface::SetNeighborInfo(TNeiRegServerInfo &tNeighborInfo)
     return m_pSysCtrlIf->SetNeighborInfo(tNeighborInfo);
 }
 
+u16 CSipToolInterface::GetCasRegServerBackInfo(TRegServerInfo &tCasRegServerInfo)
+{
+    if ( NULL == m_pSysCtrlIf )
+    {
+        return -1;
+    }
+
+    return m_pSysCtrlIf->GetCasRegServerBackInfo(tCasRegServerInfo);
+}
+
 u16 CSipToolInterface::GetNeighborBackInfo(vector<TNeiRegServerInfo> &vNeighborInfo)
 {
     if ( NULL == m_pSysCtrlIf )
