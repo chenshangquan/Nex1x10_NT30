@@ -11,10 +11,10 @@
 			<Button name="CasCfgSaveBtn" float="true" pos="614,78,0,0" width="86" height="38" normalimage="res\cascade_cfg\save_normal.png" hotimage="res\cascade_cfg\save_hover.png" pushedimage="res\cascade_cfg\save_down.png" disabledimage="res\cascade_cfg\save_disable.png" />
 		</VerticalLayout>
 		
-		<Case name="caseIsSaved">			<!--已经成功保存-->
+		<Case name="caseParentIPSaved">		<!--已经成功保存-->
 			<CasCfgSaveBtn enabled="false" />
 		</Case>
-		<Case name="caseEnableSaveBtn">		<!--使能保存按钮-->
+		<Case name="caseParentIPChanged">		<!--使能保存按钮-->
 			<CasCfgSaveBtn enabled="true" />
 		</Case>
 

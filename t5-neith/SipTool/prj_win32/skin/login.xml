@@ -26,21 +26,19 @@
 			<LoginBtn enabled="true"/>
 		</Case>
 		<Case name="caseIsLogining">
-			<LoginBtn enabled="true"/>
-			<LoginWarnLab visible="false" />
-			<LoginTipLab visible="false" />
+			<LoginBtn enabled="false"/>
 		</Case>
 		<Case name="caseIsnotLogin">
 			<LoginBtn enabled="true"/>
-			<LoginWarnLab visible="true" />
-			<LoginTipLab visible="true" />
 		</Case>
 		
 		<Case name="caseShowTip">
-			<LoginTipLeb visible="true"/>
+			<LoginWarnLab visible="true" />
+			<LoginTipLab visible="true" />
 		</Case>
 		<Case name="caseCloseTip">
-			<LoginTipLeb visible="false"/>
+			<LoginWarnLab visible="false" />
+			<LoginTipLab visible="false" />
 		</Case>
 	</VerticalLayout>
 </PageLogin>

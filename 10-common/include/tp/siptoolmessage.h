@@ -1,6 +1,6 @@
 /******************************************************************************
 模块名  : scoketmanager
-文件名  : crkmessahe.h
+文件名  : siptoolmessage.h
 功能    : 消息格式头文件
 版本    ：1.0.0
 ******************************************************************************/
@@ -8,25 +8,9 @@
 #define __SIPTOOLMESSAGE_H__
 
 //#include "rk100_msg.h"
+#include "multiplereg_common.h"
 
-#define   RK_MAXLEN_MESSAGE          65535 //1024*64,  消息最大长度64K   
-
-#define MULTIPLEREGSETTINGSBASE 0x1111
-#define MULTIPLEREGBASE 0xf111
-enum EmSipToolMsg
-{
-    #define SETPARENTIP                 (MULTIPLEREGSETTINGSBASE+1)  //设置父级ip及port，连接父级;
-    #define SETNEIGHBORINFO             (MULTIPLEREGSETTINGSBASE+2)  //设置一条邻居信息;
-    #define MULTIPLEREGSIGN             (MULTIPLEREGSETTINGSBASE+3)  //登录;
-    #define MULTIPLEREGSIGNACK          (MULTIPLEREGSETTINGSBASE+4)  //登陆回复;
-    #define SETPARENTIPACK              (MULTIPLEREGSETTINGSBASE+5)
-    #define SETNEIGHBORINFOACK          (MULTIPLEREGSETTINGSBASE+6)
-
-
-    #define CONNECTCONTROL              (MULTIPLEREGBASE+19) 
-    #define CONNECTCONTROLACK           (MULTIPLEREGBASE+20) 
-};
-
+#define   RK_MAXLEN_MESSAGE          65535 //1024*64,  消息最大长度64K
 
 class CRkMessage
 {

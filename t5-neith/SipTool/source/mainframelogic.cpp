@@ -27,6 +27,52 @@ CMainFrameLogic::~CMainFrameLogic()
 {
 }
 
+bool CMainFrameLogic::IsIpFormatRight(LPCTSTR pIpAddr)
+{
+    u32 dwCount = 0;
+    s32 i = 0;
+    u32 dwA, dwB, dwC, dwD;
+
+    // 检查是否只包含点和数字;
+    for(i = 0; pIpAddr[i] != '\0'; i++)
+    {
+        if (pIpAddr[i] > 256)
+        {
+            return false;
+        }
+
+        if(!isdigit((int)pIpAddr[i]) && pIpAddr[i] != '.')
+        {
+            return false;
+        }
+    }
+
+    // 检查形式是否为X.X.X.X;
+    for (i = 0; pIpAddr[i+1] != '\0'; i++)
+    {
+        if (isdigit(pIpAddr[i]) && pIpAddr[i+1] == '.')
+        {
+            dwCount++;
+        }
+    }
+    if (dwCount != 3)
+    {
+        return false;
+    }
+
+    // 检查区间的合法性;
+    if ((swscanf(pIpAddr, L"%d.%d.%d.%d", &dwA, &dwB, &dwC, &dwD) == 4)
+        &&(dwA >= 0 && dwA <= 255)
+        &&(dwB >= 0 && dwB <= 255)
+        &&(dwC >= 0 && dwC <= 255)
+        &&(dwD >= 0 && dwD <= 255))
+    {
+        return true;
+    }
+
+    return false;
+}
+
 bool CMainFrameLogic::OnCreate( TNotifyUI& msg )
 {
     //HWND hWnd = m_pm->GetPaintWindow();
@@ -48,8 +94,8 @@ bool CMainFrameLogic::OnInit( TNotifyUI& msg )
 {
     REG_RCKTOOL_MSG_WND_OB(m_pm->GetPaintWindow());
 
-    WINDOW_MGR_PTR->ShowWindow(g_stcStrLogoutDlg.c_str(), false);
-    WINDOW_MGR_PTR->ShowWindow(g_stcStrNeiRegServerAddDlg.c_str(), false);
+    //WINDOW_MGR_PTR->ShowWindow(g_stcStrLogoutDlg.c_str(), false);
+    WINDOW_MGR_PTR->ShowWindow(g_stcStrShadeDlg.c_str(), false);
 
     ISipToolCommonOp::ShowControl( true, m_pm, _T("PageLogin") );
     ISipToolCommonOp::ShowControl( false, m_pm, _T("PageSipToolMain") );
@@ -67,7 +113,8 @@ bool CMainFrameLogic::OnDestroy( TNotifyUI& msg )
 
 bool CMainFrameLogic::OnExitBtnClicked(TNotifyUI& msg)
 {
-    WINDOW_MGR_PTR->ShowWindowCenter(g_stcStrLogoutDlg.c_str());
+    OnShowShadeWindow();
+    WINDOW_MGR_PTR->ShowModal(g_stcStrLogoutDlg.c_str());
 	return true;
 }
 
@@ -149,4 +196,21 @@ bool CMainFrameLogic::OnSipToolLogout(WPARAM wparam, LPARAM lparam, bool& bHandl
     WINDOW_MGR_PTR->ShowWindowCenter(g_stcStrNetworkSetupDlg.c_str());
 
     return true;
+}
+
+bool CMainFrameLogic::OnShowShadeWindow(LPCTSTR lpstrName, bool bShow)
+{
+    // 遮罩窗口与主窗口的位置保持一致
+    Window* pAppWindow = WINDOW_MGR_PTR->GetWindow(lpstrName);
+    if ( pAppWindow != NULL && bShow )
+    {
+        RECT rcParent;
+        HWND hparent = m_pm->GetPaintWindow();
+        GetWindowRect(hparent,&rcParent);
+        HWND hAppWind = FindWindow(NULL, g_stcStrShadeDlg.c_str());
+        SetWindowPos(hAppWind, NULL, rcParent.left, rcParent.top, 0, 0, SWP_NOSIZE |SWP_NOACTIVATE );
+    }
+
+    WINDOW_MGR_PTR->ShowWindow(lpstrName, bShow);
+    return false;
 }

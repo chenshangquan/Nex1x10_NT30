@@ -45,11 +45,6 @@ protected:
     //点击登录按钮
     bool OnLoginBtnClicked(TNotifyUI& msg);
 
-    //自动登录
-    bool OnCheckAutoLoginSel(TNotifyUI& msg);
-    //记住密码
-    bool OnCheckRemPassWordSel(TNotifyUI& msg);
-
     //显示提示定时器响应
     bool OnShowTipTimer(TNotifyUI& msg);
 
@@ -59,7 +54,7 @@ protected:
 
     void ShowTip(CString strTip);
 
-    CString GetIniFilePath();
+    //CString GetIniFilePath();
 
     APP_DECLARE_MSG_MAP()
 

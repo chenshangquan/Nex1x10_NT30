@@ -25,6 +25,8 @@ protected:
 
     //更新邻居信息列表
     bool OnUpdateNeighborInfoList( WPARAM wparam, LPARAM lparam, bool& bHandle );
+    //更新邻居信息列表
+    bool OnDeleteNeighborInfoList( WPARAM wparam, LPARAM lparam, bool& bHandle );
 
     //bool OnRkcDisconnected( WPARAM wparam, LPARAM lparam, bool& bHandle );
 

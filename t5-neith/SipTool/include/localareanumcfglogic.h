@@ -25,13 +25,15 @@ protected:
 
     //登陆连接响应
     bool OnSipToolConnected( WPARAM wparam, LPARAM lparam, bool& bHandle );
+    //设置本地区号回复消息响应
+    bool OnSetLocalAreaCodeRsp( WPARAM wparam, LPARAM lparam, bool& bHandle );
 
     //bool OnRkcDisconnected( WPARAM wparam, LPARAM lparam, bool& bHandle );
 
     APP_DECLARE_MSG_MAP()
 
 private:
-    CString m_cstrAreaNum;      //本地区号
+    CString m_cstrAreaCode;      //本地区号
 };
 
 #endif // !defined(AFX_LOCALAREANUMCFG_H_)

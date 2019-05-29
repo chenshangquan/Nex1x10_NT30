@@ -15,6 +15,10 @@ public:
     virtual u16 SetParentIP(s8* szIp);
     //设置一条邻居信息
     virtual u16 SetNeighborInfo(TNeiRegServerInfo &tNeighborInfo);
+    //删除一条邻居信息
+    virtual u16 DeleteNeighborInfo(s8* szAreaNum);
+    //设置本地区号
+    virtual u16 SetLocalAreaCode(s8* szLocalAreaCode);
 
     //获取当前级联配置信息
     virtual u16 GetCasRegServerBackInfo(TRegServerInfo &tCasRegServerInfo);
@@ -30,6 +34,11 @@ protected:
     void OnSetParentIPRsp(const CMessage& cMsg);
     //设置邻居信息消息回复
     void OnSetNeighborInfoRsp(const CMessage& cMsg);
+    //删除邻居信息消息回复
+    void OnDeleteNeighborInfoRsp(const CMessage& cMsg);
+    //设置本地区号消息回复
+    void OnSetLocalAreaCodeRsp(const CMessage& cMsg);
+
     //断开连接
     void OnDicconnected(const CMessage& cMsg);
 

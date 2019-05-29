@@ -12,7 +12,7 @@ UINT ThreadConnectSipTool(LPVOID lpParam)
 
     if ( re != NO_ERROR )
     {
-        NOTIFY_MSG( UI_SIPTOOL_CONNECTED, FALSE, re );
+        NOTIFY_MSG( UI_SIPTOOL_CONNECTED, true, re );
         return re;
     }
 
@@ -71,6 +71,26 @@ u16 CSipToolInterface::SetNeighborInfo(TNeiRegServerInfo &tNeighborInfo)
     }
 
     return m_pSysCtrlIf->SetNeighborInfo(tNeighborInfo);
+}
+
+u16 CSipToolInterface::DeleteNeighborInfo(s8* szAreaNum)
+{
+    if ( NULL == m_pSysCtrlIf )
+    {
+        return -1;
+    }
+
+    return m_pSysCtrlIf->DeleteNeighborInfo(szAreaNum);
+}
+
+u16 CSipToolInterface::SetLocalAreaCode(s8* szLocalAreaCode)
+{
+    if ( NULL == m_pSysCtrlIf )
+    {
+        return -1;
+    }
+
+    return m_pSysCtrlIf->SetLocalAreaCode(szLocalAreaCode);
 }
 
 u16 CSipToolInterface::GetCasRegServerBackInfo(TRegServerInfo &tCasRegServerInfo)

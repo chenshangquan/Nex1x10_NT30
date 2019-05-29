@@ -7,7 +7,8 @@ const String CSystem::strMainWindow		= _T("siptool");
 const String CSystem::strSkin			= _T("skin");
 const String CSystem::strDefaultSkin	= _T("skin\\");
 
-const String g_stcStrMainFrameDlg = _T("siptool"); 
+const String g_stcStrMainFrameDlg = _T("siptool");
+const String g_stcStrShadeDlg = _T("ShadeDlg");
 const String g_stcStrLoginDlg = _T("LoginDlg");
 const String g_stcStrNetworkSetupDlg = _T("NetworkSetup");
 const String g_stcStrPopupDlg = _T("PopupDlg");

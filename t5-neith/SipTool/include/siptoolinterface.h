@@ -50,6 +50,14 @@ public:
 	*   设置一条邻居信息
 	*/ 
     u16 SetNeighborInfo(TNeiRegServerInfo &tNeighborInfo);
+    /**
+	*   删除一条邻居信息
+	*/ 
+    u16 DeleteNeighborInfo(s8* szAreaNum);
+    /**
+	*   设置本地区号
+    */ 
+    u16 SetLocalAreaCode(s8* szLocalAreaCode);
      /**
 	*   获取当前级联配置信息
 	*/ 

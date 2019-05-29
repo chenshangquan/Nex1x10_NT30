@@ -2,8 +2,7 @@
 <index>
 <!--index下配置窗口索引 file-窗口对应xml文件   logic-窗口逻辑类名  parent-父窗口名  style(frame|dialog|child)风格,默认frame-->
   <siptool file="mainframe.xml" logic="CMainFrameLogic|CLoginLogic|CCascadeCfgLogic|CNeighborCfgLogic|CLocalAreaNumCfgLogic" style="frame" />
-  <!--networksetup file="networksetup.xml" logic="CNetworkSetupLogic" parent="siptool" style="dialog" /-->
-  <!--networksetup file="networksetup.xml" logic="CCascadeCfgLogic" parent="siptool" style="child"-->
-  <LogoutDlg file="logout.xml" logic="CLogoutLogic" parent="siptool" style="dialog" />
-  <NeiRegServerAddDlg file="neiregserveradd.xml" logic="CNeiRegServerAddLogic" parent="siptool" style="dialog" />
+  <ShadeDlg file="shade.xml" logic="" parent="siptool" style="dialog" />
+  <LogoutDlg file="logout.xml" logic="CLogoutLogic" parent="ShadeDlg" style="dialog" />
+  <NeiRegServerAddDlg file="neiregserveradd.xml" logic="CNeiRegServerAddLogic" parent="ShadeDlg" style="dialog" />
 </index>

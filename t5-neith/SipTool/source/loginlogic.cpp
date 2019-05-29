@@ -17,9 +17,9 @@ APP_BEGIN_MSG_MAP(CLoginLogic, CNotifyUIImpl)
     //MSG_SELECTCHANGE(_T("CheckAutoLogin"), OnCheckAutoLoginSel)
     //MSG_SELECTCHANGE(_T("CheckRemPassWord"), OnCheckRemPassWordSel)
 
-    MSG_TIMER(_T("LoginTipLeb"), OnShowTipTimer)
+    MSG_TIMER(_T("LoginTipLab"), OnShowTipTimer)
 
-    //USER_MSG(UI_SIPTOOL_CONNECTED , OnSipToolConnected)
+    USER_MSG(UI_SIPTOOL_CONNECTED , OnSipToolConnected)
     //USER_MSG(UI_RKC_DISCONNECTED , OnSipToolDisconnected)
 APP_END_MSG_MAP()
 
@@ -62,62 +62,15 @@ bool CLoginLogic::OnDestroy( TNotifyUI& msg )
 
 bool CLoginLogic::OnMinBtnClicked(TNotifyUI& msg)
 {
-    WINDOW_MGR_PTR->ShowWindowMinsize(g_stcStrMainFrameDlg.c_str());  
+    WINDOW_MGR_PTR->ShowWindowMinsize(g_stcStrMainFrameDlg.c_str());
     return true;
 }
 
 bool CLoginLogic::OnCloseBtnClicked(TNotifyUI& msg)
 {
-    WINDOW_MGR_PTR->CloseWindow(g_stcStrMainFrameDlg.c_str());  
-    TerminateProcess(GetCurrentProcess(), 0); 
+    WINDOW_MGR_PTR->CloseWindow(g_stcStrMainFrameDlg.c_str());
+    TerminateProcess(GetCurrentProcess(), 0);
     return false;
-}
-
-// 判断IP字符串的合法性;
-bool IsIpFormatRight(LPCTSTR pIpAddr)
-{
-    u32 dwCount = 0;
-    s32 i = 0;
-    u32 dwA, dwB, dwC, dwD;
-
-    // 检查是否只包含点和数字;
-    for(i = 0; pIpAddr[i] != '\0'; i++)
-    {
-        if (pIpAddr[i] > 256)
-        {
-            return FALSE;
-        }
-
-        if(!isdigit((int)pIpAddr[i]) && pIpAddr[i] != '.')
-        {
-            return FALSE;
-        }
-    }
-
-    // 检查形式是否为X.X.X.X;
-    for (i = 0; pIpAddr[i+1] != '\0'; i++)
-    {
-        if (isdigit(pIpAddr[i]) && pIpAddr[i+1] == '.')
-        {
-            dwCount++;
-        }
-    }
-    if (dwCount != 3)
-    {
-        return FALSE;
-    }
-
-    // 检查区间的合法性;
-    if ((swscanf(pIpAddr, L"%d.%d.%d.%d", &dwA, &dwB, &dwC, &dwD) == 4)
-        &&(dwA >= 0 && dwA <= 255)
-        &&(dwB >= 0 && dwB <= 255)
-        &&(dwC >= 0 && dwC <= 255)
-        &&(dwD >= 0 && dwD <= 255))
-    {
-        return TRUE;
-    }
-
-    return FALSE;
 }
 
 bool CLoginLogic::OnLoginBtnClicked(TNotifyUI& msg)
@@ -126,7 +79,7 @@ bool CLoginLogic::OnLoginBtnClicked(TNotifyUI& msg)
     CString strUserName = (ISipToolCommonOp::GetControlText( m_pm ,_T("edtUserName"))).c_str();
     CString strPassWord = (ISipToolCommonOp::GetControlText( m_pm ,_T("edtPassWord"))).c_str();
 
-    /*if( !IsIpFormatRight(strIP) )
+    if( !CMainFrameLogic::IsIpFormatRight(strIP) )
     {
         ShowTip(_T("服务器地址非法"));
         return false;
@@ -140,12 +93,7 @@ bool CLoginLogic::OnLoginBtnClicked(TNotifyUI& msg)
     {
         ShowTip(_T("请输入账号、密码"));
         return false;
-    }*/
-
-    /*if (false == ISIPFORMATRIGHT(strIP) )
-    {
-        return false;
-    }*/
+    }
 
     u32 dwIp = ntohl( inet_addr( CT2A(strIP) ) );
     m_pm->DoCase(_T("caseIsLogining"));
@@ -162,34 +110,6 @@ bool CLoginLogic::OnShowTipTimer(TNotifyUI& msg)
     return true;
 }
 
-bool CLoginLogic::OnCheckAutoLoginSel(TNotifyUI& msg)
-{
-    COptionUI *pCheckRemPassWord = (COptionUI*)ISipToolCommonOp::FindControl( m_pm, _T("CheckRemPassWord") );
-    COptionUI *pCheckAutoLogin = (COptionUI*)ISipToolCommonOp::FindControl( m_pm, _T("CheckAutoLogin") );
-    if (pCheckRemPassWord && pCheckAutoLogin)
-    {
-        if (pCheckAutoLogin->IsSelected())
-        {
-            pCheckRemPassWord->Selected(true);
-        }
-    }
-    return true;
-}
-
-bool CLoginLogic::OnCheckRemPassWordSel(TNotifyUI& msg)
-{
-    COptionUI *pCheckRemPassWord = (COptionUI*)ISipToolCommonOp::FindControl( m_pm, _T("CheckRemPassWord") );
-    COptionUI *pCheckAutoLogin = (COptionUI*)ISipToolCommonOp::FindControl( m_pm, _T("CheckAutoLogin") );
-    if (pCheckRemPassWord && pCheckAutoLogin)
-    {
-        if (pCheckRemPassWord->IsSelected() == false)
-        {
-            pCheckAutoLogin->Selected(false);
-        }
-    }
-    return true;
-}
-
 bool CLoginLogic::OnSipToolConnected( WPARAM wparam, LPARAM lparam, bool& bHandle )
 {
     m_pm->DoCase(_T("caseNormal"));
@@ -197,42 +117,11 @@ bool CLoginLogic::OnSipToolConnected( WPARAM wparam, LPARAM lparam, bool& bHandl
     bool bIsLogin = (bool)wparam;
     if (bIsLogin == false )
     {
-        ShowTip(_T("连接到主机失败"));
+        ShowTip(_T("账号与密码不匹配"));
     }
     else
     {
-        CString strIniPath = GetIniFilePath();
-        CString strLoginIP = _T("172.0.0.1");
-        CString strUserName = (ISipToolCommonOp::GetControlText( m_pm ,_T("edtUserName"))).c_str();
-        CString strPassWord = (ISipToolCommonOp::GetControlText( m_pm ,_T("edtPassWord"))).c_str();
-        WritePrivateProfileString(_T("LoginInfo"),_T("LoginIP"),strLoginIP,strIniPath);
-        WritePrivateProfileString(_T("LoginInfo"),_T("UserName"),strUserName,strIniPath);
-        COptionUI *pCheckRemPassWord = (COptionUI*)ISipToolCommonOp::FindControl( m_pm, _T("CheckRemPassWord") );
-        COptionUI *pCheckAutoLogin = (COptionUI*)ISipToolCommonOp::FindControl( m_pm, _T("CheckAutoLogin") );
-        if (pCheckRemPassWord)
-        {
-            if (pCheckRemPassWord->IsSelected())
-            {
-                WritePrivateProfileString(_T("LoginInfo"),_T("PassWord"),strPassWord,strIniPath);
-                WritePrivateProfileString(_T("LoginInfo"),_T("RemberPW"),_T("1"),strIniPath);
-            }
-            else
-            {
-                WritePrivateProfileString(_T("LoginInfo"),_T("PassWord"),_T(""),strIniPath);
-                WritePrivateProfileString(_T("LoginInfo"),_T("RemberPW"),_T("0"),strIniPath);
-            }
-        }
-        if (pCheckAutoLogin)
-        {
-            if (pCheckAutoLogin->IsSelected())
-            {
-                WritePrivateProfileString(_T("LoginInfo"),_T("AutoLogin"),_T("1"),strIniPath);
-            }
-            else
-            {
-                WritePrivateProfileString(_T("LoginInfo"),_T("AutoLogin"),_T("0"),strIniPath);
-            }
-        }
+        
     }
     return true;
 }
@@ -246,7 +135,7 @@ bool CLoginLogic::OnSipToolDisconnected( WPARAM wparam, LPARAM lparam, bool& bHa
 void CLoginLogic::ShowTip(CString strTip)
 {
     m_pm->DoCase(_T("caseShowTip"));
-    CLabelUI *pControl = (CLabelUI*)ISipToolCommonOp::FindControl( m_pm, _T("LoginTipLeb") );
+    CLabelUI *pControl = (CLabelUI*)ISipToolCommonOp::FindControl( m_pm, _T("LoginTipLab") );
     if (pControl)
     {
         pControl->SetText(strTip);
@@ -255,6 +144,7 @@ void CLoginLogic::ShowTip(CString strTip)
     }
 }
 
+/*
 CString CLoginLogic::GetIniFilePath()
 {
     TCHAR tchPath[MAX_PATH] = {0};
@@ -271,5 +161,5 @@ CString CLoginLogic::GetIniFilePath()
     }
 
     return strIniFilePath;
-}
+}*/
 

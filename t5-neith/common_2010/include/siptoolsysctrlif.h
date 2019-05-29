@@ -36,6 +36,14 @@ public:
     */ 
     virtual u16 SetNeighborInfo(TNeiRegServerInfo &tNeighborInfo) = 0;
     /**
+    *   删除一条邻居信息
+    */ 
+    virtual u16 DeleteNeighborInfo(s8* szAreaNum) = 0;
+    /**
+    *   设置本地区号
+    */ 
+    virtual u16 SetLocalAreaCode(s8* szLocalAreaCode) = 0;
+    /**
     *   获取当前级联配置信息
     */ 
     virtual u16 GetCasRegServerBackInfo(TRegServerInfo &tCasRegServerInfo) = 0;

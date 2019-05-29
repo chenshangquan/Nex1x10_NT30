@@ -1,4 +1,4 @@
-/** @defgroup 网络设置逻辑单元 
+/** @defgroup 主窗口逻辑单元 
  *  @version V1.0.0
  *  @author  csq
  *  @date    2019.4.25
@@ -22,6 +22,13 @@ class CMainFrameLogic : public CNotifyUIImpl, public Singleton<CMainFrameLogic>
 public:
 	CMainFrameLogic();
 	~CMainFrameLogic();
+
+public:
+    //判断IP字符串是否合法
+    static bool IsIpFormatRight(LPCTSTR pIpAddr);
+
+    // 显示遮罩窗口
+    bool OnShowShadeWindow(LPCTSTR lpstrName = g_stcStrShadeDlg.c_str(), bool bShow = true);
 
 protected:
     /** 窗口创建 
@@ -55,7 +62,7 @@ protected:
 	bool OnTabCascadeCfg(TNotifyUI& msg);
 	//邻居配置
 	bool OnTabNeighborCfg(TNotifyUI& msg);
-	//本地区域号配置
+	//本地区号配置
 	bool OnTabLocalAreaNumCfg(TNotifyUI& msg);
 
     //Siptool connected

@@ -25,6 +25,8 @@ protected:
 
     //登陆连接响应
     bool OnSipToolConnected( WPARAM wparam, LPARAM lparam, bool& bHandle );
+    //设置父级IP地址响应
+    bool OnSetParentIPRsp( WPARAM wparam, LPARAM lparam, bool& bHandle );
 
     //bool OnRkcDisconnected( WPARAM wparam, LPARAM lparam, bool& bHandle );
 

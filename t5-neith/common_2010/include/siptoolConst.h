@@ -29,7 +29,7 @@ using namespace std;
 #define ERR_BGN		100
 #define ERR_END		ERR_BGN + 1999
 
-#define MAX_AREANUM_LENGTH          5
+#define MAX_AREACODE_LENGTH          5
 #define MAX_IP_LENGTH               16
 #define MAX_ALIAS_LENGTH            32
 #define MAX_SEARCH_TIME             10000

@@ -23,7 +23,7 @@ typedef struct tagLoginInfo
 
 typedef struct tagRegServerInfo
 {
-    s8      m_achAreaNum[MAX_AREANUM_LENGTH+1];
+    s8      m_achAreaCode[MAX_AREACODE_LENGTH+1];
     s8      m_achIpAddr[MAX_IP_LENGTH+1];
     u16     m_wPort;
 
@@ -33,51 +33,5 @@ public:
         memset( this, 0, sizeof(tagRegServerInfo) );
     }
 }TRegServerInfo,TNeiRegServerInfo;
-
-//#define ISIPFORMATRIGHT(pIpAddr)  do{\
-//    u32 dwCount = 0;\
-//    s32 i = 0;\
-//    u32 dwA, dwB, dwC, dwD;\
-//
-//    // 检查是否只包含点和数字;
-//    for (i = 0; pIpAddr[i] != '\0'; i++)\
-//    {\
-//        if (pIpAddr[i] > 256)\
-//        {\
-//            return FALSE;\
-//        }\
-//
-//        if(!isdigit((int)pIpAddr[i]) && pIpAddr[i] != '.')\
-//        {\
-//            return FALSE;\
-//        }\
-//    }\
-//
-//    // 检查形式是否为X.X.X.X;
-//    for (i = 0; pIpAddr[i+1] != '\0'; i++)\
-//    {\
-//        if (isdigit(pIpAddr[i]) && pIpAddr[i+1] == '.')\
-//        {\
-//            dwCount++;\
-//        }\
-//    }\
-//    if (dwCount != 3)\
-//    {\
-//        return FALSE;\
-//    }\
-//
-//    // 检查区间的合法性;
-//    if ((swscanf(pIpAddr, L"%d.%d.%d.%d", &dwA, &dwB, &dwC, &dwD) == 4)\
-//        &&(dwA >= 0 && dwA <= 255)\
-//        &&(dwB >= 0 && dwB <= 255)\
-//        &&(dwC >= 0 && dwC <= 255)\
-//        &&(dwD >= 0 && dwD <= 255))\
-//    {\
-//        return TRUE;\
-//    }\
-//
-//    return FALSE;\
-//
-//}while(0)
 
 #endif 

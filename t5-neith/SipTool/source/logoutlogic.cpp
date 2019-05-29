@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "logoutlogic.h"
+#include "mainframelogic.h"
 
 APP_BEGIN_MSG_MAP(CLogoutLogic, CNotifyUIImpl)
-    MSG_CREATEWINDOW(_T("LogoutLayout"), OnCreate)
+    //MSG_CREATEWINDOW(_T("LogoutLayout"), OnCreate)
     MSG_INIWINDOW(_T("LogoutLayout"), OnInit)
     MSG_WINDOWDESTORY(_T("LogoutLayout"), OnDestroy)
 
@@ -52,13 +53,15 @@ bool CLogoutLogic::OnDestroy( TNotifyUI& msg )
 bool CLogoutLogic::OnCloseBtnClicked(TNotifyUI& msg)
 {
     //WINDOW_MGR_PTR->CloseWindow(g_stcStrLogoutDlg.c_str(), IDNO);
-    WINDOW_MGR_PTR->ShowWindow(g_stcStrLogoutDlg.c_str(), false);
+    WINDOW_MGR_PTR->ShowWindow(g_stcStrShadeDlg.c_str(), false);
+    WINDOW_MGR_PTR->CloseWindow(g_stcStrLogoutDlg.c_str(), IDNO);
     return false;
 }
 
 bool CLogoutLogic::OnConfirmBtnClicked(TNotifyUI& msg)
 {
-    WINDOW_MGR_PTR->ShowWindow(g_stcStrLogoutDlg.c_str(), false);
+    WINDOW_MGR_PTR->ShowWindow(g_stcStrShadeDlg.c_str(), false);
+    WINDOW_MGR_PTR->CloseWindow(g_stcStrLogoutDlg.c_str(), IDOK);
     NOTIFY_MSG( UI_SIPTOOL_LOGOUT, 0 , 0 );
 
     return true;
@@ -66,7 +69,8 @@ bool CLogoutLogic::OnConfirmBtnClicked(TNotifyUI& msg)
 
 bool CLogoutLogic::OnCancelBtnClicked(TNotifyUI& msg)
 {
-    WINDOW_MGR_PTR->ShowWindow(g_stcStrLogoutDlg.c_str(), false);
+    WINDOW_MGR_PTR->ShowWindow(g_stcStrShadeDlg.c_str(), false);
+    WINDOW_MGR_PTR->CloseWindow(g_stcStrLogoutDlg.c_str(), IDCANCEL);
 
     return true;
 }

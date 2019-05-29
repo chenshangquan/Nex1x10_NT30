@@ -1,54 +1,122 @@
 #include "stdafx.h"
 #include "neiregserveraddlogic.h"
 #include "neighborcfglogic.h"
+#include "mainframelogic.h"
 
-template<> CNeiRegServerAddLogic* Singleton<CNeiRegServerAddLogic>::ms_pSingleton  = NULL;
+//template<> CNeiRegServerAddLogic* Singleton<CNeiRegServerAddLogic>::ms_pSingleton  = NULL;
 
 APP_BEGIN_MSG_MAP(CNeiRegServerAddLogic, CNotifyUIImpl)
+    //MSG_CREATEWINDOW(_T("NeiRegServerAddLayout"), OnCreate)
+    MSG_INIWINDOW(_T("NeiRegServerAddLayout"), OnInit)
+    MSG_WINDOWDESTORY(_T("NeiRegServerAddLayout"), OnDestroy)
+
     MSG_CLICK(_T("CloseBtn"), OnCloseBtnClicked)
     MSG_CLICK(_T("ConfirmBtn"), OnConfirmBtnClicked)
     MSG_CLICK(_T("CancelBtn"), OnCancelBtnClicked)
 
     //MSG_EDITCHANGE(_T("DeviceIPEdt"), OnDevIPEditTextChange)
 
-    //USER_MSG(UI_RKC_IP_CHECK , OnRkcIPChecked)
+    USER_MSG(UI_SIPTOOL_SETNEIGHBORINFORSP , OnSetNeighborInfoRsp)
     //USER_MSG(UI_RKC_DISCONNECTED , OnRkcDisconnected)
 
 APP_END_MSG_MAP()
 
 CNeiRegServerAddLogic::CNeiRegServerAddLogic()
 {
+    m_bAddNeiRegServerInfo = false;
 }
 
 CNeiRegServerAddLogic::~CNeiRegServerAddLogic()
 {
 }
 
+bool CNeiRegServerAddLogic::OnCreate( TNotifyUI& msg )
+{
+    RECT rcParent;
+    HWND hparent = GetParent(m_pm->GetPaintWindow());
+    GetWindowRect(hparent,&rcParent);
+    SetWindowPos( m_pm->GetPaintWindow(), HWND_TOP, rcParent.left, rcParent.top, 0, 0, SWP_NOSIZE |SWP_NOACTIVATE );
+
+    return true;
+}
+
+
+bool CNeiRegServerAddLogic::OnInit( TNotifyUI& msg )
+{
+    REG_RCKTOOL_MSG_WND_OB(m_pm->GetPaintWindow());
+    return true;
+}
+
+bool CNeiRegServerAddLogic::OnDestroy( TNotifyUI& msg )
+{
+    UNREG_RCKTOOL_MSG_WND_OB(m_pm->GetPaintWindow());
+    return true;
+}
+
 bool CNeiRegServerAddLogic::OnCloseBtnClicked(TNotifyUI& msg)
 {
-    WINDOW_MGR_PTR->ShowWindow(g_stcStrNeiRegServerAddDlg.c_str(), false);
+    //WINDOW_MGR_PTR->ShowWindow(g_stcStrNeiRegServerAddDlg.c_str(), false);
+    //WINDOW_MGR_PTR->ShowWindow(g_stcStrShadeDlg.c_str(), false);
+    WINDOW_MGR_PTR->CloseWindow(g_stcStrNeiRegServerAddDlg.c_str(), IDNO);
     return true;
 }
 
 bool CNeiRegServerAddLogic::OnConfirmBtnClicked(TNotifyUI& msg)
 {
-    TNeiRegServerInfo tNeiRegServerInfo;
+    memset(&m_tNeiRegServerInfo, 0, sizeof(TNeiRegServerInfo));
     CString strAreaNum = ( ISipToolCommonOp::GetControlText( m_pm ,_T("AreaNumEdt")) ).c_str();
     CString strIpAddr = ( ISipToolCommonOp::GetControlText( m_pm ,_T("IpAddrEdt")) ).c_str();
     CString strPort = ( ISipToolCommonOp::GetControlText( m_pm ,_T("PortEdt")) ).c_str();
-    memcpy(tNeiRegServerInfo.m_achAreaNum, (CT2A)strAreaNum, MAX_AREANUM_LENGTH);
-    memcpy(tNeiRegServerInfo.m_achIpAddr, (CT2A)strIpAddr, MAX_IP_LENGTH);
-    tNeiRegServerInfo.m_wPort = _ttoi(strPort);
+    if( !CMainFrameLogic::IsIpFormatRight(strIpAddr) )
+    {
+        //ShowTip(_T("服务器地址非法"));
+        return false;
+    }
+    if (strAreaNum.IsEmpty())
+    {
+        //ShowTip(_T("请输入区号"));
+        return false;
+    }
+    if(strPort.IsEmpty())
+    {
+        //ShowTip(_T("请输入端口"));
+        return false;
+    }
 
-    CNeighborCfgLogic::GetSingletonPtr()->NeiRegServerItemAdd(tNeiRegServerInfo);
-    CSipToolComInterface->SetNeighborInfo(tNeiRegServerInfo);
+    memcpy(m_tNeiRegServerInfo.m_achAreaCode, (CT2A)strAreaNum, MAX_AREACODE_LENGTH);
+    memcpy(m_tNeiRegServerInfo.m_achIpAddr, (CT2A)strIpAddr, MAX_IP_LENGTH);
+    m_tNeiRegServerInfo.m_wPort = _ttoi(strPort);
 
-    WINDOW_MGR_PTR->ShowWindow(g_stcStrNeiRegServerAddDlg.c_str(), false);
+    m_bAddNeiRegServerInfo = true;
+    CSipToolComInterface->SetNeighborInfo(m_tNeiRegServerInfo);
+
     return true;
 }
 
 bool CNeiRegServerAddLogic::OnCancelBtnClicked(TNotifyUI& msg)
 {
-    WINDOW_MGR_PTR->ShowWindow(g_stcStrNeiRegServerAddDlg.c_str(), false);
+    //WINDOW_MGR_PTR->ShowWindow(g_stcStrShadeDlg.c_str(), false);
+    WINDOW_MGR_PTR->CloseWindow(g_stcStrNeiRegServerAddDlg.c_str(), IDCANCEL);
+    return true;
+}
+
+bool CNeiRegServerAddLogic::OnSetNeighborInfoRsp( WPARAM wparam, LPARAM lparam, bool& bHandle )
+{
+    bool bSuccess = (bool)wparam;
+    if (bSuccess)
+    {
+        if (m_bAddNeiRegServerInfo)
+        {
+            CNeighborCfgLogic::GetSingletonPtr()->NeiRegServerItemAdd(m_tNeiRegServerInfo);
+            m_bAddNeiRegServerInfo = false;
+            //WINDOW_MGR_PTR->ShowWindow(g_stcStrShadeDlg.c_str(), false);
+            WINDOW_MGR_PTR->CloseWindow(g_stcStrNeiRegServerAddDlg.c_str(), IDOK);
+        }
+    }
+    else
+    {
+        //添加失败
+    }
+
     return true;
 }

@@ -10,6 +10,7 @@ APP_BEGIN_MSG_MAP(CCascadeCfgLogic, CNotifyUIImpl)
     MSG_EDITCHANGE(_T("ParentIPEdt"), OnParentIPChanged)
 
     USER_MSG(UI_SIPTOOL_CONNECTED, OnSipToolConnected)
+    USER_MSG(UI_SIPTOOL_SETPARENTIPRSP, OnSetParentIPRsp)
     //USER_MSG(UI_RKC_DISCONNECTED , OnRkcDisconnected)
 
 APP_END_MSG_MAP()
@@ -27,11 +28,11 @@ bool CCascadeCfgLogic::OnCasCfgSaveBtnClicked(TNotifyUI& msg)
 {
     CString cstrParentIP =( ISipToolCommonOp::GetControlText(m_pm ,_T("ParentIPEdt")) ).c_str();
 
-    //if ( !IsIpFormatRight(cstrParentIP) )
-    //{
-    //    //ShowTip(_T("服务器地址非法"));
-    //    return false;
-    //}
+    if ( !CMainFrameLogic::IsIpFormatRight(cstrParentIP) )
+    {
+        //ShowTip(_T("服务器地址非法"));
+        return false;
+    }
 
     CSipToolComInterface->SetParentIP( CT2A(cstrParentIP) );
     
@@ -40,7 +41,7 @@ bool CCascadeCfgLogic::OnCasCfgSaveBtnClicked(TNotifyUI& msg)
 
 bool CCascadeCfgLogic::OnParentIPChanged(TNotifyUI& msg)
 {
-    m_pm->DoCase(_T("caseEnableSaveBtn"));
+    m_pm->DoCase(_T("caseParentIPChanged"));
     return true;
 }
 
@@ -54,11 +55,18 @@ bool CCascadeCfgLogic::OnSipToolConnected( WPARAM wparam, LPARAM lparam, bool& b
         m_cstrParentIP = tCasRegServerInfo.m_achIpAddr;
         ISipToolCommonOp::SetControlText(m_cstrParentIP, m_pm ,_T("ParentIPEdt"));
 
-        m_pm->DoCase(_T("caseIsSaved"));
+        m_pm->DoCase(_T("caseParentIPSaved"));
     }
-    else
+
+    return true;
+}
+
+bool CCascadeCfgLogic::OnSetParentIPRsp( WPARAM wparam, LPARAM lparam, bool& bHandle )
+{
+    bool bSuccess = (bool)wparam;
+    if (bSuccess)
     {
-        return false;
+        m_pm->DoCase(_T("caseParentIPSaved"));
     }
 
     return true;
