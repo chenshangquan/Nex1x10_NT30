@@ -28,9 +28,13 @@ typedef struct tagRegServerInfo
     u16     m_wPort;
 
 public:
-    tagRegServerInfo()
+    void Clear()
     {
         memset( this, 0, sizeof(tagRegServerInfo) );
+    }
+    tagRegServerInfo()
+    {
+        Clear();
     }
 }TRegServerInfo,TNeiRegServerInfo;
 

@@ -63,7 +63,7 @@ u16 CSipToolSession::InitializeOsp()
     int nRet = g_SipToolApp.CreateApp(&szOspApp[0], AID_SIPTOOL_APP, dwPrior, 300, 200);
     ASSERT(nRet == 0);
 
-    PrtSipToolMsg( "RkcLib osp启动成功\n" );
+    PrtSipToolMsg( "SipToolLib osp启动成功\n" );
 
     return NO_ERROR;
 }

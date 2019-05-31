@@ -4,5 +4,5 @@
   <siptool file="mainframe.xml" logic="CMainFrameLogic|CLoginLogic|CCascadeCfgLogic|CNeighborCfgLogic|CLocalAreaNumCfgLogic" style="frame" />
   <ShadeDlg file="shade.xml" logic="" parent="siptool" style="dialog" />
   <LogoutDlg file="logout.xml" logic="CLogoutLogic" parent="ShadeDlg" style="dialog" />
-  <NeiRegServerAddDlg file="neiregserveradd.xml" logic="CNeiRegServerAddLogic" parent="ShadeDlg" style="dialog" />
+  <NeiRegServerAddDlg file="neiregserveradd.xml" logic="CNeiRegServerAddLogic" parent="siptool" style="dialog" />
 </index>

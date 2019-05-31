@@ -56,10 +56,6 @@ bool CLocalAreaNumCfgLogic::OnSipToolConnected( WPARAM wparam, LPARAM lparam, bo
 
         m_pm->DoCase(_T("caseAreaCodeSaved"));
     }
-    else
-    {
-        return false;
-    }
 
     return true;
 }

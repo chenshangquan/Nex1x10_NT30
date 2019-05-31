@@ -28,6 +28,8 @@ public:
 protected:
     void BuildEventsMap();
 
+    //osp 断链
+    void OnLinkBreak(const CMessage& cMsg);
     //连接
     void OnConnected(const CMessage& cMsg);
     //设置父级IP消息回复

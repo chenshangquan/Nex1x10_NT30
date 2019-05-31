@@ -117,7 +117,14 @@ bool CLoginLogic::OnSipToolConnected( WPARAM wparam, LPARAM lparam, bool& bHandl
     bool bIsLogin = (bool)wparam;
     if (bIsLogin == false )
     {
-        ShowTip(_T("账号与密码不匹配"));
+        if ( ERR_SIPTOOL_TCPCONNECT == (EmErrSipToolLib)lparam )
+        {
+            ShowTip(_T("未连接到服务器"));
+        }
+        else
+        {
+            ShowTip(_T("账号与密码不匹配"));
+        }
     }
     else
     {

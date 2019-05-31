@@ -89,11 +89,31 @@ u16 CSipToolSysCtrl::GetNeighborBackInfo(vector<TNeiRegServerInfo> &vNeighborInf
 
 void CSipToolSysCtrl::BuildEventsMap()
 {
+    REG_PFUN(OSP_DISCONNECT, CSipToolSysCtrl::OnLinkBreak);
     REG_PFUN(MULTIPLEREGSIGNACK, CSipToolSysCtrl::OnConnected);
     REG_PFUN(SETPARENTIPACK, CSipToolSysCtrl::OnSetParentIPRsp);
     REG_PFUN(SETNEIGHBORINFOACK, CSipToolSysCtrl::OnSetNeighborInfoRsp);
     REG_PFUN(DELETENEIGHBORINFOACK, CSipToolSysCtrl::OnDeleteNeighborInfoRsp);
     REG_PFUN(SETLOCALAREACODEACK, CSipToolSysCtrl::OnSetLocalAreaCodeRsp);
+}
+
+void CSipToolSysCtrl::OnLinkBreak(const CMessage& cMsg)
+{
+    // OSP断链通知
+    u32 u32NodeId = *(u32*)(cMsg.content);
+
+    //PrtMsg( OSP_DISCONNECT, emEventTypeCnsRecv, "Link Break (NodeID: %d)", u32NodeId );
+
+    //ClearWaiting();	// OSP断链后,尚未执行完的命令中断执行 
+    //ClearAllCommand(); // 清空所有在队列中等待执行的命令
+    //MsgTransDriver->ClearOspMsg();
+
+    m_vNeighborInfo.clear();        //清空邻居信息
+    m_tCasRegServerInfo.Clear();    //清空级联信息
+
+    //SetNodeId(INVALID_NODE);
+
+    PostEvent(UI_SIPTOOL_DISCONNECTED);
 }
 
 void CSipToolSysCtrl::OnConnected(const CMessage& cMsg)
@@ -105,7 +125,7 @@ void CSipToolSysCtrl::OnConnected(const CMessage& cMsg)
     string strTemp;
 
     //json 解析
-    m_vNeighborInfo.clear();    //清空列表
+    m_vNeighborInfo.clear();    //清空列邻居信息
     Json::Reader *readerInfo = new Json::Reader(Json::Features::strictMode());
     Json::Value root;
     CString cstrRead(cMsg.content);
