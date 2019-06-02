@@ -3,6 +3,9 @@
 #include "neighborcfglogic.h"
 #include "mainframelogic.h"
 
+#define TIMER_LENGTH  4000
+#define TIMER_SHOWTIP 200
+
 //template<> CNeiRegServerAddLogic* Singleton<CNeiRegServerAddLogic>::ms_pSingleton  = NULL;
 
 APP_BEGIN_MSG_MAP(CNeiRegServerAddLogic, CNotifyUIImpl)
@@ -14,10 +17,10 @@ APP_BEGIN_MSG_MAP(CNeiRegServerAddLogic, CNotifyUIImpl)
     MSG_CLICK(_T("ConfirmBtn"), OnConfirmBtnClicked)
     MSG_CLICK(_T("CancelBtn"), OnCancelBtnClicked)
 
-    //MSG_EDITCHANGE(_T("DeviceIPEdt"), OnDevIPEditTextChange)
+	MSG_TIMER(_T("ShowTipLab"), OnShowTipTimer)  
 
     USER_MSG(UI_SIPTOOL_SETNEIGHBORINFORSP , OnSetNeighborInfoRsp)
-    //USER_MSG(UI_RKC_DISCONNECTED , OnRkcDisconnected)
+    USER_MSG(UI_SIPTOOL_DISCONNECTED , OnSipToolDisconnected)
 
 APP_END_MSG_MAP()
 
@@ -55,7 +58,6 @@ bool CNeiRegServerAddLogic::OnDestroy( TNotifyUI& msg )
 
 bool CNeiRegServerAddLogic::OnCloseBtnClicked(TNotifyUI& msg)
 {
-    //WINDOW_MGR_PTR->ShowWindow(g_stcStrNeiRegServerAddDlg.c_str(), false);
     //WINDOW_MGR_PTR->ShowWindow(g_stcStrShadeDlg.c_str(), false);
     WINDOW_MGR_PTR->CloseWindow(g_stcStrNeiRegServerAddDlg.c_str(), IDNO);
     return true;
@@ -69,17 +71,17 @@ bool CNeiRegServerAddLogic::OnConfirmBtnClicked(TNotifyUI& msg)
     CString strPort = ( ISipToolCommonOp::GetControlText( m_pm ,_T("PortEdt")) ).c_str();
     if( !CMainFrameLogic::IsIpFormatRight(strIpAddr) )
     {
-        //ShowTip(_T("服务器地址非法"));
+        ShowTip(_T("IP地址非法"));
         return false;
     }
     if (strAreaNum.IsEmpty())
     {
-        //ShowTip(_T("请输入区号"));
+        ShowTip(_T("请输入区号"));
         return false;
     }
     if(strPort.IsEmpty())
     {
-        //ShowTip(_T("请输入端口"));
+        ShowTip(_T("请输入端口"));
         return false;
     }
 
@@ -119,4 +121,34 @@ bool CNeiRegServerAddLogic::OnSetNeighborInfoRsp( WPARAM wparam, LPARAM lparam, 
     }
 
     return true;
+}
+
+bool CNeiRegServerAddLogic::OnSipToolDisconnected( WPARAM wparam, LPARAM lparam, bool& bHandle )
+{
+	if ( WINDOW_MGR_PTR->IsWindowVisible(g_stcStrNeiRegServerAddDlg.c_str()) )
+	{
+		//WINDOW_MGR_PTR->ShowWindow(g_stcStrShadeDlg.c_str(), false);
+		WINDOW_MGR_PTR->CloseWindow(g_stcStrNeiRegServerAddDlg.c_str(), IDNO);
+	}
+
+	return true;
+}
+
+bool CNeiRegServerAddLogic::OnShowTipTimer(TNotifyUI& msg)
+{
+	m_pm->DoCase(_T("caseClsTip"));
+	m_pm->KillTimer(msg.pSender, TIMER_SHOWTIP);
+	return true;
+}
+
+void CNeiRegServerAddLogic::ShowTip(CString strTip)
+{
+	m_pm->DoCase(_T("caseShwTip"));
+	CLabelUI *pControl = (CLabelUI*)ISipToolCommonOp::FindControl( m_pm, _T("ShowTipLab") );
+	if (pControl)
+	{
+		pControl->SetText(strTip);
+		m_pm->KillTimer(pControl, TIMER_SHOWTIP);
+		m_pm->SetTimer(pControl, TIMER_SHOWTIP, TIMER_LENGTH);
+	}
 }

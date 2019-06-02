@@ -12,7 +12,7 @@ UINT ThreadConnectSipTool(LPVOID lpParam)
 
     if ( re != NO_ERROR )
     {
-        NOTIFY_MSG( UI_SIPTOOL_CONNECTED, false, re );
+        NOTIFY_MSG( UI_SIPTOOL_CONNECTED, true, re );
         return re;
     }
 
@@ -32,7 +32,7 @@ u16 CSipToolInterface::SocketConnect( u32 dwIp, s8* szUser , s8* szPwd)
     strncpy(m_tLoginInfo.m_achName, szUser, sizeof(m_tLoginInfo.m_achName));
     strncpy(m_tLoginInfo.m_achPswd, szPwd, sizeof(m_tLoginInfo.m_achPswd));
 
-    //连接rkc100
+    //连接siptool
     AfxBeginThread( ThreadConnectSipTool , NULL );
 
     return NO_ERROR;

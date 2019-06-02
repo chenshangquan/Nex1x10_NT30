@@ -11,6 +11,7 @@ APP_BEGIN_MSG_MAP(CLogoutLogic, CNotifyUIImpl)
     MSG_CLICK(_T("ConfirmBtn"), OnConfirmBtnClicked)
     MSG_CLICK(_T("CancelBtn"), OnCancelBtnClicked)
 
+	USER_MSG(UI_SIPTOOL_DISCONNECTED, OnSipToolDisconnected)
     //USER_MSG(UI_SIPTOOL_CONNECTED , OnSipToolConnected)
     //USER_MSG(UI_RKC_DISCONNECTED , OnSipToolDisconnected)
 APP_END_MSG_MAP()
@@ -52,10 +53,10 @@ bool CLogoutLogic::OnDestroy( TNotifyUI& msg )
 
 bool CLogoutLogic::OnCloseBtnClicked(TNotifyUI& msg)
 {
-    //WINDOW_MGR_PTR->CloseWindow(g_stcStrLogoutDlg.c_str(), IDNO);
     WINDOW_MGR_PTR->ShowWindow(g_stcStrShadeDlg.c_str(), false);
     WINDOW_MGR_PTR->CloseWindow(g_stcStrLogoutDlg.c_str(), IDNO);
-    return false;
+
+    return true;
 }
 
 bool CLogoutLogic::OnConfirmBtnClicked(TNotifyUI& msg)
@@ -75,33 +76,22 @@ bool CLogoutLogic::OnCancelBtnClicked(TNotifyUI& msg)
     return true;
 }
 
+bool CLogoutLogic::OnSipToolDisconnected( WPARAM wparam, LPARAM lparam, bool& bHandle )
+{
+	if ( WINDOW_MGR_PTR->IsWindowVisible(g_stcStrLogoutDlg.c_str()) )
+	{
+		WINDOW_MGR_PTR->ShowWindow(g_stcStrShadeDlg.c_str(), false);
+		WINDOW_MGR_PTR->CloseWindow(g_stcStrLogoutDlg.c_str(), IDNO);
+	}
+
+	return true;
+}
+
 /*
 bool CLogoutLogic::OnShowTipTimer(TNotifyUI& msg)
 {
     m_pm->DoCase(_T("caseCloseTip"));
     m_pm->KillTimer(msg.pSender, TIMER_SHOWTIP);
-    return true;
-}
-
-bool CLogoutLogic::OnSipToolConnected( WPARAM wparam, LPARAM lparam, bool& bHandle )
-{
-    m_pm->DoCase(_T("caseNormal"));
-
-    bool bIsLogin = (bool)wparam;
-    if (bIsLogin == false )
-    {
-        ShowTip(_T("连接到主机失败"));
-    }
-    else
-    {
-        
-    }
-    return true;
-}
-
-bool CLogoutLogic::OnSipToolDisconnected( WPARAM wparam, LPARAM lparam, bool& bHandle )
-{
-    m_pm->DoCase(_T("caseNormal"));
     return true;
 }
 

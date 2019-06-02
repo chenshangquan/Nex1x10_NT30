@@ -50,7 +50,7 @@ protected:
 
     //bool OnSipToolConnected( WPARAM wparam, LPARAM lparam, bool& bHandle );
 
-    //bool OnSipToolDisconnected( WPARAM wparam, LPARAM lparam, bool& bHandle );
+    bool OnSipToolDisconnected( WPARAM wparam, LPARAM lparam, bool& bHandle );
 
     //void ShowTip(CString strTip);
 

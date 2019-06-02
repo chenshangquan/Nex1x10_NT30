@@ -47,6 +47,12 @@ protected:
 
     //设置邻居信息回复消息响应
     bool OnSetNeighborInfoRsp( WPARAM wparam, LPARAM lparam, bool& bHandle );
+	//连接断开
+	bool OnSipToolDisconnected( WPARAM wparam, LPARAM lparam, bool& bHandle );
+
+	//显示提示定时器响应
+	bool OnShowTipTimer(TNotifyUI& msg);
+	void ShowTip(CString strTip);
 
     APP_DECLARE_MSG_MAP()
 

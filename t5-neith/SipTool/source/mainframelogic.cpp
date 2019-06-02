@@ -4,7 +4,7 @@
 template<> CMainFrameLogic* Singleton<CMainFrameLogic>::ms_pSingleton  = NULL;
 
 APP_BEGIN_MSG_MAP(CMainFrameLogic, CNotifyUIImpl)
-    MSG_CREATEWINDOW(_T("MainFrame"), OnCreate)
+    //MSG_CREATEWINDOW(_T("MainFrame"), OnCreate)
     MSG_INIWINDOW(_T("MainFrame"), OnInit)
 
 	MSG_CLICK(_T("exitbutton"), OnExitBtnClicked)
@@ -15,7 +15,8 @@ APP_BEGIN_MSG_MAP(CMainFrameLogic, CNotifyUIImpl)
 	MSG_SELECTCHANGE(_T("NeighborCfgOpt"), OnTabNeighborCfg)
 	MSG_SELECTCHANGE(_T("LocalAreaNumCfgOpt"), OnTabLocalAreaNumCfg)
 
-    USER_MSG(UI_SIPTOOL_CONNECTED, OnSipToolConnected)
+	USER_MSG(UI_SIPTOOL_CONNECTED, OnSipToolConnected)
+    USER_MSG(UI_SIPTOOL_DISCONNECTED, OnSipToolLogout)
     USER_MSG(UI_SIPTOOL_LOGOUT, OnSipToolLogout)
 APP_END_MSG_MAP()
 
@@ -81,12 +82,12 @@ bool CMainFrameLogic::OnCreate( TNotifyUI& msg )
     //styleValue &= ~(WS_EX_TOOLWINDOW); //去掉工具栏窗口属性，使其在任务栏可见
     //::SetWindowLong(hWnd, GWL_STYLE, styleValue);
 
-    s32 nTop = 0;
-    RECT rcParent;
-    HWND hparent = GetParent(m_pm->GetPaintWindow());
-    GetWindowRect(hparent,&rcParent);
-    SetWindowPos( m_pm->GetPaintWindow(), HWND_TOP, rcParent.left, rcParent.top, 0, 0, SWP_NOSIZE |SWP_NOACTIVATE );
-    return false;
+	/*s32 nTop = 0;
+	RECT rcParent;
+	HWND hparent = GetParent(m_pm->GetPaintWindow());
+	GetWindowRect(hparent,&rcParent);
+	SetWindowPos( m_pm->GetPaintWindow(), HWND_TOP, rcParent.left, rcParent.top, 0, 0, SWP_NOSIZE |SWP_NOACTIVATE );*/
+    return true;
 }
 
 
@@ -94,13 +95,12 @@ bool CMainFrameLogic::OnInit( TNotifyUI& msg )
 {
     REG_RCKTOOL_MSG_WND_OB(m_pm->GetPaintWindow());
 
-    //WINDOW_MGR_PTR->ShowWindow(g_stcStrLogoutDlg.c_str(), false);
     WINDOW_MGR_PTR->ShowWindow(g_stcStrShadeDlg.c_str(), false);
 
     ISipToolCommonOp::ShowControl( true, m_pm, _T("PageLogin") );
     ISipToolCommonOp::ShowControl( false, m_pm, _T("PageSipToolMain") );
     SetWindowPos( m_pm->GetPaintWindow(), HWND_TOP, 0, 0, 454, 282, SWP_NOACTIVATE|SWP_NOMOVE );
-    WINDOW_MGR_PTR->ShowWindowCenter(g_stcStrNetworkSetupDlg.c_str());
+    WINDOW_MGR_PTR->ShowWindowCenter(g_stcStrMainFrameDlg.c_str());
 
     return true;
 }
@@ -175,7 +175,7 @@ bool CMainFrameLogic::OnSipToolConnected(WPARAM wparam, LPARAM lparam, bool& bHa
         ISipToolCommonOp::ShowControl( false, m_pm, _T("PageLogin") );
         ISipToolCommonOp::ShowControl( true, m_pm, _T("PageSipToolMain") );
         SetWindowPos( m_pm->GetPaintWindow(), HWND_TOP, 0, 0, 864, 614, SWP_NOACTIVATE|SWP_NOMOVE );
-        WINDOW_MGR_PTR->ShowWindowCenter(g_stcStrNetworkSetupDlg.c_str());
+        WINDOW_MGR_PTR->ShowWindowCenter(g_stcStrMainFrameDlg.c_str());
 
         //默认选中级联配置
         ISipToolCommonOp::OptionSelect(true, m_pm, _T("CascadeCfgOpt"));
@@ -193,7 +193,7 @@ bool CMainFrameLogic::OnSipToolLogout(WPARAM wparam, LPARAM lparam, bool& bHandl
     ISipToolCommonOp::ShowControl( true, m_pm, _T("PageLogin") );
     ISipToolCommonOp::ShowControl( false, m_pm, _T("PageSipToolMain") );
     SetWindowPos( m_pm->GetPaintWindow(), HWND_TOP, 0, 0, 454, 282, SWP_NOACTIVATE|SWP_NOMOVE );
-    WINDOW_MGR_PTR->ShowWindowCenter(g_stcStrNetworkSetupDlg.c_str());
+    WINDOW_MGR_PTR->ShowWindowCenter(g_stcStrMainFrameDlg.c_str());
 
     return true;
 }

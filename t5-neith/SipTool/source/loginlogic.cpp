@@ -14,13 +14,10 @@ APP_BEGIN_MSG_MAP(CLoginLogic, CNotifyUIImpl)
     MSG_CLICK(_T("closebtn"), OnCloseBtnClicked)
     MSG_CLICK(_T("LoginBtn"), OnLoginBtnClicked)
 
-    //MSG_SELECTCHANGE(_T("CheckAutoLogin"), OnCheckAutoLoginSel)
-    //MSG_SELECTCHANGE(_T("CheckRemPassWord"), OnCheckRemPassWordSel)
-
     MSG_TIMER(_T("LoginTipLab"), OnShowTipTimer)
 
     USER_MSG(UI_SIPTOOL_CONNECTED , OnSipToolConnected)
-    //USER_MSG(UI_RKC_DISCONNECTED , OnSipToolDisconnected)
+	USER_MSG(UI_SIPTOOL_DISCONNECTED, OnSipToolDisconnected)
 APP_END_MSG_MAP()
 
 CLoginLogic::CLoginLogic()
@@ -99,7 +96,6 @@ bool CLoginLogic::OnLoginBtnClicked(TNotifyUI& msg)
     m_pm->DoCase(_T("caseIsLogining"));
     CSipToolComInterface->SocketConnect( dwIp, CT2A(strUserName), CT2A(strPassWord));
 
-    //CMainFrameLogic::GetSingletonPtr()->OnSipToolConnected(1);
     return true;
 }
 
@@ -136,19 +132,21 @@ bool CLoginLogic::OnSipToolConnected( WPARAM wparam, LPARAM lparam, bool& bHandl
 bool CLoginLogic::OnSipToolDisconnected( WPARAM wparam, LPARAM lparam, bool& bHandle )
 {
     m_pm->DoCase(_T("caseNormal"));
+	ShowTip(_T("已与服务器断开连接"));
+
     return true;
 }
 
 void CLoginLogic::ShowTip(CString strTip)
 {
-    m_pm->DoCase(_T("caseShowTip"));
-    CLabelUI *pControl = (CLabelUI*)ISipToolCommonOp::FindControl( m_pm, _T("LoginTipLab") );
-    if (pControl)
-    {
-        pControl->SetText(strTip);
-        m_pm->KillTimer(pControl, TIMER_SHOWTIP);
-        m_pm->SetTimer(pControl, TIMER_SHOWTIP, TIMER_LENGTH);
-    }
+	m_pm->DoCase(_T("caseShowTip"));
+	CLabelUI *pControl = (CLabelUI*)ISipToolCommonOp::FindControl( m_pm, _T("LoginTipLab") );
+	if (pControl)
+	{
+		pControl->SetText(strTip);
+		m_pm->KillTimer(pControl, TIMER_SHOWTIP);
+		m_pm->SetTimer(pControl, TIMER_SHOWTIP, TIMER_LENGTH);
+	}
 }
 
 /*
