@@ -42,5 +42,5 @@ protected:
 extern const String g_stcStrMainFrameDlg;
 extern const String g_stcStrShadeDlg;
 extern const String g_stcStrPopupDlg;
-extern const String g_stcStrLogoutDlg;
 extern const String g_stcStrNeiRegServerAddDlg;
+extern const String g_stcStrMessageBoxDlg;

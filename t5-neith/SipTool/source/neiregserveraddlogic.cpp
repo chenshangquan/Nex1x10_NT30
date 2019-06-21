@@ -3,8 +3,8 @@
 #include "neighborcfglogic.h"
 #include "mainframelogic.h"
 
-#define TIMER_LENGTH  4000
-#define TIMER_SHOWTIP 200
+#define TIMER_LENGTH  3000
+#define TIMER_SHOWTIP 202
 
 //template<> CNeiRegServerAddLogic* Singleton<CNeiRegServerAddLogic>::ms_pSingleton  = NULL;
 
@@ -17,7 +17,7 @@ APP_BEGIN_MSG_MAP(CNeiRegServerAddLogic, CNotifyUIImpl)
     MSG_CLICK(_T("ConfirmBtn"), OnConfirmBtnClicked)
     MSG_CLICK(_T("CancelBtn"), OnCancelBtnClicked)
 
-	MSG_TIMER(_T("ShowTipLab"), OnShowTipTimer)  
+	MSG_TIMER(_T("ShowNeiAddTipLab"), OnShowTipTimer)  
 
     USER_MSG(UI_SIPTOOL_SETNEIGHBORINFORSP , OnSetNeighborInfoRsp)
     USER_MSG(UI_SIPTOOL_DISCONNECTED , OnSipToolDisconnected)
@@ -58,7 +58,6 @@ bool CNeiRegServerAddLogic::OnDestroy( TNotifyUI& msg )
 
 bool CNeiRegServerAddLogic::OnCloseBtnClicked(TNotifyUI& msg)
 {
-    //WINDOW_MGR_PTR->ShowWindow(g_stcStrShadeDlg.c_str(), false);
     WINDOW_MGR_PTR->CloseWindow(g_stcStrNeiRegServerAddDlg.c_str(), IDNO);
     return true;
 }
@@ -69,25 +68,50 @@ bool CNeiRegServerAddLogic::OnConfirmBtnClicked(TNotifyUI& msg)
     CString strAreaNum = ( ISipToolCommonOp::GetControlText( m_pm ,_T("AreaNumEdt")) ).c_str();
     CString strIpAddr = ( ISipToolCommonOp::GetControlText( m_pm ,_T("IpAddrEdt")) ).c_str();
     CString strPort = ( ISipToolCommonOp::GetControlText( m_pm ,_T("PortEdt")) ).c_str();
-    if( !CMainFrameLogic::IsIpFormatRight(strIpAddr) )
+
+    if (strAreaNum.IsEmpty())
+    {
+        ShowTip(_T("区号不能为空"));
+        return false;
+    }
+    if (strAreaNum.GetLength() < 3)
+    {
+        ShowTip(_T("区号长度错误"));
+        return false;
+    }
+
+    if (strIpAddr.IsEmpty())
+    {
+        ShowTip(_T("IP地址不能为空"));
+        return false;
+    }
+    if ( !CMainFrameLogic::IsIpFormatRight(strIpAddr) )
     {
         ShowTip(_T("IP地址非法"));
         return false;
     }
-    if (strAreaNum.IsEmpty())
+
+    if (strPort.IsEmpty())
     {
-        ShowTip(_T("请输入区号"));
+        ShowTip(_T("端口不能为空"));
         return false;
     }
-    if(strPort.IsEmpty())
+    if (_ttoi(strPort) < 1024 || _ttoi(strPort) > 65535)
     {
-        ShowTip(_T("请输入端口"));
+        ShowTip(_T("端口有效范围：1024~65535"));
         return false;
     }
 
     memcpy(m_tNeiRegServerInfo.m_achAreaCode, (CT2A)strAreaNum, MAX_AREACODE_LENGTH);
     memcpy(m_tNeiRegServerInfo.m_achIpAddr, (CT2A)strIpAddr, MAX_IP_LENGTH);
     m_tNeiRegServerInfo.m_wPort = _ttoi(strPort);
+
+    //区号不能重复
+    if ( !CNeighborCfgLogic::GetSingletonPtr()->AreaCodeIsExist(m_tNeiRegServerInfo) )
+    {
+        ShowTip(_T("区号不能重复，请修改"));
+        return false;
+    }
 
     m_bAddNeiRegServerInfo = true;
     CSipToolComInterface->SetNeighborInfo(m_tNeiRegServerInfo);
@@ -97,7 +121,6 @@ bool CNeiRegServerAddLogic::OnConfirmBtnClicked(TNotifyUI& msg)
 
 bool CNeiRegServerAddLogic::OnCancelBtnClicked(TNotifyUI& msg)
 {
-    //WINDOW_MGR_PTR->ShowWindow(g_stcStrShadeDlg.c_str(), false);
     WINDOW_MGR_PTR->CloseWindow(g_stcStrNeiRegServerAddDlg.c_str(), IDCANCEL);
     return true;
 }
@@ -105,19 +128,25 @@ bool CNeiRegServerAddLogic::OnCancelBtnClicked(TNotifyUI& msg)
 bool CNeiRegServerAddLogic::OnSetNeighborInfoRsp( WPARAM wparam, LPARAM lparam, bool& bHandle )
 {
     bool bSuccess = (bool)wparam;
+    //string strErr = *(string*)lparam;
+
     if (bSuccess)
     {
         if (m_bAddNeiRegServerInfo)
         {
             CNeighborCfgLogic::GetSingletonPtr()->NeiRegServerItemAdd(m_tNeiRegServerInfo);
             m_bAddNeiRegServerInfo = false;
-            //WINDOW_MGR_PTR->ShowWindow(g_stcStrShadeDlg.c_str(), false);
             WINDOW_MGR_PTR->CloseWindow(g_stcStrNeiRegServerAddDlg.c_str(), IDOK);
         }
+        SHOWTIP(_T("邻居信息添加成功！"));
     }
     else
     {
-        //添加失败
+        /*CString cstrErr;
+        cstrErr.Format(_T("%s"),(CA2T)strErr.c_str());
+        ShowTip(cstrErr);*/
+        ShowTip(_T("保存失败！"));
+        m_bAddNeiRegServerInfo = false;
     }
 
     return true;
@@ -127,7 +156,6 @@ bool CNeiRegServerAddLogic::OnSipToolDisconnected( WPARAM wparam, LPARAM lparam,
 {
 	if ( WINDOW_MGR_PTR->IsWindowVisible(g_stcStrNeiRegServerAddDlg.c_str()) )
 	{
-		//WINDOW_MGR_PTR->ShowWindow(g_stcStrShadeDlg.c_str(), false);
 		WINDOW_MGR_PTR->CloseWindow(g_stcStrNeiRegServerAddDlg.c_str(), IDNO);
 	}
 
@@ -136,15 +164,15 @@ bool CNeiRegServerAddLogic::OnSipToolDisconnected( WPARAM wparam, LPARAM lparam,
 
 bool CNeiRegServerAddLogic::OnShowTipTimer(TNotifyUI& msg)
 {
-	m_pm->DoCase(_T("caseClsTip"));
+	m_pm->DoCase(_T("caseNeiAddClsTip"));
 	m_pm->KillTimer(msg.pSender, TIMER_SHOWTIP);
 	return true;
 }
 
 void CNeiRegServerAddLogic::ShowTip(CString strTip)
 {
-	m_pm->DoCase(_T("caseShwTip"));
-	CLabelUI *pControl = (CLabelUI*)ISipToolCommonOp::FindControl( m_pm, _T("ShowTipLab") );
+	m_pm->DoCase(_T("caseNeiAddShwTip"));
+	CLabelUI *pControl = (CLabelUI*)ISipToolCommonOp::FindControl( m_pm, _T("ShowNeiAddTipLab") );
 	if (pControl)
 	{
 		pControl->SetText(strTip);

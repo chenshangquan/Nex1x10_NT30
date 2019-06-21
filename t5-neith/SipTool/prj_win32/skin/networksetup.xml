@@ -3,9 +3,9 @@
 	<VerticalLayout name="networkconfig" bkimage="res/neighbor_cfg/background.png">
 		<HorizontalLayout height="73">
 			<Label name="SoftVersion" float="true" pos="90,17,0,0" width="100" height="14" font="0" text="V6.0.0.3.0" textcolor="#FF8D8D8D" />
-			<Button name="exitbutton" float="true" pos="728,8,0,0" width="40" height="28" normalimage="res/cascade_cfg/exit_normal.png" hotimage="res/cascade_cfg/exit_hover.png" pushedimage="res/cascade_cfg/exit_down.png" />
+			<Button name="exitbutton" float="true" pos="729,8,0,0" width="39" height="28" normalimage="res/cascade_cfg/exit_normal.png" hotimage="res/cascade_cfg/exit_hover.png" pushedimage="res/cascade_cfg/exit_down.png" />
 			<Button name="minbutton" float="true" pos="768,8,0,0" width="40" height="28" normalimage="res/cascade_cfg/min_normal.png" hotimage="res/cascade_cfg/min_hover.png" pushedimage="res/cascade_cfg/min_down.png" />
-			<Button name="closebutton" float="true" pos="807,8,0,0" width="39" height="28" normalimage="res/cascade_cfg/close_normal.png" hotimage="res/cascade_cfg/close_hover.png" pushedimage="res/cascade_cfg/close_down.png" />
+			<Button name="closebutton" float="true" pos="808,8,0,0" width="39" height="28" normalimage="res/cascade_cfg/close_normal.png" hotimage="res/cascade_cfg/close_hover.png" pushedimage="res/cascade_cfg/close_down.png" />
 			<Label name="essentialinfo" float="true" pos="15,42,0,0" width="86" height="31" bkimage="res/cascade_cfg/essential_info.png" />
 		</HorizontalLayout>
 		
@@ -36,11 +36,19 @@
 		</HorizontalLayout>
 		
 		<HorizontalLayout height="40">
-			<Label float="true" pos="640,10,0,0" width="204" height="14" font="0" text="2012-2019 苏州科达科技股份有限公司" textcolor="#FF8D8D8D" />
+			<Label name="ShowTipLab" float="true" pos="20,10,0,0" width="240" height="14" text="" textcolor="#FF8D8D8D" font="0" align="left" visible="false" />
+			<Label float="true" pos="630,10,0,0" width="220" height="14" font="0" text="2012-2019 苏州科达科技股份有限公司" textcolor="#FF8D8D8D" align="center" />
 		</HorizontalLayout>
 		
 		<Case name="caseIsLogining">
 			<CascadeCfgOpt selected="true"/>
+		</Case>
+		
+		<Case name="caseShwTip">
+			<ShowTipLab visible="true" />
+		</Case>
+		<Case name="caseClsTip">
+			<ShowTipLab visible="false" />
 		</Case>
 		<!--Case name="caseIsLogining">
 			<LoginBtn enabled="false"/>

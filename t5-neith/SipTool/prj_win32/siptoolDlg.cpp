@@ -20,7 +20,7 @@
 CSipToolDlg::CSipToolDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CSipToolDlg::IDD, pParent)
 {
-//	m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON1);
+	m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON1);
 }
 
 void CSipToolDlg::DoDataExchange(CDataExchange* pDX)

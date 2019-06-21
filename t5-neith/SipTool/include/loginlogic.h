@@ -11,11 +11,14 @@
 #endif // _MSC_VER > 1000
 
 
-class CLoginLogic : public CNotifyUIImpl
+class CLoginLogic : public CNotifyUIImpl, public Singleton<CLoginLogic>
 {
 public:
 	CLoginLogic();
 	~CLoginLogic();
+
+    //读取配置文件，初始化登陆窗口
+    void InitLoginWindow();
 
 protected:
 	/** 窗口创建 
@@ -45,6 +48,8 @@ protected:
     //点击登录按钮
     bool OnLoginBtnClicked(TNotifyUI& msg);
 
+    //认证消息无响应
+    bool OnConnectTimeoutTimer(TNotifyUI& msg);
     //显示提示定时器响应
     bool OnShowTipTimer(TNotifyUI& msg);
 
@@ -52,13 +57,17 @@ protected:
 
     bool OnSipToolDisconnected( WPARAM wparam, LPARAM lparam, bool& bHandle );
 
+    bool OnForceLogoutNty( WPARAM wparam, LPARAM lparam, bool& bHandle );
+
     void ShowTip(CString strTip);
 
-    //CString GetIniFilePath();
+    CString GetIniFilePath();
 
     APP_DECLARE_MSG_MAP()
 
 private:
+    bool m_bLogin;    //是否登陆成功
+    bool m_bForceLogout;  //是否被迫下线
 };
 
 #endif // !defined(AFX_LOGINLOGIC_H_)

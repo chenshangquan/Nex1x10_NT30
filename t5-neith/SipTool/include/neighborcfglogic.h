@@ -17,6 +17,8 @@ public:
 	~CNeighborCfgLogic();
 
     bool NeiRegServerItemAdd(TNeiRegServerInfo& tNeiRegServerInfo);
+    //查找是否存在相同的区号
+    bool AreaCodeIsExist(TNeiRegServerInfo& tNeiRegServerInfo);
 protected:
     //点击添加按钮
     bool OnNeighborCfgAddBtnClicked(TNotifyUI& msg);

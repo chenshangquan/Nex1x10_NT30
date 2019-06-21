@@ -29,7 +29,15 @@ u16 CSipToolSysCtrl::SetParentIP(s8* szIp)
 {
     Json::Value jsParentInfo;
     jsParentInfo["ParentIP"] = szIp;
-    jsParentInfo["ParentPort"] = 6668;
+    if ( strcmp(szIp, "0.0.0.0") == 0 )
+    {
+        jsParentInfo["ParentPort"] = 0;
+    }
+    else
+    {
+        jsParentInfo["ParentPort"] = 6060;
+
+    }
 
     string strParentInfo = jsParentInfo.toStyledString();
     CSipToolMsgDriver::s_pMsgDriver->PostCMsg(SETPARENTIP, (char*)strParentInfo.c_str(), strlen(strParentInfo.c_str()));
@@ -95,6 +103,7 @@ void CSipToolSysCtrl::BuildEventsMap()
     REG_PFUN(SETNEIGHBORINFOACK, CSipToolSysCtrl::OnSetNeighborInfoRsp);
     REG_PFUN(DELETENEIGHBORINFOACK, CSipToolSysCtrl::OnDeleteNeighborInfoRsp);
     REG_PFUN(SETLOCALAREACODEACK, CSipToolSysCtrl::OnSetLocalAreaCodeRsp);
+    REG_PFUN(FORCELOGOUT, CSipToolSysCtrl::OnForceLogoutNty);
 }
 
 void CSipToolSysCtrl::OnLinkBreak(const CMessage& cMsg)
@@ -120,9 +129,10 @@ void CSipToolSysCtrl::OnConnected(const CMessage& cMsg)
 {
     OspPrintf(true, false, "MULTIPLEREGSIGNACK:%s\r\n", cMsg.content);
     s32 nRet = 0;
+    bool bForceLog = 0;
     string strRet = _T("");
     TNeiRegServerInfo tNeighborInfo;
-    string strTemp;
+    string strTemp = _T("");
 
     //json 解析
     m_vNeighborInfo.clear();    //清空列邻居信息
@@ -131,15 +141,14 @@ void CSipToolSysCtrl::OnConnected(const CMessage& cMsg)
     CString cstrRead(cMsg.content);
     if ( readerInfo->parse(cstrRead.GetBuffer(0), root) )
     {
-        //获取登陆返回值
-        if (root["ret"].isString())
+        //抢登消息
+        if (root["ParentIP"].isString())
         {
-            strRet = root["ret"].asString();
-        }
-
-        if ( strcmp(strRet.c_str(), _T("successful")) == 0)
-        {
-            nRet = 1;
+            strTemp = root["ForceLog"].asString();
+            if ( strcmp(strTemp.c_str(), _T("Yes")) == 0 )
+            {
+                bForceLog = true;
+            }
         }
 
         //获取所有的邻居信息
@@ -161,14 +170,17 @@ void CSipToolSysCtrl::OnConnected(const CMessage& cMsg)
         }
 
         //获取父级配置信息
-        if (root["ParentIP"].isInt())
+        if (root["ParentIP"].isString())
         {
-            in_addr inaddr;
-            inaddr.s_addr=root["ParentIP"].asInt();
-            strncpy(m_tCasRegServerInfo.m_achIpAddr, inet_ntoa(inaddr), strlen(inet_ntoa(inaddr)));
+            strTemp = root["ParentIP"].asString();
+            strncpy( m_tCasRegServerInfo.m_achIpAddr, strTemp.c_str(), strlen(strTemp.c_str()) );
         }
 
-        if (root["ParentPort"].isInt())
+        if ( root["ParentPort"].isUInt() )
+        {
+            m_tCasRegServerInfo.m_wPort = root["ParentPort"].asUInt();
+        }
+        else if ( root["ParentPort"].isInt() )
         {
             m_tCasRegServerInfo.m_wPort = root["ParentPort"].asInt();
         }
@@ -180,9 +192,19 @@ void CSipToolSysCtrl::OnConnected(const CMessage& cMsg)
             strncpy(m_tCasRegServerInfo.m_achAreaCode, strLocalAreaCode.c_str(), strlen(strLocalAreaCode.c_str()));
         }
 
+        //获取登陆返回值
+        if (root["ret"].isString())
+        {
+            strRet = root["ret"].asString();
+        }
+
+        if ( strcmp(strRet.c_str(), _T("successful")) == 0)
+        {
+            nRet = 1;
+        }
     }
 
-    PostEvent( UI_SIPTOOL_CONNECTED, (WPARAM)nRet, 0 );
+    PostEvent( UI_SIPTOOL_CONNECTED, (WPARAM)nRet, (LPARAM)bForceLog );
 
     ::delete readerInfo;
     readerInfo = NULL;
@@ -193,12 +215,18 @@ void CSipToolSysCtrl::OnSetParentIPRsp(const CMessage& cMsg)
     OspPrintf(true, false, "SETPARENTIPACK:%s\r\n", cMsg.content);
     s32 nRet = 0;
     string strRet = _T("");
+    string strErr = _T("");
 
     Json::Reader *readerInfo = new Json::Reader(Json::Features::strictMode());
     Json::Value root;
     CString cstrRead(cMsg.content);
     if ( readerInfo->parse(cstrRead.GetBuffer(0), root) )
     {
+        if (root["error"].isString())
+        {
+            strErr = root["error"].asString();
+        }
+
         if (root["ret"].isString())
         {
             strRet = root["ret"].asString();
@@ -210,7 +238,7 @@ void CSipToolSysCtrl::OnSetParentIPRsp(const CMessage& cMsg)
         nRet = 1;
     }
 
-    PostEvent(UI_SIPTOOL_SETPARENTIPRSP, (WPARAM)nRet, 0);
+    PostEvent(UI_SIPTOOL_SETPARENTIPRSP, (WPARAM)nRet, (LPARAM)&strErr);
 
     ::delete readerInfo;
     readerInfo = NULL;
@@ -221,12 +249,18 @@ void CSipToolSysCtrl::OnSetNeighborInfoRsp(const CMessage& cMsg)
     OspPrintf(true, false, "SETNEIGHBORINFOACK:%s\r\n", cMsg.content);
     s32 nRet = 0;
     string strRet = _T("");
+    string strErr = _T("");
 
     Json::Reader *readerInfo = new Json::Reader(Json::Features::strictMode());
     Json::Value root;
     CString cstrRead(cMsg.content);
     if ( readerInfo->parse(cstrRead.GetBuffer(0), root) )
     {
+        if (root["error"].isString())
+        {
+            strErr = root["error"].asString();
+        }
+
         if (root["ret"].isString())
         {
             strRet = root["ret"].asString();
@@ -238,7 +272,7 @@ void CSipToolSysCtrl::OnSetNeighborInfoRsp(const CMessage& cMsg)
         nRet = 1;
     }
 
-    PostEvent(UI_SIPTOOL_SETNEIGHBORINFORSP, (WPARAM)nRet, 0);
+    PostEvent(UI_SIPTOOL_SETNEIGHBORINFORSP, (WPARAM)nRet, (LPARAM)&strErr);
 
     ::delete readerInfo;
     readerInfo = NULL;
@@ -249,12 +283,18 @@ void CSipToolSysCtrl::OnDeleteNeighborInfoRsp(const CMessage& cMsg)
     OspPrintf(true, false, "DELETENEIGHBORINFOACK:%s\r\n", cMsg.content);
     s32 nRet = 0;
     string strRet = _T("");
+    string strErr = _T("");
 
     Json::Reader *readerInfo = new Json::Reader(Json::Features::strictMode());
     Json::Value root;
     CString cstrRead(cMsg.content);
     if ( readerInfo->parse(cstrRead.GetBuffer(0), root) )
     {
+        if (root["error"].isString())
+        {
+            strErr = root["error"].asString();
+        }
+
         if (root["ret"].isString())
         {
             strRet = root["ret"].asString();
@@ -266,7 +306,7 @@ void CSipToolSysCtrl::OnDeleteNeighborInfoRsp(const CMessage& cMsg)
         nRet = 1;
     }
 
-    PostEvent(UI_SIPTOOL_DELETENEIGHBORINFORSP, (WPARAM)nRet, 0);
+    PostEvent(UI_SIPTOOL_DELETENEIGHBORINFORSP, (WPARAM)nRet, (LPARAM)&strErr);
 
     ::delete readerInfo;
     readerInfo = NULL;
@@ -277,12 +317,18 @@ void CSipToolSysCtrl::OnSetLocalAreaCodeRsp(const CMessage& cMsg)
     OspPrintf(true, false, "SETLOCALAREACODEACK:%s\r\n", cMsg.content);
     s32 nRet = 0;
     string strRet = _T("");
+    string strErr = _T("");
 
     Json::Reader *readerInfo = new Json::Reader(Json::Features::strictMode());
     Json::Value root;
     CString cstrRead(cMsg.content);
     if ( readerInfo->parse(cstrRead.GetBuffer(0), root) )
     {
+        if (root["error"].isString())
+        {
+            strErr = root["error"].asString();
+        }
+
         if (root["ret"].isString())
         {
             strRet = root["ret"].asString();
@@ -294,10 +340,16 @@ void CSipToolSysCtrl::OnSetLocalAreaCodeRsp(const CMessage& cMsg)
         nRet = 1;
     }
 
-    PostEvent(UI_SIPTOOL_SETLOCALAREACODERSP, (WPARAM)nRet, 0);
+    PostEvent(UI_SIPTOOL_SETLOCALAREACODERSP, (WPARAM)nRet, (LPARAM)&strErr);
 
     ::delete readerInfo;
     readerInfo = NULL;
+}
+
+void CSipToolSysCtrl::OnForceLogoutNty(const CMessage& cMsg)
+{
+    OspPrintf(true, false, "FORCELOGOUT!!\r\n");
+    PostEvent(UI_SIPTOOL_FORCELOGOUTNTY, 0, 0);
 }
 
 void CSipToolSysCtrl::OnDicconnected(const CMessage& cMsg)

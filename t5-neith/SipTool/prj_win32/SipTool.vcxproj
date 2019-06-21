@@ -87,8 +87,8 @@
     <ClInclude Include="..\include\globalheader.h" />
     <ClInclude Include="..\include\localareanumcfglogic.h" />
     <ClInclude Include="..\include\loginlogic.h" />
-    <ClInclude Include="..\include\logoutlogic.h" />
     <ClInclude Include="..\include\mainframelogic.h" />
+    <ClInclude Include="..\include\messageboxlogic.h" />
     <ClInclude Include="..\include\neighborcfglogic.h" />
     <ClInclude Include="..\include\neiregserveraddlogic.h" />
     <ClInclude Include="..\include\siptoolcommonop.h" />
@@ -105,8 +105,8 @@
     <ClCompile Include="..\source\cascadecfglogic.cpp" />
     <ClCompile Include="..\source\localareanumcfglogic.cpp" />
     <ClCompile Include="..\source\loginlogic.cpp" />
-    <ClCompile Include="..\source\logoutlogic.cpp" />
     <ClCompile Include="..\source\mainframelogic.cpp" />
+    <ClCompile Include="..\source\messageboxlogic.cpp" />
     <ClCompile Include="..\source\neighborcfglogic.cpp" />
     <ClCompile Include="..\source\neiregserveraddlogic.cpp" />
     <ClCompile Include="..\source\siptoolcommonop.cpp" />

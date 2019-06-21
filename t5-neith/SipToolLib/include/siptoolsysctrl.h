@@ -40,6 +40,8 @@ protected:
     void OnDeleteNeighborInfoRsp(const CMessage& cMsg);
     //设置本地区号消息回复
     void OnSetLocalAreaCodeRsp(const CMessage& cMsg);
+    //被迫下线通知
+    void OnForceLogoutNty(const CMessage& cMsg);
 
     //断开连接
     void OnDicconnected(const CMessage& cMsg);

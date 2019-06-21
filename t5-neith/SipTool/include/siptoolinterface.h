@@ -43,6 +43,10 @@ public:
 	*/ 
     u16 CloseLink();
     /**
+	*   获得登陆信息
+	*/ 
+    u16 GetLoginInfo(TLoginInfo& tLoginInfo);
+    /**
 	*   设置父级ip及port
 	*/ 
     u16 SetParentIP(s8* szIp);

@@ -63,7 +63,7 @@ u16 CSipToolSession::InitializeOsp()
     int nRet = g_SipToolApp.CreateApp(&szOspApp[0], AID_SIPTOOL_APP, dwPrior, 300, 200);
     ASSERT(nRet == 0);
 
-    PrtSipToolMsg( "SipToolLib osp启动成功\n" );
+    PrtSipToolMsg( "RkcLib osp启动成功\n" );
 
     return NO_ERROR;
 }
@@ -87,7 +87,8 @@ u16 CSipToolSession::RkcGetInterface(CSipToolSysCtrlIF **ppCtrl)
 /*功    能： 是否已和CNS建立了连接*/
 BOOL CSipToolSession::IsConnectedSip()
 {
-	return g_SipToolApp.GetNodeId() != INVALID_NODE;
+    //return g_SipToolApp.GetNodeId() != INVALID_NODE;
+	return GetNodeId() != INVALID_NODE;
 }
 
 /*功    能： 连接*/
@@ -152,7 +153,8 @@ u16 CSipToolSession::DisconnectSip()
         return NO_ERROR;
     }
 
-    OspDisconnectTcpNode(g_SipToolApp.GetNodeId()); 
+    //OspDisconnectTcpNode(g_SipToolApp.GetNodeId()); 
+    OspDisconnectTcpNode(GetNodeId()); 
 	m_dwSipIp = 0;
     
     return NO_ERROR;

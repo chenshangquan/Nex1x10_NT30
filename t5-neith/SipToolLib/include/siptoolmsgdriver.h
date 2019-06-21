@@ -16,7 +16,7 @@
 #include "kdvdispevent.h"
 #include "ospmsg.h"
 //#include "eventoutrkcentre.h"
-//#include "siptoolmessage.h"
+#include "siptoolmessage.h"
 
 #define     AID_SIPTOOL_SERVER_APP     573
 #define     AID_SIPTOOL_APP     62

@@ -4,6 +4,12 @@
 
 #define TIMER_LENGTH  4000
 #define TIMER_SHOWTIP 200
+#define TIMER_CONNECT_TIMEOUT  5000
+#define TIMER_CONNECT  195
+
+static UINT g_nTimerConnectTimeout = 0;  //5s检测登陆认证是否超时
+
+template<> CLoginLogic* Singleton<CLoginLogic>::ms_pSingleton  = NULL;
 
 APP_BEGIN_MSG_MAP(CLoginLogic, CNotifyUIImpl)
     MSG_CREATEWINDOW(_T("login"), OnCreate)
@@ -14,18 +20,38 @@ APP_BEGIN_MSG_MAP(CLoginLogic, CNotifyUIImpl)
     MSG_CLICK(_T("closebtn"), OnCloseBtnClicked)
     MSG_CLICK(_T("LoginBtn"), OnLoginBtnClicked)
 
+    MSG_TIMER(_T("LoginBtn"), OnConnectTimeoutTimer)
     MSG_TIMER(_T("LoginTipLab"), OnShowTipTimer)
 
     USER_MSG(UI_SIPTOOL_CONNECTED , OnSipToolConnected)
 	USER_MSG(UI_SIPTOOL_DISCONNECTED, OnSipToolDisconnected)
+    USER_MSG(UI_SIPTOOL_FORCELOGOUTNTY, OnForceLogoutNty)
 APP_END_MSG_MAP()
 
 CLoginLogic::CLoginLogic()
 {
+    m_bLogin = false;
+    m_bForceLogout = false;
 }
 
 CLoginLogic::~CLoginLogic()
 {
+}
+
+void CLoginLogic::InitLoginWindow()
+{
+    //配置文件里恢复上一次登录的信息
+    CString strIniPath = GetIniFilePath();
+    TCHAR tchLoginIP[MAX_NAME_LEN] = {0};
+    TCHAR tchUserName[MAX_NAME_LEN] = {0};
+    TCHAR tchPassWord[MAX_NAME_LEN] = {0};
+    GetPrivateProfileString(_T("LoginInfo"),_T("LoginIP"),_T(""), tchLoginIP, MAX_NAME_LEN-1, strIniPath);
+    GetPrivateProfileString(_T("LoginInfo"),_T("UserName"),_T(""), tchUserName, MAX_NAME_LEN-1, strIniPath);
+    GetPrivateProfileString(_T("LoginInfo"), _T("PassWord"),_T(""), tchPassWord, MAX_NAME_LEN-1, strIniPath);
+
+    ISipToolCommonOp::SetControlText(tchLoginIP, m_pm, _T("edtIP"));
+    ISipToolCommonOp::SetControlText(tchUserName, m_pm, _T("edtUserName"));
+    ISipToolCommonOp::SetControlText(tchPassWord, m_pm, _T("edtPassWord"));
 }
 
 bool CLoginLogic::OnCreate( TNotifyUI& msg )
@@ -96,6 +122,29 @@ bool CLoginLogic::OnLoginBtnClicked(TNotifyUI& msg)
     m_pm->DoCase(_T("caseIsLogining"));
     CSipToolComInterface->SocketConnect( dwIp, CT2A(strUserName), CT2A(strPassWord));
 
+    //5s 认证消息无响应
+    CButtonUI *pControl = (CButtonUI*)ISipToolCommonOp::FindControl( m_pm, _T("LoginBtn") );
+    if (pControl)
+    {
+        m_pm->KillTimer(pControl, TIMER_CONNECT);
+        g_nTimerConnectTimeout = m_pm->SetTimer(pControl, TIMER_CONNECT, TIMER_CONNECT_TIMEOUT);
+    }
+
+    return true;
+}
+
+bool CLoginLogic::OnConnectTimeoutTimer(TNotifyUI& msg)
+{
+    m_pm->KillTimer(msg.pSender, TIMER_CONNECT);
+    g_nTimerConnectTimeout = 0;
+    if ( !m_bLogin )
+    {
+        //CloseLink
+        CSipToolComInterface->CloseLink();
+        m_pm->DoCase(_T("caseNormal"));
+        ShowTip(_T("连接消息未响应：已断开OSP连接"));
+    }
+
     return true;
 }
 
@@ -124,32 +173,86 @@ bool CLoginLogic::OnSipToolConnected( WPARAM wparam, LPARAM lparam, bool& bHandl
     }
     else
     {
-        
+        m_bLogin = true;
+        CString strIniPath = GetIniFilePath();
+
+        TLoginInfo tLoginInfo;
+        CSipToolComInterface->GetLoginInfo(tLoginInfo);
+        in_addr tAddrIP;
+        tAddrIP.S_un.S_addr = htonl(tLoginInfo.m_dwIp);
+        CString strLoginIP = (CA2T)inet_ntoa(tAddrIP);
+        CString strUserName = (ISipToolCommonOp::GetControlText( m_pm ,_T("edtUserName"))).c_str();
+        CString strPassWord = (ISipToolCommonOp::GetControlText( m_pm ,_T("edtPassWord"))).c_str();
+        WritePrivateProfileString(_T("LoginInfo"), _T("LoginIP"), strLoginIP, strIniPath);
+        WritePrivateProfileString(_T("LoginInfo"), _T("UserName"), strUserName, strIniPath);
+        WritePrivateProfileString(_T("LoginInfo"), _T("Password"), strPassWord, strIniPath);
     }
     return true;
 }
 
 bool CLoginLogic::OnSipToolDisconnected( WPARAM wparam, LPARAM lparam, bool& bHandle )
 {
-    m_pm->DoCase(_T("caseNormal"));
-	ShowTip(_T("已与服务器断开连接"));
+    if ( !m_bLogin )
+    {
+        return true;
+    }
 
+    if (g_nTimerConnectTimeout != 0)
+    {
+        CButtonUI *pControl = (CButtonUI*)ISipToolCommonOp::FindControl( m_pm, _T("LoginBtn") );
+        if (pControl)
+        {
+            m_pm->KillTimer(pControl, TIMER_CONNECT);
+        }
+    }
+
+    m_pm->DoCase(_T("caseNormal"));
+    if (m_bForceLogout)
+    {
+        CString strIniPath = GetIniFilePath();
+        TCHAR tchLoginIP[MAX_NAME_LEN] = {0};
+        GetPrivateProfileString(_T("LoginInfo"),_T("LoginIP"),_T(""), tchLoginIP, MAX_NAME_LEN-1, strIniPath);
+        CString strShowTip = _T("");
+        strShowTip.Format(_T("您已被[%s]强制下线，该账户已在另一个地方登录"), tchLoginIP);
+        ShowTip(strShowTip);
+    }
+    else
+    {
+        ShowTip(_T("已与服务器断开连接"));
+    }
+
+    m_bLogin = false;
+    m_bForceLogout = false;
+    return true;
+}
+
+bool CLoginLogic::OnForceLogoutNty( WPARAM wparam, LPARAM lparam, bool& bHandle )
+{
+    if (g_nTimerConnectTimeout != 0)
+    {
+        CButtonUI *pControl = (CButtonUI*)ISipToolCommonOp::FindControl( m_pm, _T("LoginBtn") );
+        if (pControl)
+        {
+            m_pm->KillTimer(pControl, TIMER_CONNECT);
+        }
+    }
+
+    m_bForceLogout = true;
     return true;
 }
 
 void CLoginLogic::ShowTip(CString strTip)
 {
-	m_pm->DoCase(_T("caseShowTip"));
-	CLabelUI *pControl = (CLabelUI*)ISipToolCommonOp::FindControl( m_pm, _T("LoginTipLab") );
-	if (pControl)
-	{
-		pControl->SetText(strTip);
-		m_pm->KillTimer(pControl, TIMER_SHOWTIP);
-		m_pm->SetTimer(pControl, TIMER_SHOWTIP, TIMER_LENGTH);
-	}
+    m_pm->DoCase(_T("caseShowTip"));
+    CLabelUI *pControl = (CLabelUI*)ISipToolCommonOp::FindControl( m_pm, _T("LoginTipLab") );
+    if (pControl)
+    {
+        pControl->SetText(strTip);
+        m_pm->KillTimer(pControl, TIMER_SHOWTIP);
+        m_pm->SetTimer(pControl, TIMER_SHOWTIP, TIMER_LENGTH);
+    }
 }
 
-/*
 CString CLoginLogic::GetIniFilePath()
 {
     TCHAR tchPath[MAX_PATH] = {0};
@@ -166,5 +269,5 @@ CString CLoginLogic::GetIniFilePath()
     }
 
     return strIniFilePath;
-}*/
+}
 

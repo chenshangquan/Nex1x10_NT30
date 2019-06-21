@@ -28,7 +28,10 @@ public:
     static bool IsIpFormatRight(LPCTSTR pIpAddr);
 
     // 显示遮罩窗口
-    bool OnShowShadeWindow(LPCTSTR lpstrName = g_stcStrShadeDlg.c_str(), bool bShow = true);
+    //bool OnShowShadeWindow(LPCTSTR lpstrName = g_stcStrShadeDlg.c_str(), bool bShow = true);
+
+    // 显示提示信息
+    void ShowTip(CString strTip);
 
 protected:
     /** 窗口创建 
@@ -70,10 +73,17 @@ protected:
     //登陆注销
     bool OnSipToolLogout(WPARAM wparam, LPARAM lparam, bool& bHandle);
 
+    //显示提示定时器响应
+    bool OnShowTipTimer(TNotifyUI& msg);
+
     APP_DECLARE_MSG_MAP()
 
 private:
+    bool m_bLogin;    //是否登陆成功
 
 };
+
+void showtip(CString strTip);
+#define SHOWTIP showtip
 
 #endif // !defined(AFX_NETWORKSETUP_H_)

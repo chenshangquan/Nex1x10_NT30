@@ -11,18 +11,18 @@
 		</VerticalLayout>
 		
 		<VerticalLayout>
-			<VerticalLayout float="true" pos="36,0,0,0" width="653" height="384" bkimage="res\neighbor_cfg\bg.png">
-				<Label float="true" pos="16,14,0,0" width="28" height="14" text="序号" textcolor="#FF0F4F51" font="0" align="left" />
-				<Label float="true" pos="118,14,0,0" width="28" height="14" text="区号" textcolor="#FF0F4F51" font="0" align="left" />
-				<Label float="true" pos="302,14,0,0" width="42" height="14" text="IP地址" textcolor="#FF0F4F51" font="0" align="left" />
-				<Label float="true" pos="514,14,0,0" width="28" height="14" text="端口" textcolor="#FF0F4F51" font="0" align="left" />
+			<VerticalLayout float="true" pos="36,0,0,0" width="653" height="384" bkimage="res\neighbor_cfg\bg.png" >
+				<Label float="true" pos="16,14,0,0" width="32" height="14" text="序号" textcolor="#FF0F4F51" font="0" align="left" />
+				<Label float="true" pos="118,14,0,0" width="32" height="14" text="区号" textcolor="#FF0F4F51" font="0" align="left" />
+				<Label float="true" pos="302,14,0,0" width="48" height="14" text="IP地址" textcolor="#FF0F4F51" font="0" align="left" />
+				<Label float="true" pos="516,14,0,0" width="32" height="14" text="端口" textcolor="#FF0F4F51" font="0" align="left" />
 				
-				<List name="NeiRegServerList" float="true" pos="1,0,0,0" width="650" height="344" align="center" header="false" vscrollbar="true" itemfont="0" itemalign="center" itemtextcolor="#FF000000" itemhottextcolor="#FFFFFFFF" itemselectedtextcolor="#FFFFFFFF" itemselectedimage="res\neighbor_cfg\selected.png" itemhotimage="res\neighbor_cfg\selected.png">
-					<ListHeader width="653" height="35" visble="false" >
-						<ListHeaderItem width="50" sepwidth="1" />
-						<ListHeaderItem width="160" sepwidth="1"/>
-						<ListHeaderItem width="220" sepwidth="1"/>
-						<ListHeaderItem width="220" sepwidth="1"/>
+				<List name="NeiRegServerList" float="true" pos="1,0,0,0" width="650" height="344" align="center" header="false" vscrollbar="true" itemfont="0" itemalign="center" itemtextcolor="#FF000000" itemhottextcolor="#FFFFFFFF" itemselectedtextcolor="#FFFFFFFF" itemselectedimage="res\neighbor_cfg\selected.png" itemhotimage="res\neighbor_cfg\selected.png" >
+					<ListHeader width="649" height="35" visble="false" >
+						<ListHeaderItem width="50" sepwidth="0" />
+						<ListHeaderItem width="160" sepwidth="0" />
+						<ListHeaderItem width="220" sepwidth="0" />
+						<ListHeaderItem width="198" sepwidth="0" />
 					</ListHeader>
 				</List>
 				

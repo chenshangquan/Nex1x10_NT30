@@ -1,21 +1,20 @@
-/** @defgroup 注销逻辑单元 
+/** @defgroup 提示弹窗逻辑单元 
  *  @version V1.0.0
  *  @author  chenshangquan
- *  @date    2018.5.20
+ *  @date    2019.6.13
  */
-#if !defined(AFX_LOGOUTLOGIC_H_)
-#define AFX_LOGOUTLOGIC_H_
+#if !defined(AFX_MESSAGEBOXLOGIC_H_)
+#define AFX_MESSAGEBOXLOGIC_H_
 
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
 
-
-class CLogoutLogic : public CNotifyUIImpl
+class CMessageBoxLogic : public CNotifyUIImpl
 {
 public:
-	CLogoutLogic();
-	~CLogoutLogic();
+	CMessageBoxLogic();
+	~CMessageBoxLogic();
 
 protected:
 	/** 窗口创建 
@@ -41,22 +40,19 @@ protected:
     //点击关闭按钮
     bool OnCloseBtnClicked(TNotifyUI& msg);
     //点击确定按钮
-    bool OnConfirmBtnClicked(TNotifyUI& msg);
+    bool OnOKBtnClicked(TNotifyUI& msg);
     //点击取消按钮
     bool OnCancelBtnClicked(TNotifyUI& msg);
 
-    //显示提示定时器响应
-    //bool OnShowTipTimer(TNotifyUI& msg);
-
-    //bool OnSipToolConnected( WPARAM wparam, LPARAM lparam, bool& bHandle );
-
     bool OnSipToolDisconnected( WPARAM wparam, LPARAM lparam, bool& bHandle );
-
-    //void ShowTip(CString strTip);
-
+    
     APP_DECLARE_MSG_MAP()
 
 private:
 };
 
-#endif // !defined(AFX_LOGOUTLOGIC_H_)
+//0 没有按钮，1 确定按钮，2 确定 取消按钮, 3 确定 取消 关闭按钮
+u8 showMessageBox(LPCTSTR lpstrText, u8 byType = 1);
+#define ShowMessageBox showMessageBox
+
+#endif // !defined(AFX_MESSAGEBOXLOGIC_H_)

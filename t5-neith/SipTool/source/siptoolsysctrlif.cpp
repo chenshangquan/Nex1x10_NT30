@@ -12,7 +12,7 @@ UINT ThreadConnectSipTool(LPVOID lpParam)
 
     if ( re != NO_ERROR )
     {
-        NOTIFY_MSG( UI_SIPTOOL_CONNECTED, true, re );
+        NOTIFY_MSG( UI_SIPTOOL_CONNECTED, false, re );
         return re;
     }
 
@@ -32,7 +32,7 @@ u16 CSipToolInterface::SocketConnect( u32 dwIp, s8* szUser , s8* szPwd)
     strncpy(m_tLoginInfo.m_achName, szUser, sizeof(m_tLoginInfo.m_achName));
     strncpy(m_tLoginInfo.m_achPswd, szPwd, sizeof(m_tLoginInfo.m_achPswd));
 
-    //连接siptool
+    //连接rkc100
     AfxBeginThread( ThreadConnectSipTool , NULL );
 
     return NO_ERROR;
@@ -50,7 +50,20 @@ u16 CSipToolInterface::LinkSipServer()
 
 u16 CSipToolInterface::CloseLink()
 {
-    return m_pSysCtrlIf->CloseSocket();
+    u16 re =  ERR_SIPTOOL;
+    if ( m_pSipToolSession != NULL )
+    {
+        re = m_pSipToolSession->DisconnectSip( );
+    }
+
+    return re;
+    //return m_pSysCtrlIf->CloseSocket();
+}
+
+u16 CSipToolInterface::GetLoginInfo(TLoginInfo& tLoginInfo)
+{
+    tLoginInfo = m_tLoginInfo;
+    return NO_ERROR;
 }
 
 u16 CSipToolInterface::SetParentIP(s8* szIp)

@@ -30,7 +30,7 @@ bool CCascadeCfgLogic::OnCasCfgSaveBtnClicked(TNotifyUI& msg)
 
     if ( !CMainFrameLogic::IsIpFormatRight(cstrParentIP) )
     {
-        //ShowTip(_T("服务器地址非法"));
+        SHOWTIP(_T("服务器地址非法"));
         return false;
     }
 
@@ -42,6 +42,13 @@ bool CCascadeCfgLogic::OnCasCfgSaveBtnClicked(TNotifyUI& msg)
 bool CCascadeCfgLogic::OnParentIPChanged(TNotifyUI& msg)
 {
     m_pm->DoCase(_T("caseParentIPChanged"));
+
+    CString cstrParentIP =( ISipToolCommonOp::GetControlText(m_pm ,_T("ParentIPEdt")) ).c_str();
+    if ( cstrParentIP.IsEmpty() )
+    {
+        m_pm->DoCase(_T("caseParentIPSaved"));
+    }
+
     return true;
 }
 
@@ -53,7 +60,14 @@ bool CCascadeCfgLogic::OnSipToolConnected( WPARAM wparam, LPARAM lparam, bool& b
         TRegServerInfo tCasRegServerInfo;
         CSipToolComInterface->GetCasRegServerBackInfo(tCasRegServerInfo);
         m_cstrParentIP = tCasRegServerInfo.m_achIpAddr;
-        ISipToolCommonOp::SetControlText(m_cstrParentIP, m_pm ,_T("ParentIPEdt"));
+        if ( _tcscmp(m_cstrParentIP, _T("0.0.0.0")) == 0 )
+        {
+            ISipToolCommonOp::SetControlText(_T(""), m_pm ,_T("ParentIPEdt"));
+        }
+        else
+        {
+            ISipToolCommonOp::SetControlText(m_cstrParentIP, m_pm ,_T("ParentIPEdt"));
+        }
 
         m_pm->DoCase(_T("caseParentIPSaved"));
     }
@@ -64,21 +78,20 @@ bool CCascadeCfgLogic::OnSipToolConnected( WPARAM wparam, LPARAM lparam, bool& b
 bool CCascadeCfgLogic::OnSetParentIPRsp( WPARAM wparam, LPARAM lparam, bool& bHandle )
 {
     bool bSuccess = (bool)wparam;
+    //string strErr = *(string*)lparam;
+
     if (bSuccess)
     {
         m_pm->DoCase(_T("caseParentIPSaved"));
+        SHOWTIP(_T("级联配置，保存成功！"));
+    }
+    else
+    {
+        /*CString cstrErr;
+        cstrErr.Format(_T("%s"),(CA2T)strErr.c_str());
+        ShowTip(cstrErr);*/
+        SHOWTIP(_T("级联配置，保存失败！"));
     }
 
     return true;
 }
-
-/*
-bool CCascadeCfgLogic::OnRkcDisconnected( WPARAM wparam, LPARAM lparam, bool& bHandle )
-{
-    CButtonUI *pBtn = (CButtonUI*)IRkcToolCommonOp::FindControl(m_pm, _T("SaveNetWorkBut"));
-    if (pBtn)
-    {
-        pBtn->SetFocus();
-    }
-    return true;
-}*/

@@ -2,11 +2,11 @@
 #include "siptoolcommonop.h"
 #include "loginlogic.h"
 #include "mainframelogic.h"
-#include "logoutlogic.h"
 #include "cascadecfglogic.h"
 #include "neighborcfglogic.h"
 #include "localareanumcfglogic.h"
 #include "neiregserveraddlogic.h"
+#include "messageboxlogic.h"
 
 ISipToolCommonOp::ISipToolCommonOp(void)
 {
@@ -22,11 +22,11 @@ void ISipToolCommonOp::RegLogics()
 {
     REG_LOGIC(CLoginLogic);
 	REG_LOGIC(CMainFrameLogic);
-    REG_LOGIC(CLogoutLogic);
     REG_LOGIC(CCascadeCfgLogic);
     REG_LOGIC(CNeighborCfgLogic);
     REG_LOGIC(CLocalAreaNumCfgLogic);
     REG_LOGIC(CNeiRegServerAddLogic);
+    REG_LOGIC(CMessageBoxLogic);
 
 	return ;
 }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Window size="450,278" roundcorner="1,0" caption="0,0,0,278" bktrans="false" >
+<Window size="450,278" roundcorner="1,0" bktrans="true" >
 	<Font name="宋体" size="12" bold="false" />
 	<Font name="宋体" size="12" bold="true" />
-	<Default name="Edit" value="gdiplus=&quot;false&quot;" />
-	<Default name="Label" value="gdiplus=&quot;false&quot;" />
-	<Default name="Button" value="gdiplus=&quot;false&quot;" />
+	<Default name="Edit" value="gdiplus=&quot;true&quot;" />
+	<Default name="Label" value="gdiplus=&quot;true&quot;" />
+	<Default name="Button" value="gdiplus=&quot;true&quot;" />
 
 	<VerticalLayout name="LogoutLayout" bkimage="res/logout/background.png" >
 		<Button name="CloseBtn" float="true" pos="391,5,0,0" width="44" height="30" normalimage="res/logout/close_normal.png" hotimage="res/logout/close_hover.png" pushedimage="res/logout/close_down.png" />
