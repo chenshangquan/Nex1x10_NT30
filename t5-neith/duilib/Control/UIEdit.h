@@ -8,6 +8,9 @@ namespace DuiLib
     enum MENUSTYLE {
         MENU_NO_STYLE = 0,
         MENU_IP_STYLE = 1,//IP
+        MENU_DIGIT_STYLE = 2,//数字
+        MENU_USERNAME_STYLE = 3,//用户名
+        MENU_PASSWORD_STYLE = 4,//密码
         MENU_HEX_STYLE = 16,//十六进制
     };
 

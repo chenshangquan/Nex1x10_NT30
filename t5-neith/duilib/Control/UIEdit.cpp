@@ -253,6 +253,49 @@ namespace DuiLib
                 }
             }
         }
+        else if (m_pOwner->GetNumberStyle() == MENU_DIGIT_STYLE)//数字
+        {
+            if (str.size() > 0)
+            {
+                char c = str[str.size() - 1];
+                if ((c < '0' || c > '9'))
+                {
+                    Edit_Undo(m_hWnd);
+                    m_pOwner->Invalidate();
+                    return 0;
+                }
+            }
+        }
+        /* 用户名（只支持汉字、英文字母（区分大小写）、数字、特殊字符"_"，"-"，"*"） */
+        else if (m_pOwner->GetNumberStyle() == MENU_USERNAME_STYLE)//用户名
+        {
+            if (str.size() > 0)
+            {
+                unsigned char c = str[str.size() - 1];
+                if ( (c < '0' && c != '*' && c != '-') || (c > '9' && c < 'A') || (c > 'Z' && c < 'a' && c != '_')
+                    || (c > 'z' && c < 0x7F) )
+                {
+                    Edit_Undo(m_hWnd);
+                    m_pOwner->Invalidate();
+                    return 0;
+                }
+            }
+        }
+        /* 密码（只支持英文字母（区分大小写）、数字、特殊字符"_"，"-"，"*"） */
+        else if (m_pOwner->GetNumberStyle() == MENU_PASSWORD_STYLE)//密码
+        {
+            if (str.size() > 0)
+            {
+                unsigned char c = str[str.size() - 1];
+                if ( (c < '0' && c != '*' && c != '-') || (c > '9' && c < 'A') || (c > 'Z' && c < 'a' && c != '_')
+                    || (c > 'z' && c < 0x7F) || c > 0x80 )
+                {
+                    Edit_Undo(m_hWnd);
+                    m_pOwner->Invalidate();
+                    return 0;
+                }
+            }
+        }
 
 		Edit_EmptyUndoBuffer(m_hWnd);
 

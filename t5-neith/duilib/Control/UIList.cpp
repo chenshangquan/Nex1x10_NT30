@@ -1797,13 +1797,13 @@ void CListElementUI::DrawItemBk(HDC hDC, const RECT& rcItem)
     }
     if( IsSelected() ) {
         if( !pInfo->sSelectedImage.IsEmpty() ) {
-			if (m_bGdiPlus)
+			/*if (m_bGdiPlus)
 			{
 				if( DrawImageGDIPlus(hDC, (LPCTSTR)pInfo->sSelectedImage) )
 				{
 					return;
 				}
-			}
+			}*/ //20190612 :bktrans = "true",no selectedImage showed
             if( !DrawImage(hDC, (LPCTSTR)pInfo->sSelectedImage) ) pInfo->sSelectedImage.Empty();
             else return;
         }
@@ -2141,6 +2141,9 @@ void CListTextElementUI::DrawItemText(HDC hDC, const RECT& rcItem)
         if( pInfo->bShowHtml )
             CRenderEngine::DrawHtmlText(hDC, m_pManager, rcItem, strText.GetData(), iTextColor, \
                 &m_rcLinks[m_nLinks], &m_sLinks[m_nLinks], nLinks, DT_SINGLELINE | pInfo->uTextStyle);
+        else if( m_bGdiPlus )
+            CRenderEngine::DrawTextByGdiPlus(hDC, m_pManager, rcItem, strText.GetData(), iTextColor, \
+            pInfo->nFont, DT_SINGLELINE | pInfo->uTextStyle);
         else
             CRenderEngine::DrawText(hDC, m_pManager, rcItem, strText.GetData(), iTextColor, \
             pInfo->nFont, DT_SINGLELINE | pInfo->uTextStyle);
