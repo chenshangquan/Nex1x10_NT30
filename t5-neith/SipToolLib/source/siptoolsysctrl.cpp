@@ -6,6 +6,7 @@
 CSipToolSysCtrl::CSipToolSysCtrl(CSipToolSession &cSession) : CSipToolSysCtrlIF()
 {
     m_pSession = &cSession;
+    m_strForceIP = _T("0.0.0.0");
     BuildEventsMap();
 }
 
@@ -80,6 +81,12 @@ u16 CSipToolSysCtrl::SetLocalAreaCode(s8* szLocalAreaCode)
     return NO_ERROR;
 }
 
+u16 CSipToolSysCtrl::GetLocalInfo()
+{
+    CSipToolMsgDriver::s_pMsgDriver->PostCMsg(GETLOCALINFO, NULL, 0);
+    return NO_ERROR;
+}
+
 u16 CSipToolSysCtrl::GetCasRegServerBackInfo(TRegServerInfo &tCasRegServerInfo)
 {
     strncpy(tCasRegServerInfo.m_achAreaCode, m_tCasRegServerInfo.m_achAreaCode, MAX_AREACODE_LENGTH);
@@ -103,6 +110,7 @@ void CSipToolSysCtrl::BuildEventsMap()
     REG_PFUN(SETNEIGHBORINFOACK, CSipToolSysCtrl::OnSetNeighborInfoRsp);
     REG_PFUN(DELETENEIGHBORINFOACK, CSipToolSysCtrl::OnDeleteNeighborInfoRsp);
     REG_PFUN(SETLOCALAREACODEACK, CSipToolSysCtrl::OnSetLocalAreaCodeRsp);
+    REG_PFUN(GETLOCALINFOACK, CSipToolSysCtrl::OnGetLocalInfoRsp);
     REG_PFUN(FORCELOGOUT, CSipToolSysCtrl::OnForceLogoutNty);
 }
 
@@ -346,10 +354,94 @@ void CSipToolSysCtrl::OnSetLocalAreaCodeRsp(const CMessage& cMsg)
     readerInfo = NULL;
 }
 
+void CSipToolSysCtrl::OnGetLocalInfoRsp(const CMessage& cMsg)
+{
+    OspPrintf(true, false, "GETLOCALINFOACK:%s\r\n", cMsg.content);
+
+    TNeiRegServerInfo tNeighborInfo;
+    string strTemp = _T("");
+
+    Json::Reader *readerInfo = new Json::Reader(Json::Features::strictMode());
+    Json::Value root;
+    CString cstrRead(cMsg.content);
+    if ( readerInfo->parse(cstrRead.GetBuffer(0), root) )
+    {
+        //获取所有的邻居信息
+        m_vNeighborInfo.clear();
+        if (root["NeighborInfo"].isArray())
+        {
+            u32 dwArraySize = root["NeighborInfo"].size();
+            for (u32 dwIndex = 0; dwIndex < dwArraySize; dwIndex++)
+            {
+                memset(&tNeighborInfo, 0, sizeof(TNeiRegServerInfo));
+
+                strTemp = root["NeighborInfo"][dwIndex]["IP"].asString();
+                strncpy( tNeighborInfo.m_achIpAddr, strTemp.c_str(), strlen(strTemp.c_str()) );
+                tNeighborInfo.m_wPort = root["NeighborInfo"][dwIndex]["Port"].asInt();
+                strTemp = root["NeighborInfo"][dwIndex]["areacode"].asString();
+                strncpy( tNeighborInfo.m_achAreaCode, strTemp.c_str(), strlen(strTemp.c_str()) );
+
+                m_vNeighborInfo.push_back(tNeighborInfo);
+            }
+        }
+
+        //获取父级配置信息
+        if (root["ParentIP"].isString())
+        {
+            strTemp = root["ParentIP"].asString();
+            strncpy( m_tCasRegServerInfo.m_achIpAddr, strTemp.c_str(), strlen(strTemp.c_str()) );
+        }
+
+        if ( root["ParentPort"].isUInt() )
+        {
+            m_tCasRegServerInfo.m_wPort = root["ParentPort"].asUInt();
+        }
+        else if ( root["ParentPort"].isInt() )
+        {
+            m_tCasRegServerInfo.m_wPort = root["ParentPort"].asInt();
+        }
+
+        //获取本地区号配置信息
+        if (root["LocalAreaCode"].isString())
+        {
+            string strLocalAreaCode = root["LocalAreaCode"].asString();
+            strncpy(m_tCasRegServerInfo.m_achAreaCode, strLocalAreaCode.c_str(), strlen(strLocalAreaCode.c_str()));
+        }
+    }
+
+    PostEvent(UI_SIPTOOL_GETLOCALINFORSP, TRUE, 0);
+
+    ::delete readerInfo;
+    readerInfo = NULL;
+}
+
+u16 CSipToolSysCtrl::GetForceIP(string &strForceIP)
+{
+    strForceIP = m_strForceIP;
+    return true;
+}
+
 void CSipToolSysCtrl::OnForceLogoutNty(const CMessage& cMsg)
 {
-    OspPrintf(true, false, "FORCELOGOUT!!\r\n");
+    OspPrintf(true, false, "FORCELOGOUT:%s\r\n", cMsg.content);
+
+    m_strForceIP.clear();
+
+    Json::Reader *readerInfo = new Json::Reader(Json::Features::strictMode());
+    Json::Value root;
+    CString cstrRead(cMsg.content);
+    if ( readerInfo->parse(cstrRead.GetBuffer(0), root) )
+    {
+        if (root["ClientIP"].isString())
+        {
+            m_strForceIP = root["ClientIP"].asString();
+        }
+    }
+    
     PostEvent(UI_SIPTOOL_FORCELOGOUTNTY, 0, 0);
+
+    ::delete readerInfo;
+    readerInfo = NULL;
 }
 
 void CSipToolSysCtrl::OnDicconnected(const CMessage& cMsg)

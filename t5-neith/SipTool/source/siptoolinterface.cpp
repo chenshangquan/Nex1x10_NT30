@@ -54,7 +54,7 @@ void CSipToolInterface::CreateSession()
 {
     CSipToolLib::CreateSession( &m_pSipToolSession );
 
-    m_pSipToolSession->RkcGetInterface( &m_pSysCtrlIf );
+    m_pSipToolSession->SipGetInterface( &m_pSysCtrlIf );
     if (m_pSysCtrlIf)
     {
         m_pSysCtrlIf->SetNotifyWnd(GetRecvWindow());

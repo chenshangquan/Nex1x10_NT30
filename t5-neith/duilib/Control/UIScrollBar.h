@@ -28,6 +28,10 @@ namespace DuiLib
 		void SetScrollPos(int nPos);
 		int GetLineSize() const;
 		void SetLineSize(int nSize);
+        int GetImageCx() const;
+        void SetImageCx(int nImageCx);
+        int GetImageCy() const;
+        void SetImageCy(int nImageCy);
 
 		bool GetShowButton1();
 		void SetShowButton1(bool bShow);
@@ -150,6 +154,8 @@ namespace DuiLib
 		CDuiString m_sRailDisabledImage;
 
 		CDuiString m_sImageModify;
+        int        m_nImageCx;
+        int        m_nImageCy;
 ///////////////////////////////////////////∆¥Ω”œ‡πÿ
 		CDuiString m_strBkgBottom;
 		CDuiString m_strBkgMiddle;

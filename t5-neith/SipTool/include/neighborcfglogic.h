@@ -30,12 +30,13 @@ protected:
     //更新邻居信息列表
     bool OnDeleteNeighborInfoList( WPARAM wparam, LPARAM lparam, bool& bHandle );
 
-    //bool OnRkcDisconnected( WPARAM wparam, LPARAM lparam, bool& bHandle );
+    bool OnSipDisconnected( WPARAM wparam, LPARAM lparam, bool& bHandle );
 
     APP_DECLARE_MSG_MAP()
 
 private:
     CListUI* m_pNeiRegServerList;
+    TNeiRegServerInfo m_tNeiRegServerInfoAdd;    //待添加的邻居信息
 };
 
 #endif // !defined(AFX_NEIGHBORCFG_H_)

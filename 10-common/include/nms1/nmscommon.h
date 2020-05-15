@@ -25,13 +25,13 @@
 #include <objsafe.h>
 #include <AFXCTL.H>
 #include "osp.h"
-//#include "ftpctrl.h"
-//#include "calladdr.h"
-//#include "tplarray.h"
-//#include "tplhash.h"
-//#include "logmanage.h"
-//#include "hexasciistring.h"
-//#include "chartoPY.h"
+#include "ftpctrl.h"
+#include "calladdr.h"
+#include "tplarray.h"
+#include "tplhash.h"
+#include "logmanage.h"
+#include "hexasciistring.h"
+#include "chartoPY.h"
 //	删除单个指针
 #define DEL_PTR(p)              if (p != NULL) { delete p; p = NULL; }
 //	删除数组指针

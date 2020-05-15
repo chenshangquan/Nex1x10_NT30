@@ -63,13 +63,13 @@ u16 CSipToolSession::InitializeOsp()
     int nRet = g_SipToolApp.CreateApp(&szOspApp[0], AID_SIPTOOL_APP, dwPrior, 300, 200);
     ASSERT(nRet == 0);
 
-    PrtSipToolMsg( "RkcLib osp启动成功\n" );
+    PrtSipToolMsg( "SipToolLib osp启动成功\n" );
 
     return NO_ERROR;
 }
 
 /*获取接口指针*/
-u16 CSipToolSession::RkcGetInterface(CSipToolSysCtrlIF **ppCtrl)
+u16 CSipToolSession::SipGetInterface(CSipToolSysCtrlIF **ppCtrl)
 {
     if( m_pSysCtrlIf != NULL)
     {
@@ -116,9 +116,10 @@ u16 CSipToolSession::ConnectSip(u32 dwIP, u32 dwPort, char* strUser, char* strPw
     
     //建立Osp的TCP连接,得到本地机器的IP地址
 	u32 dwCnNodeId = 0;
+    u32 dwLocalIp = 0;
 	if ( bConnect )
 	{
-		dwCnNodeId = OspConnectTcpNode( htonl(dwIP), static_cast<u16>(dwPort), 5 , 3, 5000 );
+		dwCnNodeId = OspConnectTcpNode( htonl(dwIP), static_cast<u16>(dwPort), 5 , 3, 5000, &dwLocalIp );
 		if( dwCnNodeId == INVALID_NODE )
 		{
 			return ERR_SIPTOOL_TCPCONNECT;
@@ -138,6 +139,9 @@ u16 CSipToolSession::ConnectSip(u32 dwIP, u32 dwPort, char* strUser, char* strPw
     Json::Value jsLoginInfo;
     jsLoginInfo["user"] = strUser;
     jsLoginInfo["password"] = strPwd;
+    in_addr tAddr;
+    tAddr.S_un.S_addr = dwLocalIp;
+    jsLoginInfo["ClientIP"] = inet_ntoa(tAddr);
 
     string strLoginInfo = jsLoginInfo.toStyledString();
     CSipToolMsgDriver::s_pMsgDriver->PostCMsg(MULTIPLEREGSIGN, (char*)strLoginInfo.c_str(), strlen(strLoginInfo.c_str()));

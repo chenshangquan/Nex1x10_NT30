@@ -14,7 +14,7 @@
 #include <queue>
 #include "osp.h"
 
-#define RKC_INSTANCE_COUNT	1	// 接收消息的实例的数目
+#define SIP_INSTANCE_COUNT	1	// 接收消息的实例的数目
 
 /************************************************************************/
 /*                        消息队列定义                                  */
@@ -88,4 +88,4 @@ protected:
     u32                     m_dwNodeId;     // 当前建立连接的节点标识
 };
 
-extern zTemplate<CSipToolMsgHandler, RKC_INSTANCE_COUNT, CSipToolAppBase> g_SipToolApp;
+extern zTemplate<CSipToolMsgHandler, SIP_INSTANCE_COUNT, CSipToolAppBase> g_SipToolApp;

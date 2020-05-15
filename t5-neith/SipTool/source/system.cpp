@@ -42,8 +42,8 @@ bool CSystem::IniSystem()
     bRet = DOCMNGR()->GetDoc(m_strFile, _T("Resolution"), strValue);
     SIZE sizeSrc;
     SIZE sizeDst;
-    sizeSrc.cx = 1100;
-    sizeSrc.cy = 720;
+    sizeSrc.cx = 1920;
+    sizeSrc.cy = 1200;
 
     LPTSTR pstr = NULL;
     sizeDst.cx = _tcstol( (LPCTSTR)strValue.c_str(), &pstr, 10);  

@@ -67,6 +67,22 @@ enum EmUiRkcMsg
 	ev_UISipToolSetLocalAreaCodeRsp,
 #define UI_SIPTOOL_SETLOCALAREACODERSP ev_UISipToolSetLocalAreaCodeRsp
 
+    /************************************************************************/
+	/** 获取本地信息 Rsp
+	wParam = 0
+	lparam = 0*/
+	/************************************************************************/
+	ev_UISipToolGetLocalInfoRsp,
+#define UI_SIPTOOL_GETLOCALINFORSP ev_UISipToolGetLocalInfoRsp
+
+    /************************************************************************/
+	/** 被迫下线通知 Nty
+	wParam = 0
+	lparam = 0*/
+	/************************************************************************/
+	ev_UISipToolForceLogoutNty,
+#define UI_SIPTOOL_FORCELOGOUTNTY ev_UISipToolForceLogoutNty
+
     ev_UIRkcEnd,
 #define	UI_RKC_MSG_END   ev_UIRkcEnd
 

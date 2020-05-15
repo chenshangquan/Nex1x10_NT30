@@ -15,9 +15,16 @@ class CCascadeCfgLogic : public CNotifyUIImpl, public Singleton<CCascadeCfgLogic
 public:
 	CCascadeCfgLogic();
 	~CCascadeCfgLogic();
+public:
+    //配置项是否已修改
+    bool IsCfgChanged();
+    //配置项是否被修改
+    bool IsCfgModify();
 
-    //bool OnSaveNetWorkButClicked();
 protected:
+    //配置变更，保存提示弹框
+    bool SaveMsgBox();
+
     //点击级联配置保存按钮
     bool OnCasCfgSaveBtnClicked(TNotifyUI& msg);
     //父级IP地址更改

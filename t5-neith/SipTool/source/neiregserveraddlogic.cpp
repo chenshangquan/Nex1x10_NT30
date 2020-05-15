@@ -85,9 +85,9 @@ bool CNeiRegServerAddLogic::OnConfirmBtnClicked(TNotifyUI& msg)
         ShowTip(_T("IP地址不能为空"));
         return false;
     }
-    if ( !CMainFrameLogic::IsIpFormatRight(strIpAddr) )
+    if ( !CCallAddr::IsValidIpV4(CT2A(strIpAddr)) )
     {
-        ShowTip(_T("IP地址非法"));
+        ShowTip(_T("地址输入错误"));
         return false;
     }
 

@@ -2,6 +2,8 @@
 #include "mainframelogic.h"
 #include "messageboxlogic.h"
 #include "loginlogic.h"
+#include "cascadecfglogic.h"
+#include "localareanumcfglogic.h"
 
 #define TIMER_LENGTH  3000
 #define TIMER_SHOWTIP 300
@@ -35,71 +37,21 @@ void showtip(CString strTip)
 CMainFrameLogic::CMainFrameLogic()
 {
     m_bLogin = false;
+    m_emLastCfgTabID = emTabID_CascadeCfg;
 }
 
 CMainFrameLogic::~CMainFrameLogic()
 {
 }
 
-bool CMainFrameLogic::IsIpFormatRight(LPCTSTR pIpAddr)
-{
-    u32 dwCount = 0;
-    s32 i = 0;
-    u32 dwA, dwB, dwC, dwD;
-
-    // 检查是否只包含点和数字;
-    for(i = 0; pIpAddr[i] != '\0'; i++)
-    {
-        if (pIpAddr[i] > 256)
-        {
-            return false;
-        }
-
-        if(!isdigit((int)pIpAddr[i]) && pIpAddr[i] != '.')
-        {
-            return false;
-        }
-    }
-
-    // 检查形式是否为X.X.X.X;
-    for (i = 0; pIpAddr[i+1] != '\0'; i++)
-    {
-        if (isdigit(pIpAddr[i]) && pIpAddr[i+1] == '.')
-        {
-            dwCount++;
-        }
-    }
-    if (dwCount != 3)
-    {
-        return false;
-    }
-
-    // IP地址"0.0.0.0" 非法
-    if ( _tcscmp(pIpAddr, _T("0.0.0.0")) == 0 )
-    {
-        return false;
-    }
-
-    // 检查区间的合法性;
-    if ((swscanf(pIpAddr, L"%d.%d.%d.%d", &dwA, &dwB, &dwC, &dwD) == 4)
-        &&(dwA >= 0 && dwA <= 255)
-        &&(dwB >= 0 && dwB <= 255)
-        &&(dwC >= 0 && dwC <= 255)
-        &&(dwD >= 0 && dwD <= 255))
-    {
-        return true;
-    }
-
-    return false;
-}
-
 bool CMainFrameLogic::OnCreate( TNotifyUI& msg )
 {
-    //HWND hWnd = m_pm->GetPaintWindow();
-    //LONG styleValue = ::GetWindowLong(hWnd, GWL_STYLE);
-    //styleValue |= (WS_EX_APPWINDOW);//当窗口可见时将一个顶层窗口放置在任务栏上
-    //styleValue &= ~(WS_EX_TOOLWINDOW); //去掉工具栏窗口属性，使其在任务栏可见
-    //::SetWindowLong(hWnd, GWL_STYLE, styleValue);
+    HWND hWnd = m_pm->GetPaintWindow();
+    LONG styleValue = ::GetWindowLong(hWnd, GWL_STYLE);
+    styleValue |= (WS_EX_APPWINDOW);//当窗口可见时将一个顶层窗口放置在任务栏上
+    styleValue &= ~(WS_MAXIMIZEBOX);  //去除极大框窗口属性
+    styleValue &= ~(WS_EX_TOOLWINDOW); //去掉工具栏窗口属性，使其在任务栏可见
+    ::SetWindowLong(hWnd, GWL_STYLE, styleValue);
 
 	s32 nTop = 0;
 	RECT rcParent;
@@ -135,9 +87,19 @@ bool CMainFrameLogic::OnDestroy( TNotifyUI& msg )
 bool CMainFrameLogic::OnExitBtnClicked(TNotifyUI& msg)
 {
     //OnShowShadeWindow();
-    if (ShowMessageBox(_T("确定退出当前登陆？"), 3) == true)
+    if ( IsCfgModify() )
     {
-        NOTIFY_MSG( UI_SIPTOOL_LOGOUT, 0 , 0 );
+        if ( ShowMessageBox(_T("配置项修改未保存，确定不保存并继续退出？"), 2) == true )
+        {
+            NOTIFY_MSG( UI_SIPTOOL_LOGOUT, 0 , 0 );
+        }
+    }
+    else
+    {
+        if ( ShowMessageBox(_T("确定退出当前登录？"), 3) == true )
+        {
+            NOTIFY_MSG( UI_SIPTOOL_LOGOUT, 0 , 0 );
+        }
     }
 
 	return true;
@@ -151,41 +113,41 @@ bool CMainFrameLogic::OnMinBtnClicked(TNotifyUI& msg)
 
 bool CMainFrameLogic::OnCloseBtnClicked(TNotifyUI& msg)
 {
-    WINDOW_MGR_PTR->CloseWindow(g_stcStrMainFrameDlg.c_str());  
-    TerminateProcess(GetCurrentProcess(), 0); 
-    return false;
+    if ( IsCfgModify() )
+    {
+        if ( ShowMessageBox(_T("配置项修改未保存，确定不保存并继续退出？"), 2) == true )
+        {
+            WINDOW_MGR_PTR->CloseWindow(g_stcStrMainFrameDlg.c_str());
+            TerminateProcess(GetCurrentProcess(), 0);
+        }
+    }
+    else
+    {
+        if ( ShowMessageBox(_T("确定退出当前登录？"), 3) == true )
+        {
+            WINDOW_MGR_PTR->CloseWindow(g_stcStrMainFrameDlg.c_str());
+            TerminateProcess(GetCurrentProcess(), 0);
+        }
+    }
+
+    return true;
 }
 
 bool CMainFrameLogic::OnTabCascadeCfg(TNotifyUI& msg)
 {
-	CTabLayoutUI *pControl = (CTabLayoutUI*)ISipToolCommonOp::FindControl( m_pm, _T("SipToolSlideTab") );
-	if (pControl)
-	{
-		pControl->SelectItem(emTabID_CascadeCfg);
-	}
-
+    SwitchCfgTabWnd(emTabID_CascadeCfg);
 	return true;
 }
 
 bool CMainFrameLogic::OnTabNeighborCfg(TNotifyUI& msg)
 {
-	CTabLayoutUI *pControl = (CTabLayoutUI*)ISipToolCommonOp::FindControl( m_pm, _T("SipToolSlideTab") );
-	if (pControl)
-	{
-		pControl->SelectItem(emTabID_NeighborCfg);
-	}
-
+    SwitchCfgTabWnd(emTabID_NeighborCfg);
 	return true;
 }
 
 bool CMainFrameLogic::OnTabLocalAreaNumCfg(TNotifyUI& msg)
 {
-	CTabLayoutUI *pControl = (CTabLayoutUI*)ISipToolCommonOp::FindControl( m_pm, _T("SipToolSlideTab") );
-	if (pControl)
-	{
-		pControl->SelectItem(emTabID_LocalAreaNumCfg);
-	}
-
+    SwitchCfgTabWnd(emTabID_LocalAreaNumCfg);
 	return true;
 }
 
@@ -198,14 +160,23 @@ bool CMainFrameLogic::OnSipToolConnected(WPARAM wparam, LPARAM lparam, bool& bHa
         m_bLogin = true;
         m_pm->DoCase(_T("caseIsLogining"));
 
+        if ( !SetWindowPos( m_pm->GetPaintWindow(), HWND_TOP, 0, 0, 864, 614, SWP_NOACTIVATE|SWP_NOMOVE ) )
+        {
+            DWORD dwErrorID = GetLastError();
+            CString strMsg;
+            strMsg.Format(_T("SetWindowPos Error, GetLastError:%d"), dwErrorID);
+            ShowMessageBox(strMsg);
+        }
+
         //界面变更
         ISipToolCommonOp::ShowControl( false, m_pm, _T("PageLogin") );
         ISipToolCommonOp::ShowControl( true, m_pm, _T("PageSipToolMain") );
-        SetWindowPos( m_pm->GetPaintWindow(), HWND_TOP, 0, 0, 864, 614, SWP_NOACTIVATE|SWP_NOMOVE );
+        
         WINDOW_MGR_PTR->ShowWindowCenter(g_stcStrMainFrameDlg.c_str());
 
         //默认选中级联配置
         ISipToolCommonOp::OptionSelect(true, m_pm, _T("CascadeCfgOpt"));
+        m_emLastCfgTabID = emTabID_CascadeCfg;
 
         if (bForceLogin)
         {
@@ -227,15 +198,77 @@ bool CMainFrameLogic::OnSipToolLogout(WPARAM wparam, LPARAM lparam, bool& bHandl
         return true;
     }
 
+    if ( !SetWindowPos( m_pm->GetPaintWindow(), HWND_TOP, 0, 0, 454, 282, SWP_NOACTIVATE|SWP_NOMOVE ) )
+    {
+        DWORD dwErrorID = GetLastError();
+        CString strMsg;
+        strMsg.Format(_T("SetWindowPos Error, GetLastError:%d"), dwErrorID);
+        ShowMessageBox(strMsg);
+    }
+
     ISipToolCommonOp::ShowControl( true, m_pm, _T("PageLogin") );
     ISipToolCommonOp::ShowControl( false, m_pm, _T("PageSipToolMain") );
-    SetWindowPos( m_pm->GetPaintWindow(), HWND_TOP, 0, 0, 454, 282, SWP_NOACTIVATE|SWP_NOMOVE );
+    
     WINDOW_MGR_PTR->ShowWindowCenter(g_stcStrMainFrameDlg.c_str());
     m_bLogin = false;
 
     CSipToolComInterface->CloseLink();
 
     return true;
+}
+
+void CMainFrameLogic::SwitchCfgTabWnd( EmCfgCtrlTabID emSelCfgTabID )
+{
+    CTabLayoutUI *pControl = (CTabLayoutUI*)ISipToolCommonOp::FindControl( m_pm, _T("SipToolSlideTab") );
+    if (!pControl)
+    {
+        return;
+    }
+
+    if ( m_emLastCfgTabID == emTabID_CascadeCfg && emSelCfgTabID != emTabID_CascadeCfg )
+    {
+        bool bChanged = CCascadeCfgLogic::GetSingletonPtr()->IsCfgChanged();
+        if ( false == bChanged )
+        {
+            ISipToolCommonOp::OptionSelect(true, m_pm, _T("CascadeCfgOpt"));
+            pControl->SelectItem(emTabID_CascadeCfg);
+            return;
+        }
+    }
+
+    if (m_emLastCfgTabID == emTabID_LocalAreaNumCfg && emSelCfgTabID != emTabID_LocalAreaNumCfg)
+    {
+        bool bChanged = CLocalAreaNumCfgLogic::GetSingletonPtr()->IsCfgChanged();
+        if ( false == bChanged )
+        {
+            ISipToolCommonOp::OptionSelect(true, m_pm, _T("LocalAreaNumCfgOpt"));
+            pControl->SelectItem(emTabID_LocalAreaNumCfg);
+            return;
+        }
+    }
+
+    pControl->SelectItem(emSelCfgTabID);
+    m_emLastCfgTabID = emSelCfgTabID;
+}
+
+bool CMainFrameLogic::IsCfgModify()
+{
+    bool bModify = false;
+    switch (m_emLastCfgTabID)
+    {
+    case emTabID_CascadeCfg:
+        bModify = CCascadeCfgLogic::GetSingletonPtr()->IsCfgModify();
+        break;
+    case emTabID_NeighborCfg:
+        break;
+    case emTabID_LocalAreaNumCfg:
+        bModify = CLocalAreaNumCfgLogic::GetSingletonPtr()->IsCfgModify();
+        break;
+    default:
+        break;
+    }
+
+    return bModify;
 }
 
 /*

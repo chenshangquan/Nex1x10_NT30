@@ -1,4 +1,4 @@
-// rkcstruct.h: interface for the cmsstruct class.
+// siptoolstruct.h: interface for the cmsstruct class.
 //
 //////////////////////////////////////////////////////////////////////
 #ifndef _h_siptoolstruct_h__

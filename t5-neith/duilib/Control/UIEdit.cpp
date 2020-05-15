@@ -119,16 +119,15 @@ namespace DuiLib
 				::InvalidateRect(m_hWnd, &rcClient, FALSE);
 			}
 		}
-		else if( uMsg == WM_KEYDOWN /*&& TCHAR(wParam) == VK_RETURN*/ ) {         
-            if(TCHAR(wParam) == VK_RETURN)  
-            {
-                m_pOwner->GetManager()->SendNotify(m_pOwner, DUI_MSGTYPE_RETURN);
-            }  
-            else if(TCHAR(wParam) == VK_TAB)
-            {
-                m_pOwner->GetManager()->SetNextTabControl(::GetKeyState(VK_SHIFT) >= 0);  
-            }
+		else if( uMsg == WM_KEYDOWN && TCHAR(wParam) == VK_RETURN ) {
+			m_pOwner->GetManager()->SendNotify(m_pOwner, DUI_MSGTYPE_RETURN);
 		}
+        else if(uMsg == WM_KEYDOWN && TCHAR(wParam)== VK_TAB) {
+            m_pOwner->GetManager()->SetNextTabControl(::GetKeyState(VK_SHIFT) >= 0);
+        }
+        else if( uMsg == WM_KEYDOWN && TCHAR(wParam) == VK_BACK ) {
+            m_pOwner->SetBack(true);
+        }
 		else if( uMsg == OCM__BASE + WM_CTLCOLOREDIT  || uMsg == OCM__BASE + WM_CTLCOLORSTATIC ) {
 			if( m_pOwner->GetNativeEditBkColor() == 0xFFFFFFFF ) return NULL;
 			::SetBkMode((HDC)wParam, TRANSPARENT);
@@ -168,6 +167,11 @@ namespace DuiLib
             {
                 bHandled = FALSE;
             }
+        }
+        else if ( uMsg == WM_PASTE && m_pOwner->GetNumberStyle() != MENU_NO_STYLE )
+        {
+            m_pOwner->SetPaste(true);
+            bHandled = FALSE;
         }
 		else bHandled = FALSE;
 		if( !bHandled ) return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
@@ -231,12 +235,36 @@ namespace DuiLib
         {
             if (str.size() > 0)
             {
-                char c = str[str.size() - 1];
-                if (c < '0' || (c > '9' && c < 'A') || (c > 'F' && c < 'a') || c > 'f' )
+                WORD wPos = m_pOwner->GetSelStart();
+                if (wPos <= str.size() && wPos > 0)
                 {
-                    Edit_Undo(m_hWnd);
-                    m_pOwner->Invalidate();
-                    return 0;
+                    if ( m_pOwner->IsPaste() )
+                    {
+                        m_pOwner->SetPaste(false);
+                        if ( m_pOwner->GetPasteStart() < wPos )
+                        {
+                            for (UINT uIndex = m_pOwner->GetPasteStart(); uIndex < wPos; uIndex++)
+                            {
+                                unsigned char c = str[uIndex];
+                                if (c < '0' || (c > '9' && c < 'A') || (c > 'F' && c < 'a') || c > 'f' )
+                                {
+                                    Edit_Undo(m_hWnd);
+                                    m_pOwner->Invalidate();
+                                    return 0;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        unsigned char c = str[wPos - 1];
+                        if (c < '0' || (c > '9' && c < 'A') || (c > 'F' && c < 'a') || c > 'f' )
+                        {
+                            Edit_Undo(m_hWnd);
+                            m_pOwner->Invalidate();
+                            return 0;
+                        }
+                    }
                 }
             }
         }
@@ -244,12 +272,214 @@ namespace DuiLib
         {
             if (str.size() > 0)
             {
-                char c = str[str.size() - 1];
-                if ((c < '0' || c > '9') && c != '.' )
+                WORD wPos = m_pOwner->GetSelStart();
+                if (wPos <= str.size() && wPos > 0)
                 {
-                    Edit_Undo(m_hWnd);
-                    m_pOwner->Invalidate();
-                    return 0;
+                    if ( m_pOwner->IsPaste() )
+                    {
+                        m_pOwner->SetPaste(false);
+                        if ( m_pOwner->GetPasteStart() < wPos )
+                        {
+                            for (UINT uIndex = m_pOwner->GetPasteStart(); uIndex < wPos; uIndex++)
+                            {
+                                unsigned char c = str[uIndex];
+                                if ((c < '0' || c > '9') && c != '.' )
+                                {
+                                    Edit_Undo(m_hWnd);
+                                    m_pOwner->Invalidate();
+                                    return 0;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        unsigned char c = str[wPos - 1];
+                        if ( (c < '0' || c > '9') && c != '.' )
+                        {
+                            Edit_Undo(m_hWnd);
+                            m_pOwner->Invalidate();
+                            return 0;
+                        }
+
+                        //首字符不为'.'
+                        if ( wPos == 1 && c == '.' )
+                        {
+                            Edit_Undo(m_hWnd);
+                            m_pOwner->Invalidate();
+                            return 0;
+                        }
+
+                        CDuiString strT,tmpS;  //s:编辑框原来的字串加上刚输入的字符；tmpS：用于后面获得原来的字串中“.”的数目
+                        tmpS = pstr;
+                        strT = tmpS;
+                        int count = -1;	
+                        int i = -1;	 
+                        int j = -1;
+                        BOOL bDot = TRUE;  //是否可以再输入. （即“.”的数目大于3个）
+
+                        do	//获取“.”的数量
+                        {
+                            count++;
+                            i = tmpS.Find( 46, i+1 );
+                        }while( i != -1 );
+                        if( count >= 3 )
+                        {
+                            bDot = FALSE;
+                        }
+
+                        bool bBack = m_pOwner->IsBack();
+                        if (bBack)//回格
+                        {
+                            m_pOwner->SetBack(false);
+                        }
+
+                        if (wPos == nbyte && !bBack)  //末尾输入
+                        {
+                            if ( c == 46 && count == 3 )  //输入字符是“.”且数量为3
+                            {
+                                bDot = TRUE;
+                            }
+
+                            i = tmpS.ReverseFind(46);  //获取最后一个“.”的位置
+                            if ( !bDot )//如果不允许输入点
+                            {
+                                if ( c == 46 )
+                                {
+                                    Edit_Undo(m_hWnd);
+                                    m_pOwner->Invalidate();
+                                    return 0;
+                                }
+                                if ( nbyte - i > 4 )
+                                {
+                                    Edit_Undo(m_hWnd);
+                                    m_pOwner->Invalidate();
+                                    return 0;
+                                }
+                            }
+                            else
+                            {
+                                if ( nbyte - i > 3 && c != 46 )
+                                {
+                                    tmpS += 46;
+                                    ::SetWindowText( m_hWnd, tmpS );
+
+                                    m_pOwner->SetSel( wPos+1, wPos+1 );
+                                }
+                            }
+
+                            if ( nbyte - i >= 4 )	//用字串长度减去最后一个“.”的位置
+                            {
+                                BOOL bChange = FALSE;
+                                CDuiString strRight = strT.Right(nbyte - i - 1);
+                                int nRight = atoi(W2A(strRight));
+                                if ( nRight > 255 )
+                                {
+                                    strRight = _T("255");
+                                    strT = strT.Left( i + 1 ) + strRight;
+                                    bChange = TRUE;
+                                }
+
+                                if( !bDot )	//判断能否再输入点
+                                {
+                                    if ( bChange )
+                                    {
+                                        ::SetWindowText( m_hWnd, strT );
+
+                                        m_pOwner->SetSel( wPos, wPos );
+                                        return 0;
+                                    }
+                                }
+                                else
+                                {
+                                    strT += 46;
+                                    ::SetWindowText( m_hWnd, strT );
+
+                                    m_pOwner->SetSel( wPos+1, wPos+1 );	//将鼠标移至相应位置
+                                    return 0;
+                                }
+                            }
+                        }
+                        else  //
+                        {
+                            if ( c == 46 && count == 3 )  //输入字符是“.”且数量为3
+                            {
+                                bDot = TRUE;
+                            }
+
+                            if ( c == 46 )
+                            {
+                                if (!bDot)
+                                {
+                                    Edit_Undo(m_hWnd);
+                                    m_pOwner->Invalidate();
+                                    return 0;
+                                }
+                            }
+                            else
+                            {
+                                i = -1;
+                                j = 0;
+                                CDuiString astr[4];
+
+                                if ( count == 0 )
+                                {
+                                    int nTemp = atoi( W2A(strT) );
+                                    if ( nTemp > 255 )
+                                    {
+                                        strT = _T("255.");
+                                        SetWindowText( m_hWnd, strT );
+
+                                        m_pOwner->SetSel( 4, 4 );
+                                        return 0;
+                                    }
+                                }
+
+                                for ( int k = 0; k <= count; k++ )
+                                {					
+                                    if ( k == count )
+                                    {
+                                        astr[k] = strT.Right( nbyte -1 - i );
+                                    }
+                                    else
+                                    {
+                                        i = strT.Find( 46, i+1 ); 
+                                        astr[k] = strT.Mid( j, i - j );
+                                    }
+                                    int nTemp = atoi( W2A(astr[k]) ); 
+                                    int nAstrLen = strlen( W2A(astr[k]) );
+                                    if ( nTemp > 255 )
+                                    {
+                                        astr[k] = _T("255");
+                                    }
+                                    else
+                                    {
+                                        if ( nAstrLen > 3 )
+                                        {
+                                            return 0;
+                                        }
+                                    }
+
+                                    j = i + 1;
+                                }
+
+                                strT = _T("");
+                                for ( int k = 0; k <= count; k++  )
+                                {
+                                    strT += astr[k];
+                                    if ( k != count )
+                                    {
+                                        strT += 46;
+                                    }
+                                }
+                                ::SetWindowText( m_hWnd, strT );	
+                                m_pOwner->SetSel( wPos, wPos );
+                            }
+                        }
+
+                        //////////////////////////////////////////////////////////////////////////
+
+                    }
                 }
             }
         }
@@ -257,12 +487,36 @@ namespace DuiLib
         {
             if (str.size() > 0)
             {
-                char c = str[str.size() - 1];
-                if ((c < '0' || c > '9'))
+                WORD wPos = m_pOwner->GetSelStart();
+                if (wPos <= str.size() && wPos > 0)
                 {
-                    Edit_Undo(m_hWnd);
-                    m_pOwner->Invalidate();
-                    return 0;
+                    if ( m_pOwner->IsPaste() )
+                    {
+                        m_pOwner->SetPaste(false);
+                        if ( m_pOwner->GetPasteStart() < wPos )
+                        {
+                            for (UINT uIndex = m_pOwner->GetPasteStart(); uIndex < wPos; uIndex++)
+                            {
+                                unsigned char c = str[uIndex];
+                                if ( c < '0' || c > '9' )
+                                {
+                                    Edit_Undo(m_hWnd);
+                                    m_pOwner->Invalidate();
+                                    return 0;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        unsigned char c = str[wPos - 1];
+                        if ( c < '0' || c > '9' )
+                        {
+                            Edit_Undo(m_hWnd);
+                            m_pOwner->Invalidate();
+                            return 0;
+                        }
+                    }
                 }
             }
         }
@@ -271,13 +525,38 @@ namespace DuiLib
         {
             if (str.size() > 0)
             {
-                unsigned char c = str[str.size() - 1];
-                if ( (c < '0' && c != '*' && c != '-') || (c > '9' && c < 'A') || (c > 'Z' && c < 'a' && c != '_')
-                    || (c > 'z' && c < 0x7F) )
+                WORD wPos = m_pOwner->GetSelStart();
+                if (wPos <= str.size() && wPos > 0)
                 {
-                    Edit_Undo(m_hWnd);
-                    m_pOwner->Invalidate();
-                    return 0;
+                    if ( m_pOwner->IsPaste() )
+                    {
+                        m_pOwner->SetPaste(false);
+                        if ( m_pOwner->GetPasteStart() < wPos )
+                        {
+                            for (UINT uIndex = m_pOwner->GetPasteStart(); uIndex < wPos; uIndex++)
+                            {
+                                unsigned char c = str[uIndex];
+                                if ( (c < '0' && c != '*' && c != '-') || (c > '9' && c < 'A')
+                                    || (c > 'Z' && c < 'a' && c != '_') || (c > 'z' && c < 0x7F) )
+                                {
+                                    Edit_Undo(m_hWnd);
+                                    m_pOwner->Invalidate();
+                                    return 0;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        unsigned char c = str[wPos - 1];
+                        if ( (c < '0' && c != '*' && c != '-') || (c > '9' && c < 'A')
+                            || (c > 'Z' && c < 'a' && c != '_') || (c > 'z' && c < 0x7F) )
+                        {
+                            Edit_Undo(m_hWnd);
+                            m_pOwner->Invalidate();
+                            return 0;
+                        }
+                    }
                 }
             }
         }
@@ -286,13 +565,38 @@ namespace DuiLib
         {
             if (str.size() > 0)
             {
-                unsigned char c = str[str.size() - 1];
-                if ( (c < '0' && c != '*' && c != '-') || (c > '9' && c < 'A') || (c > 'Z' && c < 'a' && c != '_')
-                    || (c > 'z' && c < 0x7F) || c > 0x80 )
+                WORD wPos = m_pOwner->GetSelStart();
+                if (wPos <= str.size() && wPos > 0)
                 {
-                    Edit_Undo(m_hWnd);
-                    m_pOwner->Invalidate();
-                    return 0;
+                    if ( m_pOwner->IsPaste() )
+                    {
+                        m_pOwner->SetPaste(false);
+                        if ( m_pOwner->GetPasteStart() < wPos )
+                        {
+                            for (UINT uIndex = m_pOwner->GetPasteStart(); uIndex < wPos; uIndex++)
+                            {
+                                unsigned char c = str[uIndex];
+                                if ( (c < '0' && c != '*' && c != '-') || (c > '9' && c < 'A')
+                                    || (c > 'Z' && c < 'a' && c != '_') || (c > 'z' && c < 0x7F) || c > 0x80 )
+                                {
+                                    Edit_Undo(m_hWnd);
+                                    m_pOwner->Invalidate();
+                                    return 0;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        unsigned char c = str[wPos - 1];
+                        if ( (c < '0' && c != '*' && c != '-') || (c > '9' && c < 'A')
+                            || (c > 'Z' && c < 'a' && c != '_') || (c > 'z' && c < 0x7F) || c > 0x80 )
+                        {
+                            Edit_Undo(m_hWnd);
+                            m_pOwner->Invalidate();
+                            return 0;
+                        }
+                    }
                 }
             }
         }
@@ -318,7 +622,7 @@ namespace DuiLib
 	CEditUI::CEditUI() : m_pWindow(NULL), m_uMaxChar(255), m_bReadOnly(false),
 		m_bAllowedCopy(true),m_bPasswordMode(false), m_cPasswordChar(_T('*')),
 		m_uButtonState(0), m_dwEditbkColor(0xFFFFFFFF), m_iWindowStyls(0),
-        m_dwTipTextColor(0), m_uNumberStyle(MENU_NO_STYLE)
+        m_dwTipTextColor(0), m_uNumberStyle(MENU_NO_STYLE),m_bPaste(false), m_uPasteStart(0), m_bBack(false)
 	{
 		SetTextPadding(CDuiRect(4, 3, 4, 3));
 		//SetBkColor(0xFFFFFFFF);
@@ -638,6 +942,45 @@ namespace DuiLib
 	{
 		if( m_pWindow != NULL ) Edit_ReplaceSel(*m_pWindow, lpszReplace);
 	}
+
+    WORD CEditUI::GetSelEnd()
+    {
+        if(m_pWindow != NULL) return HIWORD(Edit_GetSel(*m_pWindow));
+    }
+
+    WORD CEditUI::GetSelStart()
+    {
+        if(m_pWindow != NULL) return LOWORD(Edit_GetSel(*m_pWindow));
+    }
+
+    void CEditUI::SetPaste(bool bPaste)
+    {
+        if (m_pWindow != NULL) 
+        {
+            m_bPaste = bPaste;
+            if (bPaste) m_uPasteStart = GetSelStart();
+        }
+    }
+
+    bool CEditUI::IsPaste() const
+    {
+        return m_bPaste;
+    }
+
+    UINT CEditUI::GetPasteStart()
+    {
+        return m_uPasteStart;
+    }
+
+    void CEditUI::SetBack(bool bBack)
+    {
+        if (m_pWindow != NULL) m_bBack = bBack;
+    }
+
+    bool CEditUI::IsBack() const
+    {
+        return m_bBack;
+    }
 
 	void CEditUI::SetPos(RECT rc)
 	{

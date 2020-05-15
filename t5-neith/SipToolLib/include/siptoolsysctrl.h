@@ -19,11 +19,15 @@ public:
     virtual u16 DeleteNeighborInfo(s8* szAreaNum);
     //设置本地区号
     virtual u16 SetLocalAreaCode(s8* szLocalAreaCode);
+    //获取本地信息，包含邻居,父级和本地区号
+    virtual u16 GetLocalInfo();
 
     //获取当前级联配置信息
     virtual u16 GetCasRegServerBackInfo(TRegServerInfo &tCasRegServerInfo);
     //获取当前所有的邻居信息
     virtual u16 GetNeighborBackInfo(vector<TNeiRegServerInfo> &vNeighborInfo);
+    //获取抢登者IP地址
+    virtual u16 GetForceIP(string &strForceIP);
 
 protected:
     void BuildEventsMap();
@@ -40,6 +44,8 @@ protected:
     void OnDeleteNeighborInfoRsp(const CMessage& cMsg);
     //设置本地区号消息回复
     void OnSetLocalAreaCodeRsp(const CMessage& cMsg);
+    //设置本地信息消息回复
+    void OnGetLocalInfoRsp(const CMessage& cMsg);
     //被迫下线通知
     void OnForceLogoutNty(const CMessage& cMsg);
 
@@ -53,4 +59,5 @@ private:
     CSipToolSession    *m_pSession;
     vector<TNeiRegServerInfo> m_vNeighborInfo;
     TRegServerInfo m_tCasRegServerInfo;
+    string  m_strForceIP;
 };

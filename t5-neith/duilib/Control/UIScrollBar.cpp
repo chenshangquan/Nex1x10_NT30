@@ -41,7 +41,8 @@ namespace DuiLib
 {
 	CScrollBarUI::CScrollBarUI() : m_bHorizontal(false), m_nRange(100), m_nScrollPos(0), m_nLineSize(8), 
 		m_pOwner(NULL), m_nLastScrollPos(0), m_nLastScrollOffset(0), m_nScrollRepeatDelay(0), m_uButton1State(0), \
-		m_uButton2State(0), m_uThumbState(0), m_bShowButton1(true), m_bShowButton2(true),m_bIsMosaicScroll(false)
+		m_uButton2State(0), m_uThumbState(0), m_bShowButton1(true), m_bShowButton2(true),m_bIsMosaicScroll(false), \
+        m_nImageCx(0), m_nImageCy(0)
 	{
 		m_cxyFixed.cx = DEFAULT_SCROLLBAR_SIZE;
 		ptLastMouse.x = ptLastMouse.y = 0;
@@ -161,6 +162,26 @@ namespace DuiLib
 	{
 		m_nLineSize = nSize;
 	}
+
+    int CScrollBarUI::GetImageCx() const
+    {
+        return m_nImageCx;
+    }
+
+    void CScrollBarUI::SetImageCx(int nImageCx)
+    {
+        m_nImageCx = nImageCx;
+    }
+
+    int CScrollBarUI::GetImageCy() const
+    {
+        return m_nImageCy;
+    }
+
+    void CScrollBarUI::SetImageCy(int nImageCy)
+    {
+        m_nImageCy = nImageCy;
+    }
 
 	bool CScrollBarUI::GetShowButton1()
 	{
@@ -814,6 +835,8 @@ namespace DuiLib
 		else if( _tcscmp(pstrName, _T("showbutton2")) == 0 ) SetShowButton2(_tcscmp(pstrValue, _T("true")) == 0);
 		else if( _tcscmp(pstrName, _T("mosaicscrollpic")) == 0 ) SetMosaicSliderImage(pstrValue);
 		else if( _tcscmp(pstrName, _T("mosaicscroll")) == 0 ) SetMosaicBk(_tcscmp(pstrValue, _T("true")) == 0);
+        else if( _tcscmp(pstrName, _T("imagecx")) == 0 ) SetImageCx(_ttoi(pstrValue));
+        else if( _tcscmp(pstrName, _T("imagecy")) == 0 ) SetImageCy(_ttoi(pstrValue));
 		else CControlUI::SetAttribute(pstrName, pstrValue);
 	}
 
@@ -873,8 +896,9 @@ namespace DuiLib
 		else m_uButton1State &= ~ UISTATE_DISABLED;
 
 		m_sImageModify.Empty();
-		m_sImageModify.SmallFormat(_T("dest='%d,%d,%d,%d'"), m_rcButton1.left - m_rcItem.left, \
-			m_rcButton1.top - m_rcItem.top, m_rcButton1.right - m_rcItem.left, m_rcButton1.bottom - m_rcItem.top);
+		m_sImageModify.SmallFormat(_T("dest='%d,%d,%d,%d'"), m_rcButton1.left - m_rcItem.left + m_nImageCx, \
+			m_rcButton1.top - m_rcItem.top + m_nImageCy, m_rcButton1.right - m_rcItem.left - m_nImageCx, \
+            m_rcButton1.bottom - m_rcItem.top - m_nImageCy);
 
 		if( (m_uButton1State & UISTATE_DISABLED) != 0 ) {
 			if( !m_sButton1DisabledImage.IsEmpty() ) {
@@ -913,8 +937,9 @@ namespace DuiLib
 		else m_uButton2State &= ~ UISTATE_DISABLED;
 
 		m_sImageModify.Empty();
-		m_sImageModify.SmallFormat(_T("dest='%d,%d,%d,%d'"), m_rcButton2.left - m_rcItem.left, \
-			m_rcButton2.top - m_rcItem.top, m_rcButton2.right - m_rcItem.left, m_rcButton2.bottom - m_rcItem.top);
+		m_sImageModify.SmallFormat(_T("dest='%d,%d,%d,%d'"), m_rcButton2.left - m_rcItem.left + m_nImageCx, \
+			m_rcButton2.top - m_rcItem.top + m_nImageCy, m_rcButton2.right - m_rcItem.left - m_nImageCx, \
+            m_rcButton2.bottom - m_rcItem.top - m_nImageCy);
 
 		if( (m_uButton2State & UISTATE_DISABLED) != 0 ) {
 			if( !m_sButton2DisabledImage.IsEmpty() ) {
@@ -952,8 +977,8 @@ namespace DuiLib
 		else m_uThumbState &= ~ UISTATE_DISABLED;
 
 		m_sImageModify.Empty();
-		m_sImageModify.SmallFormat(_T("dest='%d,%d,%d,%d'"), m_rcThumb.left - m_rcItem.left, \
-			m_rcThumb.top - m_rcItem.top, m_rcThumb.right - m_rcItem.left, m_rcThumb.bottom - m_rcItem.top);
+		m_sImageModify.SmallFormat(_T("dest='%d,%d,%d,%d'"), m_rcThumb.left - m_rcItem.left + m_nImageCx, \
+			m_rcThumb.top - m_rcItem.top, m_rcThumb.right - m_rcItem.left - m_nImageCx, m_rcThumb.bottom - m_rcItem.top);
 
 		if( (m_uThumbState & UISTATE_DISABLED) != 0 ) {
 			if( !m_sThumbDisabledImage.IsEmpty() ) {
@@ -992,9 +1017,9 @@ namespace DuiLib
 
 		m_sImageModify.Empty();
 		if( !m_bHorizontal ) {
-			m_sImageModify.SmallFormat(_T("dest='%d,%d,%d,%d'"), m_rcThumb.left - m_rcItem.left, \
+			m_sImageModify.SmallFormat(_T("dest='%d,%d,%d,%d'"), m_rcThumb.left - m_rcItem.left + m_nImageCx, \
 				(m_rcThumb.top + m_rcThumb.bottom) / 2 - m_rcItem.top - m_cxyFixed.cx / 2, \
-				m_rcThumb.right - m_rcItem.left, \
+				m_rcThumb.right - m_rcItem.left - m_nImageCx, \
 				(m_rcThumb.top + m_rcThumb.bottom) / 2 - m_rcItem.top + m_cxyFixed.cx - m_cxyFixed.cx / 2);
 		}
 		else {

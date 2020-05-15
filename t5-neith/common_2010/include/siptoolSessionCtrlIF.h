@@ -7,7 +7,7 @@ class CSipToolSessionCtrlIF : public CKdvDispEvent
 {
 public:
     //获取接口 
-    virtual u16 RkcGetInterface(CSipToolSysCtrlIF **ppCtrl) = 0;
+    virtual u16 SipGetInterface(CSipToolSysCtrlIF **ppCtrl) = 0;
 
     //连接到Sip
 	virtual u16 ConnectSip(u32 dwIP, u32 dwPort,LPSTR strUser,LPSTR strPwd, BOOL32 bConnect = TRUE) = 0;

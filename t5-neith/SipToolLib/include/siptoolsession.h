@@ -11,7 +11,7 @@ public:
     ~CSipToolSession();
 
     //获取接口 
-    virtual u16 RkcGetInterface(CSipToolSysCtrlIF **ppCtrl);
+    virtual u16 SipGetInterface(CSipToolSysCtrlIF **ppCtrl);
 
     virtual u16 ConnectSip(u32 dwIP, u32 dwPort, LPSTR strUser, LPSTR strPwd, BOOL32 bConnect = TRUE);
     virtual u16 DisconnectSip();

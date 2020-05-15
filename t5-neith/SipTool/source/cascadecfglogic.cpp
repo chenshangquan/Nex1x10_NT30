@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "cascadecfglogic.h"
 #include "mainframelogic.h"
+#include "messageboxlogic.h"
 
 template<> CCascadeCfgLogic* Singleton<CCascadeCfgLogic>::ms_pSingleton  = NULL;
 
@@ -24,13 +25,65 @@ CCascadeCfgLogic::~CCascadeCfgLogic()
 {
 }
 
+bool CCascadeCfgLogic::IsCfgChanged()
+{
+    CButtonUI *pControl = (CButtonUI*)ISipToolCommonOp::FindControl(m_pm ,_T("CasCfgSaveBtn"));
+    if ( pControl && pControl->IsEnabled() )
+    {
+        return SaveMsgBox();
+    }
+
+    return true;
+}
+
+bool CCascadeCfgLogic::IsCfgModify()
+{
+    CButtonUI *pControl = (CButtonUI*)ISipToolCommonOp::FindControl(m_pm ,_T("CasCfgSaveBtn"));
+    if ( pControl && pControl->IsEnabled() )
+    {
+        return true;
+    }
+
+    return false;
+}
+
+bool CCascadeCfgLogic::SaveMsgBox()
+{
+    if ( ShowMessageBox(_T("配置项已修改，是否保存配置？"), 2) == true )
+    {
+        TNotifyUI msg;
+        return OnCasCfgSaveBtnClicked(msg);
+    }
+    else
+    {
+        //还原当前配置项
+        if ( _tcscmp(m_cstrParentIP, _T("0.0.0.0")) == 0 )
+        {
+            ISipToolCommonOp::SetControlText(_T(""), m_pm ,_T("ParentIPEdt"));
+        }
+        else
+        {
+            ISipToolCommonOp::SetControlText(m_cstrParentIP, m_pm ,_T("ParentIPEdt"));
+        }
+        m_pm->DoCase(_T("caseParentIPSaved"));
+    }
+
+    return true;
+}
+
 bool CCascadeCfgLogic::OnCasCfgSaveBtnClicked(TNotifyUI& msg)
 {
     CString cstrParentIP =( ISipToolCommonOp::GetControlText(m_pm ,_T("ParentIPEdt")) ).c_str();
 
-    if ( !CMainFrameLogic::IsIpFormatRight(cstrParentIP) )
+    if ( cstrParentIP == _T("") )
     {
-        SHOWTIP(_T("服务器地址非法"));
+        CSipToolComInterface->SetParentIP( "0.0.0.0" );
+        return true;
+    }
+
+    if ( !CCallAddr::IsValidIpV4(CT2A(cstrParentIP)) )
+    {
+        ShowMessageBox(_T("地址输入错误"));
         return false;
     }
 
@@ -41,10 +94,17 @@ bool CCascadeCfgLogic::OnCasCfgSaveBtnClicked(TNotifyUI& msg)
 
 bool CCascadeCfgLogic::OnParentIPChanged(TNotifyUI& msg)
 {
-    m_pm->DoCase(_T("caseParentIPChanged"));
-
     CString cstrParentIP =( ISipToolCommonOp::GetControlText(m_pm ,_T("ParentIPEdt")) ).c_str();
     if ( cstrParentIP.IsEmpty() )
+    {
+        cstrParentIP = _T("0.0.0.0");
+    }
+
+    if (cstrParentIP != m_cstrParentIP)
+    {
+        m_pm->DoCase(_T("caseParentIPChanged"));
+    }
+    else
     {
         m_pm->DoCase(_T("caseParentIPSaved"));
     }
@@ -82,6 +142,13 @@ bool CCascadeCfgLogic::OnSetParentIPRsp( WPARAM wparam, LPARAM lparam, bool& bHa
 
     if (bSuccess)
     {
+        CString cstrParentIP =( ISipToolCommonOp::GetControlText(m_pm ,_T("ParentIPEdt")) ).c_str();
+        if ( cstrParentIP.IsEmpty() )
+        {
+            cstrParentIP = _T("0.0.0.0");
+        }
+        m_cstrParentIP = cstrParentIP;
+
         m_pm->DoCase(_T("caseParentIPSaved"));
         SHOWTIP(_T("级联配置，保存成功！"));
     }

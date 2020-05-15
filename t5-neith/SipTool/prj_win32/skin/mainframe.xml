@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Window size="850,600" roundcorner="1,0" caption="0,0,0,40" bktrans="true" mininfo="454,282" >
+<Window size="864,614" roundcorner="1,0" caption="0,0,0,40" bktrans="true" mininfo="454,282" >
 	<Font name="宋体" size="12" bold="false" />
 	<Font name="宋体" size="12" bold="true" />
 	<Font name="微软雅黑" size="12" bold="false" />
-	<Default name="VScrollBar" value="width=&quot;23&quot; bknormalimage=&quot;res/public/scrollbar_bg.png&quot; button1normalimage=&quot;res/public/tria_top_normal.png&quot; button1hotimage=&quot;res/public/tria_top_hover.png&quot; button1pushedimage=&quot;res/public/tria_top_down.png&quot; button2normalimage=&quot;res/public/tria_bottom_normal.png&quot; button2hotimage=&quot;res/public/tria_bottom_hover.png&quot; button2pushedimage=&quot;res/public/tria_bottom_down.png&quot; thumbnormalimage=&quot;file=&apos;res/public/rail.png&apos; dest=&apos;2,2,2,2&apos;&quot;" />
+	<Default name="VScrollBar" value="width=&quot;23&quot; imagecx=&quot;2&quot; imagecy=&quot;2&quot; bknormalimage=&quot;file=&apos;res/public/scrollbar_bg.png&apos; corner=&apos;2,2,2,2&apos;&quot; button1normalimage=&quot;file=&apos;res/public/tria_top_normal.png&apos; corner=&apos;19,18,0,0&apos;&quot; button1hotimage=&quot;file=&apos;res/public/tria_top_hover.png&apos; corner=&apos;19,18,0,0&apos;&quot; button1pushedimage=&quot;file=&apos;res/public/tria_top_down.png&apos; corner=&apos;19,18,0,0&apos;&quot; button2normalimage=&quot;file=&apos;res/public/tria_bottom_normal.png&apos; corner=&apos;19,18,0,0&apos;&quot; button2hotimage=&quot;file=&apos;res/public/tria_bottom_hover.png&apos; corner=&apos;19,18,0,0&apos;&quot; button2pushedimage=&quot;file=&apos;res/public/tria_bottom_down.png&apos; corner=&apos;19,18,0,0&apos;&quot; thumbnormalimage=&quot;file=&apos;res/public/rail.png&apos; corner=&apos;2,2,2,2&apos;&quot; " />
 	
 	<!--Default name="Edit" value="bordercolor=&quot;#FFABABAB&quot; bordersize=&quot;0,0,0,1&quot; gdiplus=&quot;true&quot;" /-->
 	<Default name="Edit" value="gdiplus=&quot;true&quot;" />

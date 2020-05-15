@@ -22,6 +22,7 @@
 #include <wininet.h>
 #include "kdvtype.h"
 
+
 #define IP_LEN                  (s32)16     //  IP地址字符串长度
 #define FTP_USER_LEN            (s32)32     //  FTP用户名长度
 #define FTP_PWD_LEN             (s32)32     //  FTP密码长度
@@ -626,7 +627,36 @@ public:
 	BOOL32 FindfFtpFile( LPCTSTR pszRemotePath, LPCTSTR pstrRemoteName );
 	
 	/*=============================================================================
-    函 数 名:SetIsRenameTransFile
+    函 数 名:GetRemoteFileSize
+    功    能:获取远端文件的大小
+    参    数:无
+    注    意:无
+    返 回 值:远端文件的大小
+    -------------------------------------------------------------------------------
+    修改纪录:
+    日      期  版本    修改人  修改内容
+    2005/09/29  4.0     王昊    创建
+    =============================================================================*/
+    virtual u32	GetRemoteFileSize(void);
+
+	/*=============================================================================
+    函 数 名:GetDownloadFileSize
+    功    能:获取远端下载文件的大小
+    参    数:无
+    注    意:无
+    返 回 值:远端文件的大小
+    -------------------------------------------------------------------------------
+    修改纪录:
+    日      期  版本    修改人  修改内容
+    2017/11/20  4.0     叶良平    创建
+    =============================================================================*/
+    virtual u32	GetDownloadFileSize(void);
+
+	//设置远端文件的名字，用于获取远端文件大小
+	virtual void SetRemoteFileName(LPCTSTR pszRemoteFileName);
+
+	/*=============================================================================
+    函 数 名:SetAutoEndFtpFile
     功    能:是否关闭ftp设置   默认由内部控制关闭 
     参    数:BOOL32 bAutoEnd
     注    意:多文件上传由外部控制ftp关闭
@@ -639,24 +669,10 @@ public:
     void SetAutoEndFtpFile( BOOL32 bAutoEnd ){ m_bAutoEndFtpFile = bAutoEnd;};
     BOOL32 GetAutoEndFtpFile(){ return m_bAutoEndFtpFile;};
 
-	//设置远端文件的名字，用于获取远端文件大小
-    void SetRemoteFileName(LPCTSTR pszRemoteFileName);
-
-	/*=============================================================================
-    函 数 名:GetRemoteFileSize
-    功    能:获取远端文件的大小
-    参    数:无
-    注    意:无
-    返 回 值:远端文件的大小
-    -------------------------------------------------------------------------------
-    修改纪录:
-    日      期  版本    修改人  修改内容
-    2005/09/29  4.0     王昊    创建
-    =============================================================================*/
-    virtual u32	GetRemoteFileSize(void);
-	
-
 	BOOL32 isNeedUpdate( u32 dwProcSize );
+
+	//获取连接句柄
+	HINTERNET GetHInternet(void);
 protected:
     /*=============================================================================
     函 数 名:CheckParam
@@ -746,6 +762,19 @@ protected:
     =============================================================================*/
     u32 GetWinRemoteFileSize(void);
 
+	/*=============================================================================
+    函 数 名:GetWinDownloadRemoteFileSize
+    功    能:获取远端windows 下载文件大小
+    参    数:无
+    注    意:无
+    返 回 值:远端windows下载文件大小
+    -------------------------------------------------------------------------------
+    修改纪录:
+    日      期  版本    修改人  修改内容
+    2017/11/20  4.0     叶良平    创建
+    =============================================================================*/
+    u32 GetWinDownloadRemoteFileSize(void);
+
     /*=============================================================================
     函 数 名:GetVaxRemoteFileSize
     功    能:获取远端VAX文件大小
@@ -768,6 +797,9 @@ public:
 protected:
     HINTERNET   m_hSession;                     //  应用于InternetOpen
     HINTERNET   m_hConnect;                     //  应用于InternetConnect
+
+	HINTERNET   m_hSessionDown;                 //  应用于InternetOpen
+    HINTERNET   m_hConnectDown;                 //  应用于InternetConnect
 
     TCHAR       m_aszFtpSrvIp[IP_LEN];          //  FTP服务器的IP地址
     TCHAR       m_aszFtpSrvUser[FTP_USER_LEN];  //  FTP服务器的登录用户
@@ -797,6 +829,7 @@ protected:
 #ifdef _UNICODE
 
 	CFtpCtrlMsgDeal* m_pMsgDeal;				//	处理消息的类
+
 #endif
 };
 

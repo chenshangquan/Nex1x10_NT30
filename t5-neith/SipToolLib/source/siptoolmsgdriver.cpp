@@ -94,7 +94,7 @@ void CSipToolMsgDriver::OnOspMessageComing(WPARAM wParam, LPARAM lParam)
         //打印输出
         CString strEvent = CSipToolPrintCtrl::GetPrintCtrl()->GetEventDescribe(cMsg.event); 
 
-        PrtSipToolMsg(cMsg.event, "\n[RkcLib]: 收到消息:%s(%u).", strEvent,cMsg.event);
+        PrtSipToolMsg(cMsg.event, "\n[SipToolLib]: 收到消息:%s(%u).", strEvent,cMsg.event);
 
         // 检索消息分发表
         vector<CKdvDispEvent*>::iterator itr = m_vpDispEvent.begin();
@@ -109,7 +109,7 @@ void CSipToolMsgDriver::OnOspMessageComing(WPARAM wParam, LPARAM lParam)
         }
         if (!bFind) 
         {	  	 
-            PrtSipToolMsg( "[RkcLib]: 消息:%s(%d)被抛弃,因为没有找到匹配的消息处理器.\n", strEvent, cMsg.event);		
+            PrtSipToolMsg( "[SipToolLib]: 消息:%s(%d)被抛弃,因为没有找到匹配的消息处理器.\n", strEvent, cMsg.event);		
         }
 
         cMsgQue.Pop();

@@ -22,9 +22,9 @@
 	#define LIB_KDVDECODER	"kdvdecoder_u.lib"
 	#define LIB_KDVDECODER_NGP "KdvDecoder_NGP.lib"
     #ifdef _DEBUG
-	    #define LIB_DUILIB		"duilib_ud.lib"
+        #define LIB_DUILIB		"duilib_ud.lib"
     #else
-        #define LIB_DUILIB		"duilib_u.lib"
+	#define LIB_DUILIB		"duilib_u.lib"
     #endif
 	#define LIB_APPFRAME	"appframe_u.lib"
 #else

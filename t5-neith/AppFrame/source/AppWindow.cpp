@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "AppWindow.h"
+#include "..\cnc\include\constdef.h"
 #include "..\SipTool\include\constdef.h"
 
 
@@ -20,7 +21,7 @@ namespace AppFrame {
 			m_pm.RemoveTranslateAccelerator(static_cast<ITranslateAccelerator*>(m_aNotifiers[i]));
 		}
 		m_pm.ReapObjects(m_pm.GetRoot());
-		if (m_bIsDelSelOnClose) //默认为true，窗口需要是new出来的，注意
+		if (m_bIsDelSelOnClose)
 		{
 			delete this;
 		}
@@ -243,14 +244,14 @@ namespace AppFrame {
 		case WM_SYSCOMMAND:    lRes = OnSysCommand(uMsg, wParam, lParam, bHandled); break;
 		case WM_ACTIVATE:
 			{
-				lRes = OnActive(uMsg, wParam, lParam, bHandled); 
+				lRes = OnActive(uMsg, wParam, lParam, bHandled); //bHandled = FALSE;
 				bHandled = FALSE;//控件处理
 				break;
 			}		
 		case WM_NCLBUTTONDBLCLK:
 			{
 				return lRes;
-			}
+			}			
 		case WM_TIMER:
 			{
 				if( wParam < 0x10 ) //大于16的Timer进m_pm.MessageHandler

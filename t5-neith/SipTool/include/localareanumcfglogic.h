@@ -16,8 +16,16 @@ public:
 	CLocalAreaNumCfgLogic();
 	~CLocalAreaNumCfgLogic();
 
-    //bool OnSaveNetWorkButClicked();
+public:
+    //配置项是否已修改
+    bool IsCfgChanged();
+    //配置项是否被修改
+    bool IsCfgModify();
+
 protected:
+    //配置变更，保存提示弹框
+    bool SaveMsgBox();
+
     //点击本地区号保存按钮
     bool OnLocCfgSaveBtnClicked(TNotifyUI& msg);
     //本地区号更改

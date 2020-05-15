@@ -8,7 +8,7 @@
 #include "exceptioncatch.h"
 #include <imagehlp.h>
 #pragma comment(lib, "DbgHelp.lib")
-//#include "rkcprintctrl.h"
+#include "siptoolprintctrl.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -120,7 +120,7 @@ BOOL CSipToolApp::InitInstance()
 
     new CSystem(_T("system.xml"));
 
-    //创建rkctool session
+    //创建siptool session
     CSipToolComInterface->CreateSession();
 
     CSystem::GetSingletonPtr()->Launch();
@@ -216,50 +216,49 @@ void ResetHomeWindow()
 }
 
 
-/*
+
 API void help()
 {
-    PrtRkcMsg( "\nshowver: 显示版本和编译时间");
-    PrtRkcMsg( "\nprt: 打印所有级别为3以上的消息");
-    PrtRkcMsg( "\nprtlevel nLevel: 打印级别为nLevel的消息；消息级别 1-3，\n \
+    PrtSipToolMsg( "\nshowver: 显示版本和编译时间");
+    PrtSipToolMsg( "\nprt: 打印所有级别为3以上的消息");
+    PrtSipToolMsg( "\nprtlevel nLevel: 打印级别为nLevel的消息；消息级别 1-3，\n \
             1为级别最高的消息，该级别的消息对系统可能产生致命影响\n \
             2为一般级别的消息\n \
             3为最低级别消息 " );
-    PrtRkcMsg( "\nprtid msgID: 打印消息号是msgID的消息");
-    PrtRkcMsg( "\nprtrange MaxMsgID, MinMsgID: 打印消息号范围在 MinMsgID 和 MaxMsgID 之间的消息");
-    PrtRkcMsg( "\nstopprt: 停止打印所有消息");
+    PrtSipToolMsg( "\nprtid msgID: 打印消息号是msgID的消息");
+    PrtSipToolMsg( "\nprtrange MaxMsgID, MinMsgID: 打印消息号范围在 MinMsgID 和 MaxMsgID 之间的消息");
+    PrtSipToolMsg( "\nstopprt: 停止打印所有消息");
 }
 
 API void showver()
 {   
     s8 achVersion[MAX_DEVICEVER_LEN] = {0};
-    CUIDataMgr::GetBuildVersion(achVersion);
-    PrtRkcMsg( "RK100  version: V%s  \n", achVersion ); 
-    PrtRkcMsg( "compile time: %s %s", __DATE__, __TIME__ );
+    //CUIDataMgr::GetBuildVersion(achVersion);
+    PrtSipToolMsg( "siptool  version: V%s  \n", "6.1.0.2.0"/*achVersion*/ ); 
+    PrtSipToolMsg( "compile time: %s %s\n", __DATE__, __TIME__ );
 }
 
 API void prt()
 {
-    CRkcPrintCtrl::GetPrintCtrl()->PrintAllMsg();
+    CSipToolPrintCtrl::GetPrintCtrl()->PrintAllMsg();
 }
 
 API void prtlevel( u8 byLevel )
 {
-    CRkcPrintCtrl::GetPrintCtrl()->PrintMsgLevel(byLevel);
+    CSipToolPrintCtrl::GetPrintCtrl()->PrintMsgLevel(byLevel);
 }
 
 API void prtid( u32 msgID )
 {
-    CRkcPrintCtrl::GetPrintCtrl()->SetPrintMsgID( msgID );
+    CSipToolPrintCtrl::GetPrintCtrl()->SetPrintMsgID( msgID );
 }
 
 API void prtrange( u32 beginID, u32 endID )
 { 
-    CRkcPrintCtrl::GetPrintCtrl()->SetPrintMsgRange( beginID, endID ); 
+    CSipToolPrintCtrl::GetPrintCtrl()->SetPrintMsgRange( beginID, endID ); 
 }
 
 API void stopprt()
 {
-    CRkcPrintCtrl::GetPrintCtrl()->StopPrint();
+    CSipToolPrintCtrl::GetPrintCtrl()->StopPrint();
 }
-*/

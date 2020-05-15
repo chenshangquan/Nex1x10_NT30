@@ -92,6 +92,10 @@ public:
 
     static void RemoveInstance( void )
     {
+        if(ms_pSingleton)
+        {
+            delete ms_pSingleton;
+        }
         ms_pSingleton = NULL;
 	}
 };

@@ -13,7 +13,8 @@ APP_BEGIN_MSG_MAP(CNeighborCfgLogic, CNotifyUIImpl)
 
     USER_MSG(UI_SIPTOOL_CONNECTED , OnUpdateNeighborInfoList)
     USER_MSG(UI_SIPTOOL_DELETENEIGHBORINFORSP , OnDeleteNeighborInfoList)
-    //USER_MSG(UI_RKC_DISCONNECTED , OnRkcDisconnected)
+    USER_MSG(UI_SIPTOOL_GETLOCALINFORSP , OnUpdateNeighborInfoList)
+    USER_MSG(UI_SIPTOOL_DISCONNECTED , OnSipDisconnected)
 
 APP_END_MSG_MAP()
 
@@ -28,24 +29,10 @@ CNeighborCfgLogic::~CNeighborCfgLogic()
 
 bool CNeighborCfgLogic::NeiRegServerItemAdd(TNeiRegServerInfo& tNeiRegServerInfo)
 {
-    s32 nCount = m_pNeiRegServerList->GetCount();
+    //s32 nCount = m_pNeiRegServerList->GetCount();
 
-    CString str;
-    CListTextElementUI* pListElement = new CListTextElementUI;
-    if (pListElement)
-    {
-        pListElement->SetAttribute(_T("height"),_T("24"));
-        pListElement->SetAttribute(_T("gdiplus"),_T("true"));
-        pListElement->SetTag(nCount);
-        m_pNeiRegServerList->Add(pListElement);
-
-        str.Format(_T("%d"), nCount+1);
-        pListElement->SetText(0, str);
-        pListElement->SetText(1, (CA2T)tNeiRegServerInfo.m_achAreaCode);
-        pListElement->SetText(2, (CA2T)tNeiRegServerInfo.m_achIpAddr);
-        str.Format(_T("%d"), tNeiRegServerInfo.m_wPort);
-        pListElement->SetText(3, str);
-    }
+    m_tNeiRegServerInfoAdd = tNeiRegServerInfo;
+    CSipToolComInterface->GetLocalInfo();
 
     return true;
 }
@@ -68,6 +55,12 @@ bool CNeighborCfgLogic::AreaCodeIsExist(TNeiRegServerInfo& tNeiRegServerInfo)
 bool CNeighborCfgLogic::OnNeighborCfgAddBtnClicked(TNotifyUI& msg)
 {
     //CMainFrameLogic::GetSingletonPtr()->OnShowShadeWindow();
+    if ( m_pNeiRegServerList->GetCount() >= 64 )
+    {
+        ShowMessageBox(_T("最大仅支持64个邻居配置"));
+        return false;
+    }
+
     WINDOW_MGR_PTR->ShowModal(g_stcStrNeiRegServerAddDlg.c_str());
 
     return true;
@@ -115,11 +108,18 @@ bool CNeighborCfgLogic::OnUpdateNeighborInfoList( WPARAM wparam, LPARAM lparam, 
                 pListElement->SetText(2, (CA2T)vNeighborInfo[dwIndex].m_achIpAddr);
                 str.Format(_T("%d"), vNeighborInfo[dwIndex].m_wPort);
                 pListElement->SetText(3, str);
+
+                if (strlen(m_tNeiRegServerInfoAdd.m_achAreaCode) > 0
+                    && strcmp(m_tNeiRegServerInfoAdd.m_achAreaCode, vNeighborInfo[dwIndex].m_achAreaCode) == 0)
+                {
+                    m_pNeiRegServerList->SelectItem(dwIndex, true);
+                    //m_tNeiRegServerInfoAdd.Clear();
+                }
             }
 
             //::delete pListElement;
             //pListElement = NULL;
-        }  
+        }
     }
 
     return true;
@@ -148,13 +148,8 @@ bool CNeighborCfgLogic::OnDeleteNeighborInfoList( WPARAM wparam, LPARAM lparam, 
     return true;
 }
 
-/*
-bool CNeighborCfgLogic::OnRkcDisconnected( WPARAM wparam, LPARAM lparam, bool& bHandle )
+bool CNeighborCfgLogic::OnSipDisconnected( WPARAM wparam, LPARAM lparam, bool& bHandle )
 {
-    CButtonUI *pBtn = (CButtonUI*)IRkcToolCommonOp::FindControl(m_pm, _T("SaveNetWorkBut"));
-    if (pBtn)
-    {
-        pBtn->SetFocus();
-    }
+    m_tNeiRegServerInfoAdd.Clear();
     return true;
-}*/
+}

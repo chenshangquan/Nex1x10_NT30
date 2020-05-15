@@ -102,9 +102,9 @@ bool CLoginLogic::OnLoginBtnClicked(TNotifyUI& msg)
     CString strUserName = (ISipToolCommonOp::GetControlText( m_pm ,_T("edtUserName"))).c_str();
     CString strPassWord = (ISipToolCommonOp::GetControlText( m_pm ,_T("edtPassWord"))).c_str();
 
-    if( !CMainFrameLogic::IsIpFormatRight(strIP) )
+    if( !CCallAddr::IsValidIpV4(CT2A(strIP)) )
     {
-        ShowTip(_T("服务器地址非法"));
+        ShowTip(_T("地址输入错误"));
         return false;
     }
     if (strUserName.IsEmpty())
@@ -209,11 +209,10 @@ bool CLoginLogic::OnSipToolDisconnected( WPARAM wparam, LPARAM lparam, bool& bHa
     m_pm->DoCase(_T("caseNormal"));
     if (m_bForceLogout)
     {
-        CString strIniPath = GetIniFilePath();
-        TCHAR tchLoginIP[MAX_NAME_LEN] = {0};
-        GetPrivateProfileString(_T("LoginInfo"),_T("LoginIP"),_T(""), tchLoginIP, MAX_NAME_LEN-1, strIniPath);
         CString strShowTip = _T("");
-        strShowTip.Format(_T("您已被[%s]强制下线，该账户已在另一个地方登录"), tchLoginIP);
+        string strForceIP;
+        CSipToolComInterface->GetForceIP(strForceIP);
+        strShowTip.Format( _T("您已被[%s]强制下线，该账户已在另一个地方登录"), (CA2T)strForceIP.c_str() );
         ShowTip(strShowTip);
     }
     else

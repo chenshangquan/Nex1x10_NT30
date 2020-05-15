@@ -32,7 +32,7 @@ u16 CSipToolInterface::SocketConnect( u32 dwIp, s8* szUser , s8* szPwd)
     strncpy(m_tLoginInfo.m_achName, szUser, sizeof(m_tLoginInfo.m_achName));
     strncpy(m_tLoginInfo.m_achPswd, szPwd, sizeof(m_tLoginInfo.m_achPswd));
 
-    //连接rkc100
+    //连接siptool
     AfxBeginThread( ThreadConnectSipTool , NULL );
 
     return NO_ERROR;
@@ -106,6 +106,16 @@ u16 CSipToolInterface::SetLocalAreaCode(s8* szLocalAreaCode)
     return m_pSysCtrlIf->SetLocalAreaCode(szLocalAreaCode);
 }
 
+u16 CSipToolInterface::GetLocalInfo()
+{
+    if ( NULL == m_pSysCtrlIf )
+    {
+        return -1;
+    }
+
+    return m_pSysCtrlIf->GetLocalInfo();
+}
+
 u16 CSipToolInterface::GetCasRegServerBackInfo(TRegServerInfo &tCasRegServerInfo)
 {
     if ( NULL == m_pSysCtrlIf )
@@ -124,4 +134,14 @@ u16 CSipToolInterface::GetNeighborBackInfo(vector<TNeiRegServerInfo> &vNeighborI
     }
 
     return m_pSysCtrlIf->GetNeighborBackInfo(vNeighborInfo);
+}
+
+u16 CSipToolInterface::GetForceIP(string &strForceIP)
+{
+    if ( NULL == m_pSysCtrlIf )
+    {
+        return -1;
+    }
+
+    return m_pSysCtrlIf->GetForceIP(strForceIP);
 }

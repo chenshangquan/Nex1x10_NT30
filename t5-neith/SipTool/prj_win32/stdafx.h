@@ -43,7 +43,7 @@
 #include "globalheader.h"
 
 
-
+//#define NO_LOGIN
 
 #ifdef _UNICODE
 #if defined _M_IX86

@@ -79,7 +79,7 @@ BOOL CSipToolMsgQueue::IsEmpty()
 
 ////////////////////////////////////////////////////////////////////////////////
 // 全局Osp应用程序对象
-zTemplate<CSipToolMsgHandler, RKC_INSTANCE_COUNT, CSipToolAppBase> g_SipToolApp;
+zTemplate<CSipToolMsgHandler, SIP_INSTANCE_COUNT, CSipToolAppBase> g_SipToolApp;
 
 ////////////////////////////////////////////////////////////////////////////////
 // CMsgHandler

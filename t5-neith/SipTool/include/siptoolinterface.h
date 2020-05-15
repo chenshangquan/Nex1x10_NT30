@@ -62,6 +62,10 @@ public:
 	*   设置本地区号
     */ 
     u16 SetLocalAreaCode(s8* szLocalAreaCode);
+    /**
+	*   获取本地信息，包含邻居,父级和本地区号
+    */ 
+    u16 GetLocalInfo();
      /**
 	*   获取当前级联配置信息
 	*/ 
@@ -70,6 +74,10 @@ public:
 	*   获取当前所有的邻居信息
 	*/ 
     u16 GetNeighborBackInfo(vector<TNeiRegServerInfo> &vNeighborInfo);
+    /**
+	*   获取当前抢登者IP地址
+	*/ 
+    u16 GetForceIP(string &strForceIP);
 
 private:
     static  CSipToolInterface*  m_pMySelf;

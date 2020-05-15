@@ -5,7 +5,7 @@
 //#include "kdvsys.h"
 #include <map>
 #include "nmscommon.h"
-#include "siptoolmessage.h"
+//#include "nmsmtevent.h"
  
 using namespace std;
 

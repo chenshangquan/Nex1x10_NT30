@@ -24,9 +24,6 @@ public:
 	~CMainFrameLogic();
 
 public:
-    //判断IP字符串是否合法
-    static bool IsIpFormatRight(LPCTSTR pIpAddr);
-
     // 显示遮罩窗口
     //bool OnShowShadeWindow(LPCTSTR lpstrName = g_stcStrShadeDlg.c_str(), bool bShow = true);
 
@@ -79,7 +76,14 @@ protected:
     APP_DECLARE_MSG_MAP()
 
 private:
-    bool m_bLogin;    //是否登陆成功
+    //配置条目栏切换
+    void SwitchCfgTabWnd( EmCfgCtrlTabID emSelCfgTabID );
+    //配置项是否被修改
+    bool IsCfgModify();
+
+private:
+    bool                  m_bLogin;          //是否登陆成功
+    EmCfgCtrlTabID        m_emLastCfgTabID;  //上一选中的TabID
 
 };
 

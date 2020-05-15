@@ -38,6 +38,7 @@ using namespace AutoUIFactory;
 //#include "UIDataMgr.h"
 
 #pragma comment(lib, "osplib.lib")
+#pragma comment(lib, LIB_NMSCOMMON)
 #pragma comment(lib, "siptoollib.lib")
 
 //wifi

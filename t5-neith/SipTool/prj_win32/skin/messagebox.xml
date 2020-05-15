@@ -14,7 +14,7 @@
 		<VerticalLayout>
 			<HorizontalLayout height="14">
 				<Control />
-				<Label name="LabelTip" width="240" height="14" font="0" text="" align="center" textcolor="#FFFFFFFF" />
+				<Label name="LabelTip" width="320" height="14" font="0" text="" align="center" textcolor="#FFFFFFFF" />
 				<Control />
 			</HorizontalLayout>
 			<Control />
@@ -25,7 +25,7 @@
 			<HorizontalLayout height="31">
 				<Control />
 				<Button name="ConfirmBtn" width="87" height="31" normalimage="res/public/confirm_normal.png" hotimage="res/public/confirm_hover.png" pushedimage="res/public/confirm_down.png" disabledimage="res/public/confirm_disabled.png" />
-				<Control width="28" />
+				<Control name="DivideCtrl" width="28" />
 				<Button name="CancelBtn" width="87" height="31" normalimage="res/public/cancel_normal.png" pushedimage="res/public/cancel_down.png" disabledimage="res/public/cancel_disabled.png" />
 				<Control />
 			</HorizontalLayout>
@@ -34,21 +34,25 @@
 		
 		<Case name="caseTypeNoBtn">
 			<ConfirmBtn visible="false"/>
+			<DivideCtrl visible="false"/>
 			<CancelBtn visible="false"/>
 			<CloseBtn visible="false"/>
 		</Case>
 		<Case name="caseTypeOneBtn">
 			<ConfirmBtn visible="true"/>
+			<DivideCtrl visible="false"/>
 			<CancelBtn visible="false"/>
 			<CloseBtn visible="false"/>
 		</Case>
 		<Case name="caseTypeTwoBtn">
 			<ConfirmBtn visible="true"/>
+			<DivideCtrl visible="true"/>
 			<CancelBtn visible="true"/>
 			<CloseBtn visible="false"/>
 		</Case>
 		<Case name="caseTypeThreeBtn">
 			<ConfirmBtn visible="true"/>
+			<DivideCtrl visible="true"/>
 			<CancelBtn visible="true"/>
 			<CloseBtn visible="true"/>
 		</Case>

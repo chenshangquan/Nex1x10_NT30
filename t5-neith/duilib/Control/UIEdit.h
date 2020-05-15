@@ -60,6 +60,15 @@ namespace DuiLib
 		void SetSel(long nStartChar, long nEndChar);
 		void SetSelAll();
 		void SetReplaceSel(LPCTSTR lpszReplace);
+        WORD GetSelEnd();
+        WORD GetSelStart();
+
+        void SetPaste(bool bPaste);
+        bool IsPaste() const;
+        UINT GetPasteStart();
+        
+        void SetBack(bool bBack);
+        bool IsBack() const;
 
 		void SetPos(RECT rc);
 		void SetVisible(bool bVisible = true);
@@ -94,6 +103,10 @@ namespace DuiLib
 		//edit提示信息
 		CDuiString m_sTipText;
         UINT m_uNumberStyle;
+
+        bool m_bPaste;
+        UINT m_uPasteStart;
+        bool m_bBack;//VK_BACK
 	};
 }
 #endif // __UIEDIT_H__
