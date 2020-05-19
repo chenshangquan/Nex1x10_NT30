@@ -2,7 +2,7 @@
 <PageNeighborCfg>
 	<VerticalLayout name="NeighborCfgLayout">
 		<VerticalLayout height="80">
-			<Label float="true" pos="40,38,0,0" width="150" height="14" text="邻居regserver服务列表" textcolor="#FF354646" font="1" align="left" />
+			<Label float="true" pos="40,38,0,0" width="150" height="14" text="邻居regserver服务列表" textcolor="#FE354646" font="1" align="left" />
 			<Label float="true" pos="190,45,0,0" width="515" height="1" bkimage="res\cascade_cfg\line.png" />
 			
 			<!--Edit name="RegSerIPEdt" float="true" pos="35,76,0,0" width="559" height="42" text="" textpadding="19,0,19,0" textcolor="#FF3B3B3B" font="0" normalimage="res\cascade_cfg\input_normal.png" focusedimage="res\cascade_cfg\input_focused.png" disabledimage="res\cascade_cfg\input_disabled.png" maxchar="15" numberstyle="1" />
@@ -12,12 +12,12 @@
 		
 		<VerticalLayout>
 			<VerticalLayout float="true" pos="36,0,0,0" width="653" height="384" bkimage="res\neighbor_cfg\bg.png" >
-				<Label float="true" pos="16,14,0,0" width="32" height="14" text="序号" textcolor="#FF0F4F51" font="0" align="left" />
-				<Label float="true" pos="118,14,0,0" width="32" height="14" text="区号" textcolor="#FF0F4F51" font="0" align="left" />
-				<Label float="true" pos="302,14,0,0" width="48" height="14" text="IP地址" textcolor="#FF0F4F51" font="0" align="left" />
-				<Label float="true" pos="518,14,0,0" width="32" height="14" text="端口" textcolor="#FF0F4F51" font="0" align="left" />
+				<Label float="true" pos="16,14,0,0" width="32" height="14" text="序号" textcolor="#FE0F4F51" font="0" align="left" />
+				<Label float="true" pos="118,14,0,0" width="32" height="14" text="区号" textcolor="#FE0F4F51" font="0" align="left" />
+				<Label float="true" pos="302,14,0,0" width="48" height="14" text="IP地址" textcolor="#FE0F4F51" font="0" align="left" />
+				<Label float="true" pos="518,14,0,0" width="32" height="14" text="端口" textcolor="#FE0F4F51" font="0" align="left" />
 				
-				<List name="NeiRegServerList" float="true" pos="2,0,0,0" width="649" height="344" align="center" header="false" vscrollbar="true" itemfont="0" itemalign="center" itemtextcolor="#FF000000" itemhottextcolor="#FFFFFFFF" itemselectedtextcolor="#FFFFFFFF" itemselectedimage="file='res\neighbor_cfg\selected.png' source='1,1,648,20' corner='2,2,2,2'" itemhotimage="file='res\neighbor_cfg\selected.png' source='1,1,648,20' corner='2,2,2,2'" gdiplus="true" >
+				<List name="NeiRegServerList" float="true" pos="2,0,0,0" width="649" height="344" align="center" header="false" vscrollbar="true" itemfont="0" itemalign="center" itemtextcolor="#FE000000" itemhottextcolor="#FEFFFFFF" itemselectedtextcolor="#FEFFFFFF" itemselectedimage="file='res\neighbor_cfg\selected.png' source='1,1,648,20' corner='2,2,2,2'" itemhotimage="file='res\neighbor_cfg\selected.png' source='1,1,648,20' corner='2,2,2,2'" gdiplus="true" >
 					<ListHeader width="649" height="35" visble="false" >
 						<ListHeaderItem width="50" sepwidth="0" />
 						<ListHeaderItem width="160" sepwidth="0" />

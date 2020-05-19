@@ -160,13 +160,7 @@ bool CMainFrameLogic::OnSipToolConnected(WPARAM wparam, LPARAM lparam, bool& bHa
         m_bLogin = true;
         m_pm->DoCase(_T("caseIsLogining"));
 
-        if ( !SetWindowPos( m_pm->GetPaintWindow(), HWND_TOP, 0, 0, 864, 614, SWP_NOACTIVATE|SWP_NOMOVE ) )
-        {
-            DWORD dwErrorID = GetLastError();
-            CString strMsg;
-            strMsg.Format(_T("SetWindowPos Error, GetLastError:%d"), dwErrorID);
-            ShowMessageBox(strMsg);
-        }
+        SetWindowPos( m_pm->GetPaintWindow(), HWND_TOP, 0, 0, 864, 614, SWP_NOACTIVATE|SWP_NOMOVE );
 
         //界面变更
         ISipToolCommonOp::ShowControl( false, m_pm, _T("PageLogin") );
@@ -197,20 +191,20 @@ bool CMainFrameLogic::OnSipToolLogout(WPARAM wparam, LPARAM lparam, bool& bHandl
     {
         return true;
     }
+    m_bLogin = false;
 
-    if ( !SetWindowPos( m_pm->GetPaintWindow(), HWND_TOP, 0, 0, 454, 282, SWP_NOACTIVATE|SWP_NOMOVE ) )
+    //窗口最小化时需还原
+    if ( WINDOW_MGR_PTR->IsWindowMinsize(g_stcStrMainFrameDlg.c_str()) )
     {
-        DWORD dwErrorID = GetLastError();
-        CString strMsg;
-        strMsg.Format(_T("SetWindowPos Error, GetLastError:%d"), dwErrorID);
-        ShowMessageBox(strMsg);
+        ::ShowWindow(m_pm->GetPaintWindow(), SW_RESTORE);
     }
+
+    SetWindowPos( m_pm->GetPaintWindow(), HWND_TOP, 0, 0, 454, 282, SWP_NOACTIVATE|SWP_NOMOVE );
 
     ISipToolCommonOp::ShowControl( true, m_pm, _T("PageLogin") );
     ISipToolCommonOp::ShowControl( false, m_pm, _T("PageSipToolMain") );
     
     WINDOW_MGR_PTR->ShowWindowCenter(g_stcStrMainFrameDlg.c_str());
-    m_bLogin = false;
 
     CSipToolComInterface->CloseLink();
 

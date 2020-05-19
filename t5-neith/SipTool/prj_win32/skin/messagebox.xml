@@ -8,13 +8,13 @@
 	<VerticalLayout name="MessageBoxLayout" bkimage="res/public/msgboxbk.png" >
 		<HorizontalLayout height="113">
 			<Button name="CloseBtn" float="true" pos="391,5,0,0" width="44" height="30" normalimage="res/public/close_normal.png" hotimage="res/public/close_hover.png" pushedimage="res/public/close_down.png" />
-			<Label float="true" pos="22,20,0,0" width="56" height="14" font="0" text="提示信息" textcolor="#FF8D8D8D" />
+			<Label float="true" pos="22,20,0,0" width="56" height="14" font="0" text="提示信息" textcolor="#FE8D8D8D" />
 		</HorizontalLayout>
 		
 		<VerticalLayout>
 			<HorizontalLayout height="14">
 				<Control />
-				<Label name="LabelTip" width="320" height="14" font="0" text="" align="center" textcolor="#FFFFFFFF" />
+				<Label name="LabelTip" width="320" height="14" font="0" text="" align="center" textcolor="#FEFFFFFF" />
 				<Control />
 			</HorizontalLayout>
 			<Control />

@@ -1395,7 +1395,11 @@ void CRenderEngine::DrawTextByGdiPlus(HDC hDC, CPaintManagerUI* pManager, RECT& 
 
 			// 必须设置文字质量，否则绘制出的文字透明度存在问题
             TFontInfo* tFontInfo = pManager->GetFontInfo(iFont);
-            if ( tFontInfo->sFontName != _T("宋体") )  // 宋体字不做平滑处理、去毛边
+            if ( tFontInfo->sFontName == _T("宋体") )  // 宋体字不做平滑处理、去毛边
+            {
+                graphics.SetTextRenderingHint( TextRenderingHintSystemDefault );
+            }
+            else
             {
                 graphics.SetTextRenderingHint( TextRenderingHintAntiAlias );
             }

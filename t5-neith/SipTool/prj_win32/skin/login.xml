@@ -9,18 +9,18 @@
 		<HorizontalLayout height="150">
 			<Control width="30"/>
 			<VerticalLayout>
-				<Edit name="edtIP" float="true" pos="0,20,0,0" width="296" height="50" text="" tiptext="服务器地址" tiptextcolor="#ff787878" textcolor="#ff000000" textpadding="17,0,17,0" font="2" normalimage="res/login/input_normal.png" focusedimage="res/login/input_selected.png" maxchar="16" numberstyle="1" />
-				<Edit name="edtUserName" float="true" pos="0,62,0,0" width="296" height="50" text="" tiptext="用户名" tiptextcolor="#ff787878" textcolor="#ff000000" textpadding="17,0,17,0" font="2" normalimage="res/login/input_normal.png" focusedimage="res/login/input_selected.png" maxchar="16" numberstyle="3" />
-				<Edit name="edtPassWord" float="true" pos="0,104,0,0" width="296" height="50" text="" tiptext="密码" tiptextcolor="#ff787878" textcolor="#ff000000" textpadding="17,0,17,0" font="2" normalimage="res/login/input_normal.png" focusedimage="res/login/input_selected.png" password="true" maxchar="32" numberstyle="4" />
+				<Edit name="edtIP" float="true" pos="0,20,0,0" width="296" height="50" text="" tiptext="服务器地址" tiptextcolor="#fe787878" textcolor="#fe000000" textpadding="17,0,17,0" font="2" normalimage="res/login/input_normal.png" focusedimage="res/login/input_selected.png" maxchar="16" numberstyle="1" />
+				<Edit name="edtUserName" float="true" pos="0,62,0,0" width="296" height="50" text="" tiptext="用户名" tiptextcolor="#fe787878" textcolor="#fe000000" textpadding="17,0,17,0" font="2" normalimage="res/login/input_normal.png" focusedimage="res/login/input_selected.png" maxchar="16" numberstyle="3" />
+				<Edit name="edtPassWord" float="true" pos="0,104,0,0" width="296" height="50" text="" tiptext="密码" tiptextcolor="#fe787878" textcolor="#fe000000" textpadding="17,0,17,0" font="2" normalimage="res/login/input_normal.png" focusedimage="res/login/input_selected.png" password="true" maxchar="32" numberstyle="4" />
 			</VerticalLayout>
 			<Button name="LoginBtn" float="true" pos="328,109,0,0" width="86" height="40" normalimage="res/login/login_normal.png" hotimage="res/login/login_hover.png" pushedimage="res/login/login_down.png"/>
 		</HorizontalLayout>
 		
 		<HorizontalLayout height="75">
 			<Label name="LoginWarnLab" float="true" pos="40,3,0,0" width="25" height="24" bkimage="res/login/warn.png" visible="false" />
-			<Label name="LoginTipLab" float="true" pos="72,9,0,0" width="400" height="14" text="账号与密码不匹配" textcolor="#fff3f3f3" font="0" align="left" visible="false" />
+			<Label name="LoginTipLab" float="true" pos="72,9,0,0" width="400" height="14" text="账号与密码不匹配" textcolor="#fef3f3f3" font="0" align="left" visible="false" />
 			<Label float="true" pos="50,45,0,0" width="64" height="10" bkimage="res/login/copyright.png" />
-			<Label float="true" pos="30,43,0,0" width="394" height="14" text="           2012-2020 苏州科达科技股份有限公司 V6.1.0.2.0" textcolor="#ff8e8d8d" font="0" align="center" />
+			<Label float="true" pos="30,43,0,0" width="394" height="14" text="           2012-2020 苏州科达科技股份有限公司 V6.1.0.2.0" textcolor="#fe8e8d8d" font="0" align="center" />
 		</HorizontalLayout>
 		
 		<Case name="caseNormal">
